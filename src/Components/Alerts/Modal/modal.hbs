@@ -1,0 +1,23 @@
+<div class="modal {{state}}">
+    <div class="modal_background" onclick="modalClose()"></div>
+
+    <div class="modal_content border-shadow-radius">
+        <div class="modal_content_title">
+            {{title}}
+        </div>
+
+        <div class="modal_body">
+            <div class="{{action}}-user_form">
+                <form onsubmit="return {{action}}(event)">
+                    {{>Field 
+                        inputName="login"
+                        label="Логин"
+                        inputId="action-action"
+                    }}
+
+                    {{>Button title=buttonName }}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
