@@ -3,7 +3,7 @@ https://www.figma.com/file/q5QZGfBMPnQVNkvHyI4BLn/Chat-(Copy)?node-id=0%3A1&t=9p
 
 
 Ссылка на сайт
-https://mellow-tartufo-d9f8d1.netlify.app/
+https://musical-pastelito-875b8b.netlify.app/
 
 Запуск проекта в Dev Режиме
 --
