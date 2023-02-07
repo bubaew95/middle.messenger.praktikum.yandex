@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "node static/server.js",
+    "start": "npm run build && node static/server.js",
     "dev": "parcel src/index.html",
     "build": "parcel build src/index.html"
   },
