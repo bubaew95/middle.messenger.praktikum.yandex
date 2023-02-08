@@ -1,55 +1,39 @@
 import Profile from './profile.hbs';
+
+import ProfileTmpl from './profile-tmpl.hbs';
+import EditProfile from './edit-profile.hbs';
+import ChangePassword from './change-password.hbs';
+
 import './profile.pcss';
 
 window.showEditBlocks = (str) => {
     const profile = document.querySelector('.show-profile');
-    const profileActions = document.querySelector('.profile_right_info_actions');
-    const changePassword = document.querySelector('.change-password');
-    const saveButton = document.querySelector('.profile_right_info_data_save-button');
-    const valueField = document.querySelectorAll('.profile_right_info_data_field-value');
-
-    if(str == 'edit-data') { 
-        profileActions.classList.add('display-none');
-        saveButton.classList.remove('display-none');
-        
-        valueField.forEach(item => {
-            const valueInput = item.querySelector('input')
-            const valueText = item.querySelector('span');
-            try {
-                valueText.classList.add('display-none')
-                valueInput.classList.add('display-block')
-            }catch(err) {}
-        })
-    }
-
-    if(str == 'edit-password') {
-        profile.classList.add('display-none');
-        changePassword.classList.remove('display-none');
-        saveButton.classList.remove('display-none');
-        profileActions.classList.add('display-none');
-
-        valueField.forEach(item => {
-            const valueInput = item.querySelector('input');
-            valueInput.classList.add('display-block')
-        })
-    }
-
-    if(str == 'show-profile') {
+    const actions = document.querySelector('.profile_right_info_actions');
+    const profileContent = document.querySelector('.profile_right_info_data_content');
+    
+    if(str == 'profile') {
+        actions.classList.remove('display-none');
+        actions.classList.add('display-block');
         profile.classList.remove('display-none');
-        changePassword.classList.add('display-none');
-        saveButton.classList.add('display-none');
-        profileActions.classList.remove('display-none');
-
-        valueField.forEach(item => {
-            const valueInput = item.querySelector('input')
-            const valueText = item.querySelector('span');
-            try {
-                valueText.classList.remove('display-none')
-                valueInput.classList.remove('display-block')
-            } catch(err) {}
-        })
+        profileContent.innerHTML = '';
+        return false;
+    } else {
+        profile.classList.add('display-none');
+        actions.classList.add('display-none');
+        actions.classList.remove('display-block');
     }
 
+    let templateRoutes = {
+        'profile': ProfileTmpl,
+        'edit-profile': EditProfile,
+        'change-password': ChangePassword
+    }
+    if(profileContent) {
+        let template = templateRoutes[str];
+        profileContent.innerHTML = template();  
+        return true;
+    }
+    return false; 
 }
 
 export default Profile;

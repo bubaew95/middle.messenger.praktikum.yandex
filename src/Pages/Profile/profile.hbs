@@ -37,6 +37,11 @@
                 </div>
 
                 <div class="profile_right_info_data mb-4">
+                    
+                    <div class="profile_right_info_data_content">
+                        
+                    </div>
+
                     <div class="show-profile">
                         <ul>
                             <li>
@@ -45,11 +50,6 @@
                                 </div>
                                 <div class="profile_right_info_data_field-value">
                                     <span>pochta@yandex.ru</span>
-                                    {{> Field
-                                        inputClassName="re-password"
-                                        inputName="rePassword"
-                                        value="pochta@yandex.ru"
-                                    }}
                                 </div> 
                             </li>
                             <li>
@@ -58,11 +58,6 @@
                                 </div>
                                 <div class="profile_right_info_data_field-value">
                                     <span>bubaev</span>
-                                    {{> Field
-                                        inputClassName="re-password"
-                                        inputName="rePassword"
-                                        value="bubaev"
-                                    }}
                                 </div> 
                             </li>
                             <li>
@@ -71,11 +66,6 @@
                                 </div>
                                 <div class="profile_right_info_data_field-value">
                                     <span>Джохар</span>
-                                    {{> Field
-                                        inputClassName="re-password"
-                                        inputName="rePassword"
-                                        value="Джохар"
-                                    }}
                                 </div> 
                             </li>
                             <li>
@@ -84,11 +74,6 @@
                                 </div>
                                 <div class="profile_right_info_data_field-value">
                                     <span>Вальтер</span>
-                                    {{> Field 
-                                        inputClassName="re-password"
-                                        inputName="rePassword"
-                                        value="Вальтер"
-                                    }}
                                 </div> 
                             </li>
                             <li>
@@ -97,11 +82,6 @@
                                 </div>
                                 <div class="profile_right_info_data_field-value">
                                     <span>bubaev007</span>
-                                    {{> Field  
-                                        inputClassName="re-password"
-                                        inputName="rePassword"
-                                        value="bubaev007"
-                                    }}
                                 </div> 
                             </li>
                             <li>
@@ -110,71 +90,17 @@
                                 </div>
                                 <div class="profile_right_info_data_field-value">
                                     <span>+7 (909) 967 30 30</span>
-                                    {{> Field 
-                                        inputClassName="re-password"
-                                        inputName="rePassword"
-                                        value="+7 (909) 967 30 30"
-                                    }}
                                 </div> 
                             </li>
                         </ul>
                     </div>
-
-                    <div class="change-password display-none">
-                        <ul>
-                            <li>
-                                <div class="profile_right_info_data_field-name">
-                                    Старый пароль
-                                </div>
-                                <div class="profile_right_info_data_field-value">
-                                    {{> Field 
-                                        type="password"
-                                        inputClassName="old-password"
-                                        inputName="oldPassword"
-                                        value="*******"
-                                    }}
-                                </div> 
-                            </li>
-                            <li>
-                                <div class="profile_right_info_data_field-name">
-                                    Новый пароль
-                                </div>
-                                <div class="profile_right_info_data_field-value">
-                                    {{> Field 
-                                        type="password"
-                                        inputClassName="old-password"
-                                        inputName="newPassword"
-                                        value="*******"
-                                    }}
-                                </div> 
-                            </li>
-                            <li>
-                                <div class="profile_right_info_data_field-name">
-                                    Повторите новый пароль
-                                </div>
-                                <div class="profile_right_info_data_field-value">
-                                    {{> Field 
-                                        type="password"
-                                        inputClassName="re-password"
-                                        inputName="rePassword"
-                                        value="*******"
-                                    }}
-                                </div> 
-                            </li>
-                        </ul> 
-                    </div>
-
-                    <div class="profile_right_info_data_save-button mt-8 display-none">
-                        <div class="profile_right_info_data_save-button_center">
-                            {{>Button title="Сохранить" onclick="showEditBlocks('show-profile')"}}
-                        </div>
-                    </div>
+                    
                 </div>
                 
                 <div class="profile_right_info_actions">
                     <ul>
-                        <li onclick="showEditBlocks('edit-data')"><a>Изменить данные</a></li>
-                        <li onclick="showEditBlocks('edit-password')"><a>Изменить пароль</a></li>
+                        <li onclick="showEditBlocks('edit-profile')"><a>Изменить данные</a></li>
+                        <li onclick="showEditBlocks('change-password')"><a>Изменить пароль</a></li>
                         <li><a class="text-danger">Выйти</a></li>
                     </ul>
                 </div>
