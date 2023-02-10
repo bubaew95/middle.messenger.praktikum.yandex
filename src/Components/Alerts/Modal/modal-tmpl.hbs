@@ -1,0 +1,35 @@
+{{#if (isContains window 'deleteUser')}}
+    {{>Modal
+        title="Удалить пользователя"
+        action="onDelete"
+        buttonName="Удалить"
+        state="show"
+    }}
+{{/if}}
+
+{{#if (isContains window 'addUser')}}
+    {{>Modal 
+        title="Добавить пользователя"
+        action="onAdd"
+        buttonName="Добавить"
+        state="show"
+    }}
+{{/if}}
+
+{{#if (isContains window 'changeAvatar')}}
+    {{>ModalBrowse 
+        title="Загрузите файл"
+        action="changeAvatar"
+        buttonName="Поменять"
+        state="show"
+    }}
+{{/if}}
+
+{{#if (isContains window 'sendFile')}}
+    {{>ModalBrowse 
+        title="Отправить файл"
+        action="sendFile"
+        buttonName="Отправить"
+        state="show"
+    }}
+{{/if}}

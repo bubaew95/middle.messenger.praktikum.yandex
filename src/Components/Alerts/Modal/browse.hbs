@@ -1,0 +1,25 @@
+<div class="modal {{state}}">
+    <div class="modal_background" onclick="modalClose()"></div>
+
+    <div class="modal_content border-shadow-radius">
+        <div class="modal_content_title">
+            {{title}}
+        </div>
+
+        <div class="modal_body">
+            <div class="{{action}}_form">
+                <form onsubmit="return {{action}}(event)">
+                    <div class="modal_body_browse">
+                        <a>Выбрать файл на компьютере</a>
+                    </div>
+                    {{>Button title=buttonName }}
+                </form>
+                <div class="modal_body_error error">
+                    <div class="error-text">
+                        Нужно выбрать файл
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

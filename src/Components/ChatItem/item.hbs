@@ -1,0 +1,31 @@
+
+<div class="chat_left-column_items_item " onclick="selectChat('{{ id }}')">
+    <div class="chat_left-column_items_item_avatar">
+        <img src="{{avatar}}" alt="{{name}}">
+    </div>
+    <div class="chat_left-column_items_item_info">
+        <div class="chat_left-column_items_item_info_name">
+            {{name}}
+        </div>
+
+        <div class="chat_left-column_items_item_info_message">
+
+            {{#if isActive}}
+                <span class="chat_left-column_items_item_info_my-message">Вы:</span>
+            {{/if}}
+            {{Substr message end=70}}
+        </div>
+    </div>
+
+    <div class="chat_left-column_items_item_right">
+        <div class="chat_left-column_items_item_right_date">
+            {{lastMessageTime}}
+        </div>
+
+        <div class="chat_left-column_items_item_right_badge">
+            {{#if badge}}
+                <span>{{badge}}</span>
+            {{/if}}
+        </div>
+    </div>
+</div>

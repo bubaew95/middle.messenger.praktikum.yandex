@@ -1,0 +1,84 @@
+<div class="edit-profile">
+    <form action="" onsubmit="showEditBlocks('profile')">
+        <ul>
+            <li>
+                <div class="edit-profile_field-name">
+                    Почта
+                </div>
+                <div class="edit-profile_field-value"> 
+                    {{> Field
+                        inputClassName="email"
+                        inputName="email"
+                        value="pochta@yandex.ru"
+                    }}
+                </div> 
+            </li>
+            <li>
+                <div class="edit-profile_field-name">
+                    Логин
+                </div>
+                <div class="edit-profile_field-value"> 
+                    {{> Field
+                        inputClassName="login"
+                        inputName="login"
+                        value="bubaev"
+                    }}
+                </div> 
+            </li>
+            <li>
+                <div class="edit-profile_field-name">
+                    Имя
+                </div>
+                <div class="edit-profile_field-value"> 
+                    {{> Field
+                        inputClassName="second_name"
+                        inputName="second_name"
+                        value="Джохар"
+                    }}
+                </div> 
+            </li>
+            <li>
+                <div class="edit-profile_field-name">
+                    Фамилия
+                </div>
+                <div class="edit-profile_field-value"> 
+                    {{> Field 
+                        inputClassName="first_name"
+                        inputName="first_name"
+                        value="Вальтер"
+                    }}
+                </div> 
+            </li>
+            <li>
+                <div class="edit-profile_field-name">
+                    Имя в чате
+                </div>
+                <div class="edit-profile_field-value"> 
+                    {{> Field  
+                        inputClassName="display_named"
+                        inputName="display_name"
+                        value="bubaev007"
+                    }}
+                </div> 
+            </li>
+            <li>
+                <div class="edit-profile_field-name">
+                    Телефон
+                </div>
+                <div class="edit-profile_field-value"> 
+                    {{> Field 
+                        inputClassName="phone"
+                        inputName="phone"
+                        value="+7 (909) 967 30 30"
+                    }}
+                </div> 
+            </li>
+        </ul>
+
+        <div class="profile_right_info_data_save-button mt-8">
+            <div class="profile_right_info_data_save-button_center">
+                {{>Button title="Сохранить"}}
+            </div>
+        </div>
+    </form>
+</div>

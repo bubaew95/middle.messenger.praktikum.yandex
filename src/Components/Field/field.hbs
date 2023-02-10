@@ -1,0 +1,22 @@
+
+
+<div class="{{containerClassName}}-input input-group {{#if error}}error{{/if}}">
+    
+    {{#if label}}
+        <label for="{{inputId}}" class="label">{{label}}</label>
+    {{/if}}
+    
+    <input 
+        id="{{inputId}}" 
+        type="{{#if type}}{{type}}{{else}}text{{/if}}" 
+        class="{{inputClassName}} input"  
+        name="{{inputName}}" 
+        placeholder="{{#if placeholder}}{{placeholder}}{{else}}{{label}}{{/if}}"
+        value="{{value}}"
+    />
+
+    {{#if error}}
+        <div class="{{containerClassName}}_error error-text">{{error}}</div>
+    {{/if}}
+
+</div>

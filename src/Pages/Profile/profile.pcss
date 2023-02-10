@@ -1,0 +1,139 @@
+.profile {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    display: flex;
+
+    & .input-group {
+        margin:0;
+        padding: 0;
+    }
+
+    &_left {
+        border-right: 1px solid #EAEAEA;
+        height: 100vh;
+        width: 64px;
+        background: #FBFBFB;
+
+        &_prev-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            cursor: pointer;
+
+            &:hover {
+                opacity: .7;
+            }
+        }
+    }
+
+    &_right {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+
+        &_info {
+            width: 510px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+
+            &_header {
+                justify-content: center;
+                display: inline-grid;
+                margin-bottom: 20px;
+                align-items: center;
+                text-align: center;
+
+                &_avatar {
+                    width: 130px;
+                    height: 130px;
+                    background: #efefef;
+                    border: 1px solid #ccc;
+                    border-radius: 50%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+                    overflow: hidden;
+                    position: relative;
+
+                    &:hover {
+                        & .profile_right_info_header_avatar_change-image-block {
+                            display: block !important;
+                        }
+                    }
+
+                    & img {
+                        height: 100%;
+                        width: 100%;
+                        object-fit: cover;
+                        overflow: hidden; 
+                    } 
+
+                    &_change-image-block {
+                        height: 100%;
+                        width: 100%;
+                        position: absolute;
+                        display: none;
+
+                        &_text {
+                            font-size: 14px;
+                            background: #00000082;
+                            height: 100%;
+                            display: flex;
+                            width: 100%;
+                            justify-content: center;
+                            align-items: center;
+                            position: absolute;
+                            color: white;
+                       }
+                    }
+
+                } 
+                
+                &_name {
+                    color: #1E1E1E;
+                    font-weight: bold;
+                    font-size: 16px;
+                }
+            }
+
+            &_data {
+                &_field-name {
+                    color: #1E1E1E;
+                }
+
+                &_field-value { 
+                    color: #999;
+                    display: flex;
+                    justify-content: right;
+                    align-items: center; 
+                }
+
+                &_save-button {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    
+                    &_center {
+                        width: 280px;
+                    }
+                }
+            }
+
+            & ul li {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 12px 0;
+                border-bottom: 1px solid #EAEAEA;
+
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+        }
+    }
+}

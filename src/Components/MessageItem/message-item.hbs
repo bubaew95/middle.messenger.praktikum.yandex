@@ -1,0 +1,12 @@
+<div class="chat_right-column_selected_middle_items_item{{#if media}}_is-media{{/if}} {{#if isMySelf}}chat_me{{/if}}">
+    <div class="chat_right-column_selected_middle_items_item{{#if media}}_is-media{{/if}}_message">
+        {{#if media}}
+            {{{media}}}
+        {{else}} 
+            {{text}}
+        {{/if}}
+    </div>
+    <div class="chat_right-column_selected_middle_items_item{{#if media}}_is-media{{/if}}_time">
+        {{time}}
+    </div>
+</div>
