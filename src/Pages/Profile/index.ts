@@ -5,11 +5,14 @@ import EditProfile from './edit-profile.hbs';
 import ChangePassword from './change-password.hbs';
 
 import './profile.pcss';
+import { TRoutes } from '../../routers';
 
-window.showEditBlocks = (str) => {
-    const profile = document.querySelector('.show-profile');
-    const actions = document.querySelector('.profile_right_info_actions');
-    const profileContent = document.querySelector('.profile_right_info_data_content');
+type Nullable<T> = T | null;
+
+window.showEditBlocks = (str: string): boolean => {
+    const profile: Nullable<HTMLDivElement> = document.querySelector('.show-profile') as HTMLDivElement;
+    const actions: Nullable<HTMLDivElement> = document.querySelector('.profile_right_info_actions') as HTMLDivElement;
+    const profileContent: Nullable<HTMLDivElement> = document.querySelector('.profile_right_info_data_content') as HTMLDivElement;
     
     if(str == 'profile') {
         actions.classList.remove('display-none');
@@ -23,13 +26,15 @@ window.showEditBlocks = (str) => {
         actions.classList.remove('display-block');
     }
 
-    let templateRoutes = {
+    
+    let templateRoutes: TRoutes = {
         'profile': ProfileTmpl,
         'edit-profile': EditProfile,
         'change-password': ChangePassword
     }
+
     if(profileContent) {
-        let template = templateRoutes[str];
+        let template = templateRoutes[str] ;
         profileContent.innerHTML = template();  
         return true;
     }

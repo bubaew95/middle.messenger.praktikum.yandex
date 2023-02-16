@@ -1,10 +1,14 @@
-import Login from './Pages/Login/index.js';
+import Login from './Pages/Login';
 import Registration from './Pages/Registration';
 import Chat from './Pages/Chat';
 import Profile from './Pages/Profile';
 import {Error404, Error500} from './Pages/Error';
 
-const routers = {
+export type TRoutes = {
+    [key: string]: Function
+};
+
+const routers: TRoutes = {
     'login': Login,
     'registration': Registration,
     'chat': Chat,  
