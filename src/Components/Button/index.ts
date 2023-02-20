@@ -1,6 +1,23 @@
+import Block from '../../utils/Block'; 
 import template from './button.hbs';
-import Handlebars from 'handlebars/dist/handlebars.runtime';
-
 import './button.pcss'
 
-Handlebars.registerPartial('Button', template);
+interface ButtonProps {
+  title: string;
+  className: string|null;
+  events?: {
+    click: (e: Event) => void;
+  };
+}
+
+export default class Button extends Block {
+    
+    constructor(props: ButtonProps) {
+        super(props);
+    }
+
+    render() {
+        return this.compile(template, this.props);
+    }
+}
+  
