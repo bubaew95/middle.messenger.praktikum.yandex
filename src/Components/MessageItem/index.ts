@@ -1,6 +1,17 @@
-import MessageItem from './message-item.hbs';
-import Handlebars from 'handlebars/dist/handlebars.runtime';
-
+import Block from '../../utils/Block';
+import template from './message-item.hbs';
 import './message-item.pcss';
 
-Handlebars.registerPartial('MessageItem', MessageItem);
+
+export default class MessageItem extends Block {
+
+    constructor(props) {
+        console.log(props)
+        super(props);
+    }
+
+    protected render(): DocumentFragment {
+        return this.compile(template, this.props)
+    }
+
+}

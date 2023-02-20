@@ -21,10 +21,8 @@
 
             <div class="chat_left-column_items">
 
-                {{#each data }}
-                    {{>ChatItem }}
-                {{else }}
-                    <p>Чатов пока нет</p>
+                {{#each Chats}}
+                    {{{this}}}
                 {{/each}}
 
             </div>
@@ -33,6 +31,8 @@
         <!-- Подгрузка сообщений происходит в файле index.js -->
         <div class="chat_right-column chat-block">
             
+            {{{ Messages }}}
+
             <div class="chat_right-column_not-select">
                 Выберите чат чтобы отправить сообщение
             </div>

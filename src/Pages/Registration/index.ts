@@ -4,7 +4,7 @@ import Block from '../../utils/Block';
 import template from './registration.hbs';
 import registrationForm from './registration-form.hbs';
 import Link from '../../Components/Link';
-import { LOGIN_PAGE, renderDom } from '../../routers';
+import { CHAT_PAGE, LOGIN_PAGE, renderDom } from '../../routers';
 
 import './registration.pcss';
 
@@ -98,7 +98,7 @@ export default class RegistrationPage extends Block {
             template: registrationForm,
             events: {
               submit: (e: SubmitEvent) => {
-                e.preventDefault();
+                e.preventDefault();  
                 console.log({
                   login: loginField.getValue(),
                   password: passwordField.getValue()

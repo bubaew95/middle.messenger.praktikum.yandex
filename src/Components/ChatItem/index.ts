@@ -1,6 +1,16 @@
-import Handlebars from 'handlebars/dist/handlebars.runtime';
-import Item from './item.hbs';
-
+import Block from '../../utils/Block';
+import template from './item.hbs';
 import './item.pcss';
 
-Handlebars.registerPartial('ChatItem', Item);
+
+export default class Chat extends Block {
+
+    constructor(props) { 
+        super(props)
+    }
+
+    protected render(): DocumentFragment {
+        return this.compile(template, this.props)
+    }
+
+}

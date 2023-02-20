@@ -1,46 +1,46 @@
-import Chat from './chat.hbs'
+import template from './chat.hbs'
+import Block from '../../utils/Block';
 import './chat.pcss';
+ 
+import data from './chats.json'; 
+import { ChatItem, MessageItem } from '../../Components';
 
-import SelectChat from './Partials/select-chat.hbs';
 
-import Data from './chats.json';
-
-type Nullable<T> = T | null;
-let openFlag: {[key: string]: boolean} = {};
-
-window.selectChat = (id: string): void => {
-    const filter = Data.filter((item: typeof Data) => item.id === id);
+export default class Chat extends Block {
     
-    let chatBlock: Nullable<HTMLDivElement> = document.querySelector('.chat-block') as HTMLDivElement;
-
-    chatBlock.innerHTML = SelectChat(filter[0]);
-}
-
-window.openBox = (context: Event, boxId:string | null = null): void  => {
-    
-    if(!boxId) {
-        return;
+    constructor(props) {
+        super(props)
     }
 
-    const dom:Nullable<HTMLDivElement> = document.querySelector(`#${boxId}`) as HTMLDivElement;
-
-    if(openFlag[boxId]) { 
-        dom.classList.remove('display-block');
-        openFlag[boxId] = false;
-    } else {
-        dom.classList.add('display-block');
-        openFlag[boxId] =  true;
+    protected componentDidUpdate(oldProps: any, newProps: any): boolean {
+        console.log(oldProps, newProps)
+        return true;
     }
-}
 
-window.onDelete = (e: Event): void => {
-    e.preventDefault();
-    console.log('onDelete')
-}
+    protected init(): void {
+        let child: {[key: string]: Block | Block[]} = this.children;
 
-window.onAdd =  (e: Event): void => {
-    e.preventDefault();
-    console.log('onAdd')
-}
+        child.Chats = [];
 
-export default Chat;
+        data.map((item: {[key: string]: any}) => { 
+            const chatItem = new ChatItem({
+                ...item,
+                events: {
+                    click: (e: PointerEvent) => {
+                        this.setProps({
+                            Messages: new MessageItem(item)
+                        })
+                    }
+                }
+            });
+
+            (child.Chats as Array<Block>).push(chatItem);
+        })
+ 
+    }
+
+    protected render(): DocumentFragment {
+        return this.compile(template, this.props)
+    }
+
+}

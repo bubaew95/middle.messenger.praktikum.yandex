@@ -28,7 +28,9 @@ class Block {
 
     const { props, children } = this._getChildrenAndProps(propsWithChildren);
 
-    this._meta = {  props };
+    this._meta = { 
+      props
+    };
 
     this.children = children;
     this.props = this._makePropsProxy(props);
@@ -73,6 +75,8 @@ class Block {
   }
  
   private _init() {
+    //this._createResources();
+
     this.init();
 
     this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
@@ -110,7 +114,7 @@ class Block {
   }
 
   protected componentDidUpdate(oldProps: any, newProps: any) {
-    return true; 
+    return true;
   }
 
   setProps = (nextProps: any) => {
