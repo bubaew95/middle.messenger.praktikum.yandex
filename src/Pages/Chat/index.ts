@@ -3,10 +3,10 @@ import Block from '../../utils/Block';
 import './chat.pcss';
  
 import data from './chats.json'; 
-import { ChatItem, MessageItem } from '../../Components';
+import { ChatItem, MessageItem, Messages } from '../../Components';
 
 
-export default class Chat extends Block {
+export default class ChatPage extends Block {
     
     constructor(props) {
         super(props)
@@ -20,22 +20,21 @@ export default class Chat extends Block {
     protected init(): void {
         let child: {[key: string]: Block | Block[]} = this.children;
 
-        child.Chats = [];
+        child.Chat = new Messages({});
 
+        child.Chats = [];
         data.map((item: {[key: string]: any}) => { 
             const chatItem = new ChatItem({
                 ...item,
                 events: {
                     click: (e: PointerEvent) => {
-                        this.setProps({
-                            Messages: new MessageItem(item)
-                        })
+                        (child.Chat as Block).setProps(item)
                     }
                 }
             });
 
             (child.Chats as Array<Block>).push(chatItem);
-        })
+        }) 
  
     }
 

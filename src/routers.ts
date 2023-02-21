@@ -1,10 +1,10 @@
 import LoginPage from './Pages/Login';
-import RegistrationPage from './Pages/Registration';
-import Chat from './Pages/Chat';
+import RegistrationPage from './Pages/Registration'; 
 import Profile from './Pages/Profile';
 import {Error404, Error500} from './Pages/Error';
 import { Nullable } from './typings/Nullable';
 import Block from './utils/Block';
+import ChatPage from './Pages/Chat';
 
 export type TRoutes = {
     [key: string]: Function
@@ -20,7 +20,7 @@ export const ERROR_500_PAGE = 'error-500';
 const routers: TRoutes = {
     [LOGIN_PAGE]: LoginPage,
     [REGISTRATION_PAGE]: RegistrationPage,
-    [CHAT_PAGE]: Chat,  
+    [CHAT_PAGE]: ChatPage,  
     [PROFILE_PAGE]: Profile,
     [ERROR_404_PAGE]: Error404,
     [ERROR_500_PAGE]: Error500

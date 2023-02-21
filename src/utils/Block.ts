@@ -75,10 +75,7 @@ class Block {
   }
  
   private _init() {
-    //this._createResources();
-
     this.init();
-
     this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
   }
 
@@ -97,8 +94,8 @@ class Block {
       let childrens: undefined | []  = undefined;
 
       if(Array.isArray(child)) {
-        // childrens = [];
-        // childrens.push(child.map(item => item.dispatchComponentDidMount())); 
+        //childrens = [];
+        //childrens.push(child.map(item => item.dispatchComponentDidMount())); 
       } else {
         childrens = child.dispatchComponentDidMount(); 
       }
@@ -121,7 +118,7 @@ class Block {
     if (!nextProps) {
       return;
     }
-
+    
     Object.assign(this.props, nextProps);
   };
 
@@ -207,7 +204,6 @@ class Block {
         const oldTarget = { ...target }
 
         target[prop] = value;
-
         // Запускаем обновление компоненты
         // Плохой cloneDeep, в следующей итерации нужно заставлять добавлять cloneDeep им самим
         self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);

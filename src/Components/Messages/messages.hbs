@@ -9,7 +9,7 @@
         </div>
 
         <div class="chat_right-column_selected_header_actions">
-            {{>HeaderActions }}
+            {{!-- {{>HeaderActions }} --}}
         </div>
     </div>
 
@@ -19,9 +19,9 @@
             <div class="chat_right-column_selected_middle_items_chat-date">
                 19 июня
             </div>
-
-            {{#each messages}}
-                {{>MessageItem }}
+  
+            {{#each Messages}}
+                {{{ this }}}
             {{/each}}
 
         </div>
@@ -30,26 +30,26 @@
     <form>
         <div class="chat_right-column_selected_message-form">
             <div class="chat_right-column_selected_message-form_actions">
-                {{>FooterActions }}
+                {{!-- {{>FooterActions }} --}}
             </div>
     
             <div class="chat_right-column_selected_message-form_input">
-                {{>Field 
+                {{!-- {{>Field 
                     containerClassName="chat_right-column_selected_message-form" 
                     inputName="message"
                     placeholder="Сообщение"
-                }}
+                }} --}}
             </div>
 
             <div class="chat_right-column_selected_message-form_send-button"> 
 
-                {{>Button 
+                {{!-- {{>Button 
                     title='<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect y="5.19995" width="11" height="1.6" fill="white"/>
                         <path d="M7 1L11 6L7 11" stroke="white" stroke-width="1.6"/>
                         </svg>
                     '
-                }}
+                }} --}}
             </div> 
         </div>
     </form>
