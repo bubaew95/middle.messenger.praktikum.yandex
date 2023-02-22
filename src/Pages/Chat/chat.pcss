@@ -45,8 +45,8 @@ $borderColor: #EAEAEA;
         } 
 
         &_items {
-            height: 84vh;
-            overflow: scroll;
+            height: calc(100vh - 123px);
+            overflow-x: auto;
 
             &_item {
                 height: 73px; 
@@ -60,11 +60,12 @@ $borderColor: #EAEAEA;
                 }
 
                 &_avatar {
-                    width: 47px;
-                    height: 47px;
+                    width: 45px;
+                    height: 45px;
                     border-radius: 50%;
                     overflow: auto;
                     display: flex;
+                    border: 1px solid #eaeaea;
 
                     & img {
                         width: 100%;
@@ -164,11 +165,12 @@ $borderColor: #EAEAEA;
                 position: relative;
 
                 &_avatar {
-                    width: 34px;
-                    height: 34px;
-                    overflow: hidden;
+                    width: 33px;
+                    height: 33px;
                     border-radius: 50%;
                     margin-right: 10px;
+                    overflow: hidden;
+                    border: 1px solid #eaeaea;
                     
                     & img {
                         width: 100%;
@@ -208,7 +210,7 @@ $borderColor: #EAEAEA;
 
             &_middle {
                 flex: 1;
-                overflow: scroll;
+                overflow-x: auto;
 
                 &_items {
                     margin: 10px 0;

@@ -28,7 +28,9 @@ export default class ChatPage extends Block {
                 ...item,
                 events: {
                     click: (e: PointerEvent) => {
-                        (child.Chat as Block).setProps(item)
+                        (child.Chat as Block).setProps({
+                            id: item.id
+                        })
                     }
                 }
             });

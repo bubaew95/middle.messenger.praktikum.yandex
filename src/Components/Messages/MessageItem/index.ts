@@ -5,7 +5,7 @@ import './message-item.pcss';
 
 export default class MessageItem extends Block {
 
-    constructor(props) {   
+    constructor(props) {
         super(props);
     }
 
