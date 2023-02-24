@@ -4,9 +4,10 @@ import Block from '../../utils/Block';
 import template from './registration.hbs';
 import registrationForm from './registration-form.hbs';
 import Link from '../../Components/Link';
-import { CHAT_PAGE, LOGIN_PAGE, renderDom } from '../../routers';
+import { LOGIN_PAGE, renderDom } from '../../routers';
 
 import './registration.pcss';
+import ChildType from '../../typings/ChildrenType';
 
 export default class RegistrationPage extends Block {
 
@@ -15,7 +16,7 @@ export default class RegistrationPage extends Block {
     }
 
     protected init(): void {
-        let child: {[key: string]: Block | Block[]} = this.children;
+        let child: ChildType = this.children;
         
         const emailField = new Field({
             name: 'email',
@@ -83,7 +84,7 @@ export default class RegistrationPage extends Block {
 
         const button = new Button({
             title: 'Зарегистрироваться',
-            className: 'registration-form_login mx-2'
+            className: 'registration-form_login mx-2 button'
         });
 
         const enterAccount = new Link({

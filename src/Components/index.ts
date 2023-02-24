@@ -1,12 +1,12 @@
 import Button from './Button';
 import Field from './Field';
 import Input from './Input';
+import Link from './Link';
+import List from './List';
 import ChatItem from './ChatItem';
 import Messages from './Messages';
 import MessageItem from './Messages/MessageItem';
-import FooterActions from './Alerts/FooterActions';
-import HeaderActions from './Alerts/HeaderActions';
-import Modal from './Alerts/Modal';
+import Modal from './Modal';
 
 export {
     Button,
@@ -15,7 +15,7 @@ export {
     ChatItem,
     Messages,
     MessageItem,
-    FooterActions,
-    HeaderActions,
-    Modal
+    Modal,
+    Link,
+    List,
 }

@@ -32,11 +32,17 @@ $borderColor: #EAEAEA;
                     &:hover {
                         opacity: .7;
                     }
-                } 
+                }
+
+                &_link {
+                    display:flex;
+                    justify-content: right;
+                    align-items: center;
+                }
             }
 
             &-search {
-                & input {
+                &_input {
                     &::placeholder {
                         text-align: center;
                     }
@@ -149,7 +155,6 @@ $borderColor: #EAEAEA;
 
         &_selected {
             width: 100%;
-            position: relative;
             display: flex;
             flex-direction: column;
             overflow: hidden;

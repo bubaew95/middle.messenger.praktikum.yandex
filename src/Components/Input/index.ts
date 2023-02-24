@@ -2,10 +2,20 @@ import Block from '../../utils/Block';
 import template from './input.hbs';
 import './input.pcss';
 
-export default class Input extends Block {
+interface IInputProps {
+    name: string;
+    className?: string;
+    type?: string;
+    placeholder?:string;
+    value?: string;
+    events?: {
+        keyup?: (e: KeyboardEvent) => void;
+        blur?: (e: FocusEvent) => void;
+    };
+}
 
-    //TODO: Доработать типов
-    constructor(props: {}) { 
+export default class Input extends Block {
+    constructor(props: IInputProps) {
         super(props)
     }
 

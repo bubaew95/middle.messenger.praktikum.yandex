@@ -7,17 +7,16 @@ import Block from '../../utils/Block';
 import template from './login.hbs';
 import loginForm from './login-form.hbs';
 import './login.pcss'; 
-
-type TLoginPageProps = {}
+import ChildType from '../../typings/ChildrenType';
 
 export default class LoginPage extends Block {
 
-    constructor(props: TLoginPageProps) { 
+    constructor(props: {}) { 
         super(props);
     }
 
     init() {
-      let child: {[key: string]: Block | Block[]} = this.children;
+      let child: ChildType = this.children;
 
       const loginField = new Field({
         name: 'login',
@@ -40,7 +39,7 @@ export default class LoginPage extends Block {
       
       const button = new Button({
         title: 'Войти',
-        className: 'login-form_buttons_button'
+        className: 'login-form_buttons_button button'
       });
 
       const noAccountLink = new Link({

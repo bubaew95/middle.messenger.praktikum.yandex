@@ -1,4 +1,5 @@
 import Block from "../../utils/Block";
+import template from './form.hbs';
 
 interface IFormEvents {
     submit: (e: SubmitEvent) => void;
@@ -11,11 +12,14 @@ interface IFormProps {
 
 export default class Form extends Block
 {
-    constructor(props: IFormProps) { 
+    constructor(props: IFormProps) {
         super(props)
     }
 
     protected render(): DocumentFragment {
-        return this.compile(this.props.template, this.props)
+        return this.compile(
+            this.props.template ?? template, 
+            this.props
+        )
     } 
 }

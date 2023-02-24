@@ -7,13 +7,14 @@ import './field.pcss';
 
 interface FieldProps {
     name: string;
-    label: string | null;
-    error?: string | null;
+    label?: string;
+    error?: string;
+    className?: string;
     type?: string;
+    placeholder?:string;
+    value?: string;
     onBlur?: (e: FocusEvent) => void;
-    events?: {
-      click: (e: Event) => void;
-    };
+    onKeyup?: (e: KeyboardEvent) => void;
 }
 
 export default class Field extends Block {
@@ -28,12 +29,27 @@ export default class Field extends Block {
     }
 
     init() {
-        this.children.Input = new Input({
-            ...this.props,
-            events: {
-                blur: (e: FocusEvent) => this.props?.onBlur(e)
-            }
-        }) 
+        let props = this.props;
+
+        if(this.props.onBlur) { 
+            props = {
+                ...props,
+                events: {
+                    blur: (e: FocusEvent) => this.props.onBlur(e)
+                }
+            } 
+        }
+
+        if(this.props.onKeyup) {
+            props = {
+                ...props,
+                events: {
+                    keyup: (e: KeyboardEvent) => this.props.onKeyup(e)
+                }
+            } 
+        }
+
+        this.children.Input = new Input(props) 
     }
 
     render(): DocumentFragment { 

@@ -1,10 +1,9 @@
-import { CHAT_PAGE, LOGIN_PAGE, REGISTRATION_PAGE, renderDom } from './routers';
-import './Helpers'
-import './Components'
+import { CHAT_PAGE, LOGIN_PAGE, PROFILE_CHANGE_PASSWORD_PAGE, PROFILE_EDIT_PAGE, PROFILE_PAGE, REGISTRATION_PAGE, renderDom } from './routers';
+import './Components';
+import 'icon-blender/css/icon-blender.css';
 import './style.pcss';
 
-import ModalTmpl from './Components/Alerts/Modal/modal-tmpl.hbs';
-import chatData from './Pages/Chat/chats.json';
+import './Helpers/Substr'
 
 window.addEventListener('DOMContentLoaded', () => {
     renderDom(CHAT_PAGE)

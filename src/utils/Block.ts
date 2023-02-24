@@ -67,6 +67,14 @@ class Block {
     });
   }
 
+  _removeEvents() {
+    const {events = {}} = this.props as { events: Record<string, () =>void> };
+
+    Object.keys(events).forEach(eventName => { 
+      this._element?.removeEventListener(eventName, events[eventName]);
+    });
+  }
+
   _registerEvents(eventBus: EventBus) {
     eventBus.on(Block.EVENTS.INIT, this._init.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
@@ -114,11 +122,15 @@ class Block {
     return true;
   }
 
+  getProps() {
+    return this.props;
+  }
+
   setProps = (nextProps: any) => {
     if (!nextProps) {
       return;
     }
-    
+
     Object.assign(this.props, nextProps);
   };
 
@@ -128,8 +140,8 @@ class Block {
 
   private _render() {
     const fragment = this.render();
-
-    //TODO: реализовать обработчик удаления событий
+    
+    this._removeEvents();
 
     const newElement = fragment.firstElementChild as HTMLElement;
 
@@ -164,7 +176,7 @@ class Block {
         contextAndStubs[name] = `<div data-id="${component.id}"></div>`;
       }
     }); 
-
+    
     const html = template(contextAndStubs); 
     const temp = document.createElement('template'); 
     

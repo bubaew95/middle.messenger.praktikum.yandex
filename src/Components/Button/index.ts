@@ -4,7 +4,7 @@ import './button.pcss'
 
 interface ButtonProps {
   title: string;
-  className: string|null;
+  className?: string;
   events?: {
     click: (e: Event) => void;
   };

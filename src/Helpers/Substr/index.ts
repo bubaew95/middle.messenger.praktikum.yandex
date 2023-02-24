@@ -1,7 +1,6 @@
 import Handlebars from 'handlebars/dist/handlebars.runtime';
 
-Handlebars.registerHelper("Substr", function(text, options) {
-
+Handlebars.registerHelper("Substr", function(text: string, options: any) {
     const {start = 0, end = 20} = options.hash;
 
     let string = text.substring(start, end);
@@ -11,5 +10,4 @@ Handlebars.registerHelper("Substr", function(text, options) {
     }
 
     return new Handlebars.SafeString(string)
-
 });
