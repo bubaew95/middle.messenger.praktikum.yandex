@@ -8,6 +8,7 @@ import { LOGIN_PAGE, renderDom } from '../../routers';
 
 import './registration.pcss';
 import ChildType from '../../typings/ChildrenType';
+import PhoneValidator from '../../Validators/PhoneValidator';
 
 export default class RegistrationPage extends Block {
 
@@ -57,8 +58,12 @@ export default class RegistrationPage extends Block {
             name: 'phone',
             label: 'Телефон',
             onBlur: (e: FocusEvent) => { 
-              const element: string  = (e.target as HTMLInputElement).value; 
-              console.log(element)
+              const phone: string  = (e.target as HTMLInputElement).value; 
+
+              phoneField.setProps({
+                error: PhoneValidator.validate(phone)
+              })
+
             }
         });
 

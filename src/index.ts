@@ -6,5 +6,5 @@ import './style.pcss';
 import './Helpers/Substr'
 
 window.addEventListener('DOMContentLoaded', () => {
-    renderDom(CHAT_PAGE)
+    renderDom(REGISTRATION_PAGE)
 });

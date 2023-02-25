@@ -1,7 +1,6 @@
 import { EventBus } from "./EventBus";
 import { nanoid } from 'nanoid';
 
-// Нельзя создавать экземпляр данного класса
 class Block {
   static EVENTS = {
     INIT: "init",
@@ -28,11 +27,9 @@ class Block {
 
     const { props, children } = this._getChildrenAndProps(propsWithChildren);
 
-    this._meta = { 
-      props
-    };
+    this._meta = { props };
 
-    this.children = children;
+    this.children = (children as Record<string, Block>);
     this.props = this._makePropsProxy(props);
 
     this.eventBus = () => eventBus;
@@ -62,15 +59,15 @@ class Block {
   _addEvents() {
     const {events = {}} = this.props as { events: Record<string, () =>void> };
 
-    Object.keys(events).forEach(eventName => {
+    Object.keys(events).forEach((eventName: string) => {
       this._element?.addEventListener(eventName, events[eventName]);
     });
   }
 
   _removeEvents() {
-    const {events = {}} = this.props as { events: Record<string, () =>void> };
+    const {events = {}} = this.props as { events: Record<string, () => void> };
 
-    Object.keys(events).forEach(eventName => { 
+    Object.keys(events).forEach((eventName: string) => { 
       this._element?.removeEventListener(eventName, events[eventName]);
     });
   }
@@ -98,17 +95,15 @@ class Block {
   public dispatchComponentDidMount() {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
 
-    Object.values(this.children).forEach(child => {
-      let childrens: undefined | []  = undefined;
+    Object.values(this.children).forEach((child: Block) => {
+      let childrens = undefined;
 
       if(Array.isArray(child)) {
-        //childrens = [];
-        //childrens.push(child.map(item => item.dispatchComponentDidMount())); 
+        child.map(item => item.dispatchComponentDidMount()); 
       } else {
-        childrens = child.dispatchComponentDidMount(); 
-      }
-
-      return childrens;
+        childrens = child.dispatchComponentDidMount();
+      } 
+      return childrens
     });
   }
 
@@ -154,7 +149,7 @@ class Block {
     this._addEvents();
   }
 
-  private _stubReplace(temp, child) {
+  private _stubReplace(temp: HTMLTemplateElement, child: Block) {
     const stub = temp.content.querySelector(`[data-id="${child.id}"]`);
  
     if (!stub) {
@@ -171,14 +166,14 @@ class Block {
  
     Object.entries(this.children).forEach(([name, component]) => {
       if(Array.isArray(component)) {
-        contextAndStubs[name] = component.map(child => `<div data-id="${child.id}"></div>`);
+        contextAndStubs[name] = component.map((child: Block) => `<div data-id="${child.id}"></div>`);
       } else {
         contextAndStubs[name] = `<div data-id="${component.id}"></div>`;
       }
     }); 
     
-    const html = template(contextAndStubs); 
-    const temp = document.createElement('template'); 
+    const html: string = template(contextAndStubs);  
+    const temp: HTMLTemplateElement = document.createElement('template'); 
     
     temp.innerHTML = html;
 
@@ -204,32 +199,26 @@ class Block {
   }
 
   _makePropsProxy(props: any) {
-    // Ещё один способ передачи this, но он больше не применяется с приходом ES6+
     const self = this;
 
     return new Proxy(props, {
       get(target, prop) {
-        const value = target[prop];
+        const value: any = target[prop]; 
         return typeof value === "function" ? value.bind(target) : value;
       },
-      set(target, prop, value) {
-        const oldTarget = { ...target }
 
+      set(target, prop, value) {
+        const oldTarget:any = { ...target }  
         target[prop] = value;
-        // Запускаем обновление компоненты
-        // Плохой cloneDeep, в следующей итерации нужно заставлять добавлять cloneDeep им самим
+        
         self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
         return true;
       },
+
       deleteProperty() {
         throw new Error("Нет доступа");
       }
     });
-  }
-
-  _createDocumentElement(tagName: string) {
-    // Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
-    return document.createElement(tagName);
   }
 
   show() {

@@ -11,7 +11,7 @@ export default class ChatPage extends Block {
     
     constructor(props: {}) {
         super(props)
-    }
+    } 
 
     protected init(): void {
         let child: ChildType = this.children;
