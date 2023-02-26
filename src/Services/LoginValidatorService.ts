@@ -15,8 +15,8 @@ export default class LoginValidatorService extends ValidatorService
         const loginValidator: ValidatorInterface = new LoginValidator(login);
 
         if(this.isDisableRender(login, component)) {
-            return false;
-        }
+            return this.isValid(this.validatorName) ? false : true;
+        } 
 
         if(this.isEmplty(loginValidator, component)) {
             this.validates[this.validatorName] = false;
@@ -49,10 +49,5 @@ export default class LoginValidatorService extends ValidatorService
         this.validates[this.validatorName] = true;
 
         return this.isNullProps(component);
-    }
-
-    static isValid()
-    {
-        return super.isValid(this.validatorName);
     }
 }

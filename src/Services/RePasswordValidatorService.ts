@@ -11,7 +11,7 @@ export default class RePasswordValidatorService extends ValidatorService
         const passwordValidator: ValidatorInterface = new RePasswordValidator(password);
 
         if(this.isDisableRender(password, component)) {
-            return false;
+            return this.isValid(this.validatorName) ? false : true;
         }
 
         if(this.isEmplty(passwordValidator, component)) {
@@ -32,10 +32,5 @@ export default class RePasswordValidatorService extends ValidatorService
         this.validates[this.validatorName] = true;
 
         return this.isNullProps(component);
-    }
-
-    static isValid()
-    {
-        return super.isValid(this.validatorName);
     }
 }

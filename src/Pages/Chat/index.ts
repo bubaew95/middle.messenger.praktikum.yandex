@@ -16,9 +16,6 @@ export default class ChatPage extends Block {
     protected init(): void {
         let child: ChildType = this.children;
 
-        /**
-         * блок с сообщениями
-         */
         child.Chat = new Messages({});
 
         let chats: Block[] = [];
@@ -37,9 +34,6 @@ export default class ChatPage extends Block {
             chats.push(chatItem);
         });
 
-        /**
-         * Кнопка Профиль
-         */
         child.ProfileLink = new Link({
             text: 'Профиль <i class="ib eva-arrow-ios-forward-fill"></i>',
             className: 'chat_left-column_header-profile_link',
@@ -48,15 +42,18 @@ export default class ChatPage extends Block {
             }
         });
 
-        /**
-         * Поиск по чату
-         */
         child.ChatSearch = new Field({
             name: 'search',
             className: 'chat_left-column_header-search_input',
             placeholder: 'Поиск',
             onKeyup: (e: KeyboardEvent) => {
                 const query = (e.target as HTMLInputElement).value;
+
+                if(query.length === 0) {
+                    return;
+                }
+
+                console.log(query);
             }
         });
 

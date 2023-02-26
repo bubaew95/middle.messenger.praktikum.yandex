@@ -55,10 +55,15 @@ export default class LoginPage extends Block {
         events: {
           submit: (e: SubmitEvent) => {
             e.preventDefault();
-            console.log({
-              login: loginField.getValue(),
-              password: passwordField.getValue()
-            })
+
+            const login = loginField.getValue();
+            const password = passwordField.getValue();
+            
+            if(login.length === 0 || password.length === 0) {
+              return;
+            }
+            
+            console.log({ login,password })
           }
         }, 
         LoginField: loginField,

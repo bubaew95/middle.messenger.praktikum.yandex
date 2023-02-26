@@ -4,6 +4,10 @@ import Icon from '../../../Components/Icon';
 import Browse from '../../../Components/Modal/Browse';
 import ProfileAvatar from '../../../Components/ProfileAvatar';
 import ProfileData from '../../../Components/ProfileData';
+import EmailValidatorService from '../../../Services/EmailValidatorService';
+import LoginValidatorService from '../../../Services/LoginValidatorService';
+import NameValidatorService from '../../../Services/NameValidatorService';
+import PhoneValidatorService from '../../../Services/PhoneValidatorService';
 import { PROFILE_PAGE, renderDom } from '../../../routers';
 import ChildType from '../../../typings/ChildrenType';
 import Block from '../../../utils/Block';
@@ -50,38 +54,46 @@ export default class EditProfile extends Block {
             }
         })
 
-        const name = new Field({
+        const firstNameField = new Field({
             name: 'name',
-            onBlur: (e: FocusEvent) => {
-                const target = (e.target as HTMLInputElement);
-                console.log(target.value)
+            onBlur: (e: FocusEvent) => { 
+                NameValidatorService.check(
+                    (e.target as HTMLInputElement).value, 
+                    firstNameField
+                );
             },
             value: this.props.name
         });
 
-        const email = new Field({
+        const emailField = new Field({
             name: 'email',
             onBlur: (e: FocusEvent) => {
-                const target = (e.target as HTMLInputElement);
-                console.log(target.value)
+                EmailValidatorService.check(
+                    (e.target as HTMLInputElement).value, 
+                    emailField
+                ); 
             },
             value: this.props.email
         });
 
-        const login = new Field({
+        const loginField = new Field({
             name: 'login',
             onBlur: (e: FocusEvent) => {
-                const target = (e.target as HTMLInputElement);
-                console.log(target.value)
+                LoginValidatorService.check(
+                    (e.target as HTMLInputElement).value, 
+                    loginField
+                );
             },
             value: this.props.login
         });
         
-        const first_name = new Field({
+        const secondNameField = new Field({
             name: 'first_name',
             onBlur: (e: FocusEvent) => {
-                const target = (e.target as HTMLInputElement);
-                console.log(target.value)
+                NameValidatorService.check(
+                    (e.target as HTMLInputElement).value, 
+                    secondNameField
+                );
             },
             value: this.props.first_name
         });
@@ -95,22 +107,24 @@ export default class EditProfile extends Block {
             value: this.props.nickname
         });
 
-        const phone = new Field({
+        const phoneField = new Field({
             name: 'phone',
             onBlur: (e: FocusEvent) => {
-                const target = (e.target as HTMLInputElement);
-                console.log(target.value)
+                PhoneValidatorService.check(
+                    (e.target as HTMLInputElement).value, 
+                    phoneField
+                ) 
             },
             value: this.props.phone
         });
 
         const profileData = new ProfileData({
-            name,
-            email,
-            login, 
-            first_name,
+            first_name: firstNameField,
+            email: emailField,
+            login: loginField, 
+            second_name: secondNameField,
             nickname,
-            phone,
+            phone: phoneField,
         });
 
         const SaveButton = new Button({
@@ -124,18 +138,18 @@ export default class EditProfile extends Block {
                 submit: (e: SubmitEvent) => {
                     e.preventDefault();
                     
-                    const nameValue = name.getValue();
-                    const emailValue = email.getValue();
-                    const loginValue = login.getValue();
-                    const firstNameValue = first_name.getValue();
+                    const nameValue = firstNameField.getValue();
+                    const emailValue = emailField.getValue();
+                    const loginValue = loginField.getValue();
+                    const secondNameValue = secondNameField.getValue();
                     const nickNameValue = nickname.getValue();
-                    const phoneValue = phone.getValue();
+                    const phoneValue = phoneField.getValue();
                     
                     console.log({
                         nameValue,
                         emailValue,
                         loginValue,
-                        firstNameValue,
+                        secondNameValue,
                         nickNameValue,
                         phoneValue,
                     })

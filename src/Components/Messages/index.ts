@@ -161,7 +161,13 @@ export default class Messages extends Block {
             events: {
                 submit: (e: SubmitEvent) => {
                     e.preventDefault();  
-                    console.log(Input.getValue())
+                    const message = Input.getValue();
+
+                    if(message.length === 0) {
+                        return;
+                    }
+
+                    console.log('message', message)
                 }
             },
             Input,

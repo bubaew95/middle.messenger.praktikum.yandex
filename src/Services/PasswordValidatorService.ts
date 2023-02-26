@@ -13,7 +13,7 @@ export default class PasswordValidatorService extends ValidatorService
         const passwordValidator: ValidatorInterface = new PasswordValidator(password);
 
         if(this.isDisableRender(password, component)) {
-            return false;
+            return this.isValid(this.validatorName) ? false : true;
         }
 
         if(this.isEmplty(passwordValidator, component)) {
@@ -44,13 +44,8 @@ export default class PasswordValidatorService extends ValidatorService
             return true;
         }
 
-        this.validates[this.validatorNamePasswordValidator] = true;
+        this.validates[this.validatorName] = true;
 
         return this.isNullProps(component);
-    }
-
-    static isValid()
-    {
-        return super.isValid('PasswordValidator');
     }
 }

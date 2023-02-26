@@ -6,5 +6,5 @@ import './style.pcss';
 import './Helpers/Substr'
 
 window.addEventListener('DOMContentLoaded', () => {
-    renderDom(REGISTRATION_PAGE)
+    renderDom(PROFILE_EDIT_PAGE)
 });

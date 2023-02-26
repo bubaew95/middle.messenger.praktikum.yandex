@@ -122,14 +122,56 @@ export default class RegistrationPage extends Block {
             events: {
               submit: (e: SubmitEvent) => {
                 e.preventDefault();
-                const emailIsValid = EmailValidatorService.check(emailField.getValue(), emailField);
-                const loginIsValid = LoginValidatorService.isValid();
-                const firstNameIsValid = NameValidatorService.isValid();
-                const secondNameIsValid = NameValidatorService.isValid();
-                const phoneIsValid = PhoneValidatorService.isValid(); 
-                const passwordIsValid = PasswordValidatorService.isValid();
-                const rePasswordIsValid = RePasswordValidatorService.isValid();
-                console.log(emailIsValid)
+                const email: string = emailField.getValue();
+                const login: string = loginField.getValue();
+                const firstName: string = firstNameField.getValue();
+                const secondName: string = secondNameField.getValue();
+                const phone: string = phoneField.getValue();
+                const password: string = passwordField.getValue();
+                let isError: boolean = false;
+
+                if(EmailValidatorService.check(email, emailField)) {
+                  isError = true;
+                }
+
+                if(LoginValidatorService.check(login, loginField)) { 
+                  isError = true;
+                }
+
+                console.log(isError)
+
+                if(NameValidatorService.check(firstName, firstNameField)) {
+                  isError = true;
+                }
+                
+                if(NameValidatorService.check(secondName, secondNameField)) {
+                  isError = true;
+                }
+
+                if(PhoneValidatorService.check(phone, phoneField)) {
+                  isError = true;
+                }
+
+                if(PasswordValidatorService.check(password, passwordField)) {
+                  isError = true;
+                }
+                
+                if(RePasswordValidatorService.check(password, rePasswordField.getValue(), rePasswordField)) {
+                  isError = true;
+                }
+
+                if(isError) {
+                  return;
+                }
+
+                console.log({
+                  email,
+                  login,
+                  firstName,
+                  secondName,
+                  phone,
+                  password,
+                })
               }
             },
             Button: button,
@@ -144,11 +186,9 @@ export default class RegistrationPage extends Block {
                 rePasswordField
             ]
         });
-
     }
 
     protected render(): DocumentFragment {
         return this.compile(template, this.props)
     }
-
 }

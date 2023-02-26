@@ -12,7 +12,7 @@ export default abstract class ValidatorService
         const validatorName: string = validator.constructor.name;
 
         if(this.isDisableRender(value, component)) { 
-            return false;
+            return this.isValid(validatorName) ? false : true;
         }
 
         if( 
