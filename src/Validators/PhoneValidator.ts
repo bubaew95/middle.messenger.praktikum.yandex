@@ -1,39 +1,10 @@
+import AbsctractValidator from "./Interface/AbstractValidator";
 
-const Messages = {
-    NotBlank: 'Поле телефон не может быть пустым',
-    NotCorrect: 'Поле телефон должен иметь формат 7XXXXXXXXXX'
-};
+export default class PhoneValidator extends AbsctractValidator { 
+    REGEX: RegExp = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
 
-export default class PhoneValidator {
-    private static readonly REGEX = /^[\d\+][\d\(\)\ -+]{9,18}\d$/;
-
-    private static emptyField(phone: string): boolean {
-        if(phone.length === 0) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private static regexPhone(phone: string): boolean  {
-        if(new RegExp(this.REGEX).test(phone)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    static validate (phone: string): string | null {
-        
-        if(this.emptyField(phone)) {
-            return Messages.NotBlank;
-        }
-
-        if(this.regexPhone(phone)) {
-            return Messages.NotCorrect;
-        }
-
-        return null;
-    }
-
+    Message = { 
+        NotBlank: 'Поле должно быть заполнено',
+        NotCorrect: 'Поле имеет недопустимые символы'
+    };
 }

@@ -8,7 +8,12 @@ import { LOGIN_PAGE, renderDom } from '../../routers';
 
 import './registration.pcss';
 import ChildType from '../../typings/ChildrenType';
-import PhoneValidator from '../../Validators/PhoneValidator';
+import EmailValidatorService from '../../Services/EmailValidatorService';
+import PhoneValidatorService from '../../Services/PhoneValidatorService';
+import NameValidatorService from '../../Services/NameValidatorService';
+import LoginValidatorService from '../../Services/LoginValidatorService';
+import PasswordValidatorService from '../../Services/PasswordValidatorService';
+import RePasswordValidatorService from '../../Services/RePasswordValidatorService';
 
 export default class RegistrationPage extends Block {
 
@@ -22,35 +27,44 @@ export default class RegistrationPage extends Block {
         const emailField = new Field({
             name: 'email',
             label: 'Почта',
-            onBlur: (e: FocusEvent) => { 
-                const email: string  = (e.target as HTMLInputElement).value;
+            onBlur: (e: FocusEvent) => {  
+              EmailValidatorService.check(
+                (e.target as HTMLInputElement).value, 
+                emailField
+              ); 
             }
         });
 
         const loginField = new Field({
             name: 'login',
             label: 'Логин',
-            onBlur: (e: FocusEvent) => { 
-              const element: string  = (e.target as HTMLInputElement).value; 
-              console.log(element)
+            onBlur: (e: FocusEvent) => {  
+              LoginValidatorService.check(
+                (e.target as HTMLInputElement).value, 
+                loginField
+              );
             }
         });
 
         const firstNameField = new Field({
             name: 'first_name',
             label: 'Имя',
-            onBlur: (e: FocusEvent) => { 
-              const element: string  = (e.target as HTMLInputElement).value; 
-              console.log(element)
+            onBlur: (e: FocusEvent) => {  
+              NameValidatorService.check(
+                (e.target as HTMLInputElement).value, 
+                firstNameField
+              );
             }
         });
 
         const secondNameField = new Field({
             name: 'second_name',
             label: 'Фамилия',
-            onBlur: (e: FocusEvent) => { 
-              const element: string  = (e.target as HTMLInputElement).value; 
-              console.log(element)
+            onBlur: (e: FocusEvent) => {  
+              NameValidatorService.check(
+                (e.target as HTMLInputElement).value, 
+                secondNameField
+              );
             }
         });
 
@@ -58,12 +72,10 @@ export default class RegistrationPage extends Block {
             name: 'phone',
             label: 'Телефон',
             onBlur: (e: FocusEvent) => { 
-              const phone: string  = (e.target as HTMLInputElement).value; 
-
-              phoneField.setProps({
-                error: PhoneValidator.validate(phone)
-              })
-
+              PhoneValidatorService.check(
+                (e.target as HTMLInputElement).value, 
+                phoneField
+              ) 
             }
         });
 
@@ -71,9 +83,11 @@ export default class RegistrationPage extends Block {
             name: 'password',
             label: 'Пароль',
             type: 'password',
-            onBlur: (e: FocusEvent) => { 
-              const element: string  = (e.target as HTMLInputElement).value; 
-              console.log(element)
+            onBlur: (e: FocusEvent) => {  
+              PasswordValidatorService.check(
+                (e.target as HTMLInputElement).value, 
+                passwordField
+              );
             }
         });
 
@@ -82,8 +96,11 @@ export default class RegistrationPage extends Block {
             label: 'Пароль (ещё раз)',
             type: 'password',
             onBlur: (e: FocusEvent) => { 
-              const element: string  = (e.target as HTMLInputElement).value; 
-              console.log(element)
+              RePasswordValidatorService.check(
+                (e.target as HTMLInputElement).value, 
+                passwordField.getValue(), 
+                rePasswordField
+              );
             }
         });
 
@@ -99,16 +116,20 @@ export default class RegistrationPage extends Block {
               click: () => renderDom(LOGIN_PAGE)
             }
         });
-
+ 
         child.Form = new Form({
             template: registrationForm,
             events: {
               submit: (e: SubmitEvent) => {
-                e.preventDefault();  
-                console.log({
-                  login: loginField.getValue(),
-                  password: passwordField.getValue()
-                })
+                e.preventDefault();
+                const emailIsValid = EmailValidatorService.check(emailField.getValue(), emailField);
+                const loginIsValid = LoginValidatorService.isValid();
+                const firstNameIsValid = NameValidatorService.isValid();
+                const secondNameIsValid = NameValidatorService.isValid();
+                const phoneIsValid = PhoneValidatorService.isValid(); 
+                const passwordIsValid = PasswordValidatorService.isValid();
+                const rePasswordIsValid = RePasswordValidatorService.isValid();
+                console.log(emailIsValid)
               }
             },
             Button: button,
