@@ -1,9 +1,20 @@
 {
-    "extends": "stylelint-config-standard",
+    "extends": "stylelint-config-recommended",
     "rules": {
-      "color-hex-case": "lower"
+      "color-hex-case": "lower",
+      "at-rule-no-unknown": null,
+      "property-no-unknown": null,
+      "no-empty-source": null,
+      "block-no-empty": null,
+      "no-descending-specificity": null
     },
     "ignoreFiles": [
+      "**/*.js",
+      "**/*.ts",
+      "**/*.hbs",
+      "**/*.json",
+      "**/*.md",
+      "src/index.html",
       "build/*",
       "dist/*"
     ]

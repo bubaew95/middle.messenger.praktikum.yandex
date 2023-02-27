@@ -1,4 +1,4 @@
-import { Button, Field, Input, Modal } from '../../../Components';
+import { Button, Field, Modal } from '../../../Components';
 import Form from '../../../Components/Form';
 import Icon from '../../../Components/Icon';
 import Browse from '../../../Components/Modal/Browse';
