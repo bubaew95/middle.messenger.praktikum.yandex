@@ -1,7 +1,7 @@
-$chatBackgroundColor: rgba(187, 38, 73, 0.2);
+$chatBackgroundColor: rgb(187 38 73 / 20%);
 $leftColumnSize: 310px;
-$primary: #BB2649;
-$borderColor: #EAEAEA;
+$primary: #bb2649;
+$borderColor: #eaeaea;
 
 .chat{
     padding: 0;
@@ -27,7 +27,7 @@ $borderColor: #EAEAEA;
 
                 & a {
                     font-size: 12px;
-                    color: #999999;
+                    color: #999;
                 
                     &:hover {
                         opacity: .7;
@@ -84,18 +84,18 @@ $borderColor: #EAEAEA;
                     margin-left: 10px;
 
                     &_name {
-                        color: #1E1E1E;
+                        color: #1e1e1e;
                         font-size: 14px;
                     }
 
                     &_message {
                         font-size: 12px;
                         margin-top: 7px;
-                        color: #999999;
+                        color: #999;
                     }
 
                     &_my-message {
-                        color: #1E1E1E;
+                        color: #1e1e1e;
                     }
                 } 
 
@@ -149,8 +149,7 @@ $borderColor: #EAEAEA;
             justify-content: center;
             align-items: center;
             flex: 1;
-
-            color: #999999;
+            color: #999;
         }
 
         &_selected {
@@ -185,7 +184,7 @@ $borderColor: #EAEAEA;
 
                 &_name {
                     flex: 1;
-                    color: #1E1E1E;
+                    color: #1e1e1e;
                     
                     & span {
                         cursor: pointer;
@@ -197,7 +196,6 @@ $borderColor: #EAEAEA;
                 }
                 
                 &_actions {
-
                     &_icon {
                         padding: 5px 10px;
                         cursor: pointer;
@@ -225,7 +223,7 @@ $borderColor: #EAEAEA;
                     overflow: auto;
 
                     &_item {
-                        background-color: #F8F8F8;
+                        background-color: #f8f8f8;
                         width: 402px;
                         padding: 14px;
                         margin-bottom: 10px;
@@ -250,6 +248,7 @@ $borderColor: #EAEAEA;
                                     width: 100%;
                                     object-fit: cover; 
                                 }
+
                                 &:hover {
                                     opacity: .9;
                                 }
@@ -271,6 +270,7 @@ $borderColor: #EAEAEA;
                             font-size: 14px;
                             margin-bottom: 3px;
                         }
+
                         &_time {
                             color: #999;
                             font-size: 11px;
@@ -283,7 +283,7 @@ $borderColor: #EAEAEA;
                     &_chat-date {
                         text-align: center;
                         margin: 32px 0;
-                        color: #999999;
+                        color: #999;
                         font-size: 14px;
                     }
                 }
@@ -333,11 +333,11 @@ $borderColor: #EAEAEA;
     &_me {
         flex: 1 1 auto;
         align-self: flex-end;
-        background-color: #F1D4DB;
+        background-color: #f1d4db;
         margin-right: 20px;
 
         & .chat_right-column_selected_middle_items_item_time {
-            color: #BB2649;
+            color: #bb2649;
         }
     }
 }

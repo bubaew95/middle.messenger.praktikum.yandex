@@ -1,14 +1,14 @@
 export {};
 
 declare global {
-    interface Window {
+    interface window {
         goToPage: (name: string) => void;
         onShowModal: (param: string) => void;
         modalClose: () => void;
         selectChat: (id: string) => void;
-        openBox: (context: Event, boxId:string | null = null) => void ;
-        onDelete: (e: Event) => void;
-        onAdd: (e: Event) => void;
+        openBox: (context: event, boxid:string | null = null) => void ;
+        onDelete: (e: event) => void;
+        onAdd: (e: event) => void;
         showEditBlocks: (str: string) => boolean;
     }
 }
