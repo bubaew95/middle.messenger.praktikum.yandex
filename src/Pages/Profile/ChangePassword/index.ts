@@ -2,6 +2,8 @@ import { Button, Field } from '../../../Components';
 import Form from '../../../Components/Form';
 import Icon from '../../../Components/Icon';
 import ProfileAvatar from '../../../Components/ProfileAvatar';
+import PasswordValidatorService from '../../../Services/PasswordValidatorService';
+import RePasswordValidatorService from '../../../Services/RePasswordValidatorService';
 import { PROFILE_PAGE, renderDom } from '../../../routers';
 import ChildType from '../../../typings/ChildrenType';
 import Block from '../../../utils/Block';
@@ -37,36 +39,42 @@ export default class ChangePassword extends Block {
             }
         });
         
-        const oldPassword = new Field({
+        const oldPasswordField = new Field({
             name: 'oldPassword',
             type: 'password',
             placeholder: '*******',
             onBlur: (e: FocusEvent) => {
                 const target = (e.target as HTMLInputElement);
-                oldPassword.setProps({
+                oldPasswordField.setProps({
                     error: 'test'
                 })
                 console.log(target.value)
             }
         });
 
-        const newPassword = new Field({
+        const newPasswordField = new Field({
             name: 'newPassword',
             type: 'password',
             placeholder: '*******',
-            onBlur: (e: FocusEvent) => {
-                const target = (e.target as HTMLInputElement);
-                console.log(target.value)
+            onBlur: (e: FocusEvent) => { 
+                PasswordValidatorService.check(
+                    (e.target as HTMLInputElement).value,
+                    newPasswordField
+                );
             }
         });
 
-        const rePassword = new Field({
+        const rePasswordField = new Field({
             name: 'rePassword',
             type: 'password',
             placeholder: '*******',
             onBlur: (e: FocusEvent) => {
-                const target = (e.target as HTMLInputElement);
-                console.log(target.value)
+                const rePassword = (e.target as HTMLInputElement).value;
+                RePasswordValidatorService.check(
+                    newPasswordField.getValue(),
+                    rePassword,
+                    rePasswordField
+                );
             }
         });
 
@@ -81,9 +89,27 @@ export default class ChangePassword extends Block {
                 submit: (e: SubmitEvent) => {
                     e.preventDefault();
                     
-                    const oldPasswordValue = oldPassword.getValue();
-                    const newPasswordValue = newPassword.getValue();
-                    const rePasswordValue = rePassword.getValue();
+                    const oldPasswordValue = oldPasswordField.getValue();
+                    const newPasswordValue = newPasswordField.getValue();
+                    const rePasswordValue = rePasswordField.getValue();
+                    
+                    if(newPasswordValue.length === 0) {
+                        return;
+                    }
+                    
+                    let isError: boolean = false;
+
+                    if(PasswordValidatorService.check(newPasswordValue, newPasswordField)) {
+                        isError = true;
+                    }
+
+                    if(RePasswordValidatorService.check(newPasswordValue, rePasswordValue, rePasswordField)) {
+                        isError = true;
+                    }
+
+                    if(isError) {
+                        return;
+                    }
                     
                     console.log({
                         oldPasswordValue,
@@ -92,9 +118,9 @@ export default class ChangePassword extends Block {
                     })
                 }
             }, 
-            oldPassword,
-            newPassword,
-            rePassword,
+            oldPassword: oldPasswordField,
+            newPassword: newPasswordField,
+            rePassword: rePasswordField,
             SaveButton
         }) 
 

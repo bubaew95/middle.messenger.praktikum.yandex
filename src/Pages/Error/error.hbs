@@ -3,17 +3,15 @@
         
         <div class="error-page_content">
             <div class="error-page_content_error-number">
-                <h1>404</h1>
+                <h1>{{{ errorCode }}}</h1>
             </div>
 
             <div class="error-page_content_text">
-                <p>Не туда попали</p>
+                <p>{{{ errorTitle }}}</p>
             </div>
         </div>
 
-        <div class="error-page_go-to-back mt-4">
-            <a onclick="goToPage('chat')">Назад к чатам</a>
-        </div>
+        {{{ Link }}}
 
     </div>
 </div>

@@ -138,15 +138,40 @@ export default class EditProfile extends Block {
                 submit: (e: SubmitEvent) => {
                     e.preventDefault();
                     
-                    const nameValue = firstNameField.getValue();
+                    const firstNameValue = firstNameField.getValue();
                     const emailValue = emailField.getValue();
                     const loginValue = loginField.getValue();
                     const secondNameValue = secondNameField.getValue();
                     const nickNameValue = nickname.getValue();
                     const phoneValue = phoneField.getValue();
+                    let isError = false;
                     
+                    if(NameValidatorService.check(firstNameValue, firstNameField)) {
+                        isError = true;
+                    }
+
+                    if(EmailValidatorService.check(emailValue, emailField)) {
+                        isError = true;
+                    }
+
+                    if(LoginValidatorService.check(loginValue, loginField)) {
+                        isError = true;
+                    }
+
+                    if(NameValidatorService.check(secondNameValue, secondNameField)) {
+                        isError = true;
+                    }
+
+                    if(PhoneValidatorService.check(phoneValue, phoneField)) {
+                        isError = true;
+                    }
+
+                    if(isError) {
+                        return;
+                    }
+
                     console.log({
-                        nameValue,
+                        firstNameValue,
                         emailValue,
                         loginValue,
                         secondNameValue,
