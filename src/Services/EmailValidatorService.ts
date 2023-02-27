@@ -10,9 +10,4 @@ export default class EmailValidatorService extends ValidatorService
             value, component
         ); 
     }
-
-    static isValid()
-    {
-        return super.isValid('EmailValidator');
-    }
 }

@@ -12,9 +12,4 @@ export default class PhoneValidatorService extends ValidatorService
             component
         );
     }
-
-    static isValid()
-    {
-        return super.isValid('PhoneValidator');
-    }
 }

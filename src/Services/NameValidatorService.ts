@@ -12,9 +12,4 @@ export default class NameValidatorService extends ValidatorService
             name, component
         );
     }
-
-    static isValid()
-    {
-        return super.isValid('NameValidator');
-    }
 }
