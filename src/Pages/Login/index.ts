@@ -41,7 +41,7 @@ export default class LoginPage extends Block {
         title: 'Войти',
         className: 'login-form_buttons_button button',
         events: {
-          click: () => renderDom(CHAT_PAGE);
+          click: () => renderDom(CHAT_PAGE)
         }
       });
 
