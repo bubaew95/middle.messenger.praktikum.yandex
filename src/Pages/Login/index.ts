@@ -2,7 +2,7 @@ import { Field } from '../../Components';
 import Button from '../../Components/Button';
 import Form from '../../Components/Form';
 import Link from '../../Components/Link';
-import { REGISTRATION_PAGE, renderDom } from '../../routers';
+import { CHAT_PAGE, REGISTRATION_PAGE, renderDom } from '../../routers';
 import Block from '../../utils/Block';
 import template from './login.hbs';
 import loginForm from './login-form.hbs';
@@ -39,7 +39,10 @@ export default class LoginPage extends Block {
       
       const button = new Button({
         title: 'Войти',
-        className: 'login-form_buttons_button button'
+        className: 'login-form_buttons_button button',
+        events: {
+          click: () => renderDom(CHAT_PAGE);
+        }
       });
 
       const noAccountLink = new Link({
