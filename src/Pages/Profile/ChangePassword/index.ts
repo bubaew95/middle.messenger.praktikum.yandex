@@ -80,7 +80,8 @@ export default class ChangePassword extends Block {
 
         const SaveButton = new Button({
             className: 'button',
-            title: 'Сохранить'
+            title: 'Сохранить',
+            type: 'submit'
         })
 
         child.ChangePassword = new Form({

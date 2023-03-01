@@ -78,7 +78,8 @@ export default class Messages extends Block {
                     <rect y="5.19995" width="11" height="1.6" fill="white"/>
                     <path d="M7 1L11 6L7 11" stroke="white" stroke-width="1.6"/>
                 </svg>
-            `
+            `,
+            type: 'submit'
         });
 
         const MediaAction = new Action({

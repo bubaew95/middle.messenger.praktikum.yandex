@@ -106,7 +106,8 @@ export default class RegistrationPage extends Block {
 
         const button = new Button({
             title: 'Зарегистрироваться',
-            className: 'registration-form_login mx-2 button'
+            className: 'registration-form_login mx-2 button',
+            type: 'submit'
         });
 
         const enterAccount = new Link({

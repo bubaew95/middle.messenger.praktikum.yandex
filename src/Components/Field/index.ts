@@ -15,12 +15,16 @@ interface FieldProps {
     value?: string;
     onBlur?: (e: FocusEvent) => void;
     onKeyup?: (e: KeyboardEvent) => void;
+    events?: {
+        blur?: (e: FocusEvent) => void;
+        keyup?: (e: KeyboardEvent) => void;
+    }
 }
 
 export default class Field extends Block {
 
-    constructor(props: FieldProps) {
-        super(props)
+    constructor(props: FieldProps){
+        super(props);
     }
 
     getValue(): string {
@@ -35,7 +39,7 @@ export default class Field extends Block {
             props = {
                 ...props,
                 events: {
-                    blur: (e: FocusEvent) => this.props.onBlur(e)
+                    blur: (e: FocusEvent) => this.props.onBlur!(e)
                 }
             } 
         }
@@ -44,7 +48,7 @@ export default class Field extends Block {
             props = {
                 ...props,
                 events: {
-                    keyup: (e: KeyboardEvent) => this.props.onKeyup(e)
+                    keyup: (e: KeyboardEvent) => this.props.onKeyup!(e)
                 }
             } 
         }

@@ -20,7 +20,7 @@ export default class ChatPage extends Block {
 
         let chats: Block[] = [];
         data.map((item: {[key: string]: any}) => { 
-            const chatItem = new ChatItem({
+            const chatItem = new ChatItem({                 
                 ...item,
                 events: {
                     click: (e: PointerEvent) => {
@@ -42,7 +42,7 @@ export default class ChatPage extends Block {
             }
         });
 
-        child.ChatSearch = new Field({
+        child.ChatSearch = new Field({ 
             name: 'search',
             className: 'chat_left-column_header-search_input',
             placeholder: 'Поиск',

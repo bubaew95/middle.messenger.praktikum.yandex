@@ -19,9 +19,9 @@ export default class EditProfile extends Block {
         props = {
             email: 'noxchi_dev@ya.ru',
             login: 'noxchi_dev',
-            name: 'Noxcho',
-            first_name: 'al-Shishany',
-            nickname: 'noxchi developer',
+            first_name: 'Noxcho',
+            second_name: 'al-Shishany',
+            display_name: 'noxchi developer',
             phone: '79999999999',
         };
         super(props)
@@ -55,14 +55,14 @@ export default class EditProfile extends Block {
         })
 
         const firstNameField = new Field({
-            name: 'name',
+            name: 'first_name',
             onBlur: (e: FocusEvent) => { 
                 NameValidatorService.check(
                     (e.target as HTMLInputElement).value, 
                     firstNameField
                 );
             },
-            value: this.props.name
+            value: this.props.first_name
         });
 
         const emailField = new Field({
@@ -88,23 +88,23 @@ export default class EditProfile extends Block {
         });
         
         const secondNameField = new Field({
-            name: 'first_name',
+            name: 'second_name',
             onBlur: (e: FocusEvent) => {
                 NameValidatorService.check(
                     (e.target as HTMLInputElement).value, 
                     secondNameField
                 );
             },
-            value: this.props.first_name
+            value: this.props.second_name
         });
 
         const nickname = new Field({
-            name: 'nickname',
+            name: 'display_name',
             onBlur: (e: FocusEvent) => {
                 const target = (e.target as HTMLInputElement);
                 console.log(target.value)
             },
-            value: this.props.nickname
+            value: this.props.display_name
         });
 
         const phoneField = new Field({
@@ -129,7 +129,8 @@ export default class EditProfile extends Block {
 
         const SaveButton = new Button({
             className: 'button',
-            title: 'Сохранить'
+            title: 'Сохранить',
+            type: 'submit'
         })
 
         child.EditProfile = new Form({

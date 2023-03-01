@@ -27,7 +27,7 @@ export default class LoginPage extends Block {
         }
       });
       
-      const passwordField = new Field({
+      const passwordField = new Field({ 
         name: 'password',
         label: 'Пароль',
         type: 'password',
@@ -40,6 +40,7 @@ export default class LoginPage extends Block {
       const button = new Button({
         title: 'Войти',
         className: 'login-form_buttons_button button',
+        type: 'submit',
         events: {
           click: () => renderDom(CHAT_PAGE)
         }
@@ -47,7 +48,8 @@ export default class LoginPage extends Block {
 
       const noAccountLink = new Link({
         text: 'Нет аккаунта?',
-        className: 'login-form_registration text-center mx-2',
+        containerClassName: 'mx-2',
+        className: 'login-form_registration text-center',
         events: {
           click: () => renderDom(REGISTRATION_PAGE)
         }
