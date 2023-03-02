@@ -1,24 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Overpass:wght@200&family=Roboto:wght@100&family=Unbounded:wght@300&display=swap');
 
-$inputColor: #F2F2F2;
-$errorColor: #FF2F2F;
-$primary: #BB2649;
-$borderColor: #EAEAEA;
+$inputColor: #f2f2f2;
+$errorColor: #ff2f2f;
+$primary: #bb2649;
+$borderColor: #eaeaea;
 
 body {
     padding: 0;
     margin: 0;
-    font-family: 'Overpass', sans-serif;
+    font-family: Overpass, sans-serif;
 
 }
 
 h1,h2,h3,h4,h5,h6 {
-    color: #1E1E1E;
+    color: #1e1e1e;
 }
 
 a {
     cursor: pointer;
-    color: #3A75C4;
+    color: #3a75c4;
     text-decoration: none;
     
     &:hover {
@@ -42,7 +42,7 @@ form {
 }
 
 .border-shadow-radius {
-    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 14%);
+    box-shadow: 0 0 3px 0 rgb(0 0 0 / 14%);
     border-radius: 12px;
 }
 
@@ -72,7 +72,6 @@ form {
 
 .input {
     background-color: $inputColor;
-    padding: auto;
     height: 40px;
     width: 100%;
     padding: 0 10px;
@@ -87,7 +86,7 @@ form {
 
 .label {
     font-size: 14px;
-    color: #1E1E1E;
+    color: #1e1e1e;
 }
 
 .container-sm {
@@ -123,7 +122,7 @@ form {
 }
 
 .text-danger {
-    color: #FF0000;
+    color: #f00;
 }
 
 .error {
@@ -143,21 +142,16 @@ form {
 }
 
 .border {
-    border-top: 1px solid #EAEAEA;
+    border-top: 1px solid #eaeaea;
 }
 
-.display-block {
-    display: block !important;
-}
-
-.settings-block {
-    display: none;
+.settings-block { 
     position: absolute;
     background: white;
     border-radius: 12px;
-    padding: 15px;
-    margin: 0;
+    padding: 15px; 
     z-index: 4444; 
+    margin: 5px 0;
 
     & ul li {
         padding: 8px 0;
@@ -227,6 +221,7 @@ form {
                 text-decoration: underline;
             }
         }
+
         &_error {
             text-align: center;
             margin-top: 15px;
@@ -248,4 +243,78 @@ form {
 
 .display-block {
     display: block !important;
+}
+
+.no-button-style {
+    border: none;
+    background: none;
+    cursor: pointer;
+    
+    &:hover {
+        opacity: .8;
+    }
+}
+
+.cursor-pointer {
+    cursor: pointer;
+
+    &:hover {
+        opacity: .8;
+    }
+}
+
+.gray-color {
+    color: #999;
+}
+
+.primary-color {
+    color: $primary;
+}
+
+.ib-22px {
+    font-size: 22px;
+}
+
+.ib-30px {
+    font-size: 30px;
+}
+
+.ph-paperclip{
+	@iconUrl ph paperclip;
+}
+
+.octicon-file-media-24 {
+	@iconUrl octicon file-media-24;
+}
+
+.dashicons-media-default {
+	@iconUrl dashicons media-default;
+}
+
+.grommet-icons-map-location{
+	@iconUrl grommet-icons map-location;
+}
+
+.entypo-dots-three-vertical{
+	@iconUrl entypo dots-three-vertical;
+}
+
+.fluent-delete-off-24-filled {
+	@iconUrl fluent delete-off-24-filled;
+}
+
+.fluent-person-delete-20-filled{
+	@iconUrl fluent person-delete-20-filled;
+}
+
+.ph-user-plus-fill{
+	@iconUrl ph user-plus-fill;
+}
+
+.eva-arrow-ios-forward-fill{
+	@iconUrl eva arrow-ios-forward-fill;
+}
+
+.la-long-arrow-alt-left{
+	@iconUrl fa arrow-left;
 }

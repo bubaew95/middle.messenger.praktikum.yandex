@@ -1,6 +1,7 @@
 {
   "plugins": {
     "postcss-nested": true,
-    "postcss-simple-vars": true
+    "postcss-simple-vars": true,
+    "postcss-icon-blender": true
   }
 }

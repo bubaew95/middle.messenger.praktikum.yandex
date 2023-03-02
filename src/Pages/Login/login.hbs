@@ -6,37 +6,7 @@
             </h3>
         </div>
 
-        <form class="login-form" onsubmit="goToPage('chat')">
-            <div class="login-form_fields">
-
-                {{>Field 
-                    containerClassName="login-form_login-input"
-                    inputId="login-form_login"
-                    label="Логин"
-                    inputName="login"
-                    placeholder="Логин"
-                }}
-
-                {{>Field 
-                    containerClassName="login-form_password-input"
-                    inputId="login-form_password"
-                    label="Пароль"
-                    inputName="password"
-                    type="password"
-                    placeholder="Пароль"
-                }}
-
-            </div>
-
-            <div class="login-form_buttons buttons-center">
-
-                {{>Button className="login-form_submit" title="Войти"}}
-
-                <a onclick="goToPage('registration')" class="login-form_registration text-center mx-2">
-                    Нет аккаунта?
-                </a>
-                
-            </div>
-        </form> 
+        {{{ Form }}}
+        
     </div>
 </div>  

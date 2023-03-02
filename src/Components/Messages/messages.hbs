@@ -1,0 +1,36 @@
+<div class="chat_right-column_selected">
+    <div class="chat_right-column_selected_header">
+        <div class="chat_right-column_selected_header_avatar">
+            <img src="{{avatar}}" alt="{{name}}">
+        </div>
+
+        <div class="chat_right-column_selected_header_name">
+            <span>{{name}}</span>
+        </div>
+
+        <div class="chat_right-column_selected_header_actions">
+            {{#each HeaderActions}}
+                {{{ this }}}
+            {{/each}}
+        </div>
+    </div>
+
+    <div class="chat_right-column_selected_middle">
+        <div class="chat_right-column_selected_middle_items">     
+
+            <div class="chat_right-column_selected_middle_items_chat-date">
+                19 июня
+            </div>
+  
+            {{#each Messages}}
+                {{{ this }}}
+            {{/each}}
+
+        </div>
+    </div>
+
+    {{{ Form }}}
+
+    {{{ Modal }}}
+    
+</div>

@@ -7,76 +7,7 @@
             </h3>
         </div>
 
-        <form class="registration-form" onsubmit="goToPage('chat')">
-            <div class="registration-form_fields">
-
-                {{>Field 
-                    containerClassName="registration-form_registration"
-                    inputId="registration-form_email"
-                    label="Почта"
-                    type="email"
-                    inputName="email"
-                    placeholder="Почта"
-                    error=""
-                }} 
-
-                {{>Field 
-                    containerClassName="registration-form_registration"
-                    inputId="registration-form_password"
-                    label="Логин" 
-                    inputName="login"
-                    error=""
-                }} 
-
-                {{>Field 
-                    containerClassName="registration-form_registration"
-                    inputId="registration-form_name"
-                    label="Имя" 
-                    inputName="first_name"
-                    error=""
-                }} 
-                
-                {{>Field 
-                    containerClassName="registration-form_registration"
-                    inputId="registration-form_last-name"
-                    label="Фамилия" 
-                    inputName="second_name"
-                    error=""
-                }} 
-
-                {{>Field 
-                    containerClassName="registration-form_registration"
-                    inputId="registration-form_phone"
-                    label="Телефон" 
-                    inputName="phone"
-                    error=""
-                }} 
-
-                {{>Field 
-                    containerClassName="registration-form_registration"
-                    inputId="registration-form_password"
-                    label="Пароль" 
-                    inputName="password"
-                    error="Пароли не совпадают"
-                }} 
-
-                {{>Field 
-                    containerClassName="registration-form_registration"
-                    inputId="registration-form_re-password"
-                    label="Пароль (ещё раз)" 
-                    inputName="re_password"
-                    error="Пароли не совпадают"
-                }} 
-
-            </div>
-
-            <div class="registration-form_buttons buttons-center">
-                {{>Button className="registration-form_submit" title="Зарегистрироваться"}}
-
-                <a onclick="goToPage('login')" class="registration-form_login mx-2">
-                    Войти
-                </a>
-            </div>
-        </form> 
+        {{{ Form }}}
+        
     </div>
 </div>  

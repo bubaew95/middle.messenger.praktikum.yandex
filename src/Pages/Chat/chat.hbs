@@ -4,27 +4,22 @@
 
             <div class="chat_left-column_header">
                 <div class="chat_left-column_header-profile">
-                    <a onclick="goToPage('profile')">
-                        Профиль
-                        <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M1 9L5 5L1 1" stroke="#999999"/>
-                        </svg>
-                    </a>
+
+                    {{{ ProfileLink }}}
+                    
                 </div>
                 <div class="mx-2"></div>
-                <div class="chat_left-column_header-search">
-                    <input type="text" name="search" class="chat_left-column_header-search_input input" placeholder="Поиск">
-                </div>
+
+                {{{ ChatSearch }}}
+                
             </div>
 
             <div class="mx-2"></div>
 
             <div class="chat_left-column_items">
 
-                {{#each data }}
-                    {{>ChatItem }}
-                {{else }}
-                    <p>Чатов пока нет</p>
+                {{#each Chats}}
+                    {{{this}}}
                 {{/each}}
 
             </div>
@@ -33,9 +28,7 @@
         <!-- Подгрузка сообщений происходит в файле index.js -->
         <div class="chat_right-column chat-block">
             
-            <div class="chat_right-column_not-select">
-                Выберите чат чтобы отправить сообщение
-            </div>
+            {{{ Chat }}} 
 
         </div>
 
