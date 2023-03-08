@@ -3,7 +3,7 @@ import template from './profile.hbs';
 import './profile.pcss';
 import { Link } from '../../Components';
 import Icon from '../../Components/Icon';
-import { CHAT_PAGE, PROFILE_CHANGE_PASSWORD_PAGE, PROFILE_EDIT_PAGE, renderDom } from '../../routers';
+import { CHAT_PAGE, PROFILE_CHANGE_PASSWORD_PAGE, PROFILE_EDIT_PAGE, renderDom } from '../../utils/Routes';
 import ProfileAvatar from '../../Components/ProfileAvatar';
 import ProfileData from '../../Components/ProfileData';
 import ChildType from '../../typings/ChildrenType';

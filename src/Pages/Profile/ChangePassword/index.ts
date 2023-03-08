@@ -4,7 +4,7 @@ import Icon from '../../../Components/Icon';
 import ProfileAvatar from '../../../Components/ProfileAvatar';
 import PasswordValidatorService from '../../../Services/PasswordValidatorService';
 import RePasswordValidatorService from '../../../Services/RePasswordValidatorService';
-import { PROFILE_PAGE, renderDom } from '../../../routers';
+import { PROFILE_PAGE, renderDom } from '../../../utils/Routes';
 import ChildType from '../../../typings/ChildrenType';
 import Block from '../../../utils/Block';
 import template from './change-password.hbs'; 

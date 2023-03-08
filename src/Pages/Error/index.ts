@@ -1,5 +1,5 @@
 import { Link } from "../../Components";
-import { CHAT_PAGE, renderDom } from "../../routers";
+import { CHAT_PAGE, renderDom } from "../../utils/Routes";
 import ChildType from "../../typings/ChildrenType";
 import Block from "../../utils/Block";
 import template from './error.hbs';

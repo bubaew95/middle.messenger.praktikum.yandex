@@ -10,5 +10,6 @@ declare global {
         onDelete: (e: event) => void;
         onAdd: (e: event) => void;
         showEditBlocks: (str: string) => boolean;
+        history: () => any;
     }
 }

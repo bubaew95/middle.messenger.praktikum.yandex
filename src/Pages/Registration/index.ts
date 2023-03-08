@@ -4,7 +4,7 @@ import Block from '../../utils/Block';
 import template from './registration.hbs';
 import registrationForm from './registration-form.hbs';
 import Link from '../../Components/Link';
-import { LOGIN_PAGE, renderDom } from '../../routers';
+import { LOGIN_PAGE, renderDom } from '../../utils/Routes';
 
 import './registration.pcss';
 import ChildType from '../../typings/ChildrenType';

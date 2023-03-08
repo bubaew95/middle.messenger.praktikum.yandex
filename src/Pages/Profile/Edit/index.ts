@@ -8,7 +8,7 @@ import EmailValidatorService from '../../../Services/EmailValidatorService';
 import LoginValidatorService from '../../../Services/LoginValidatorService';
 import NameValidatorService from '../../../Services/NameValidatorService';
 import PhoneValidatorService from '../../../Services/PhoneValidatorService';
-import { PROFILE_PAGE, renderDom } from '../../../routers';
+import { PROFILE_PAGE, renderDom } from '../../../utils/Routes';
 import ChildType from '../../../typings/ChildrenType';
 import Block from '../../../utils/Block';
 import template from './edit.hbs'; 

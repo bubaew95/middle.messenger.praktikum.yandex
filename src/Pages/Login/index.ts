@@ -2,7 +2,7 @@ import { Field } from '../../Components';
 import Button from '../../Components/Button';
 import Form from '../../Components/Form';
 import Link from '../../Components/Link';
-import { CHAT_PAGE, REGISTRATION_PAGE, renderDom } from '../../routers';
+import { CHAT_PAGE, REGISTRATION_PAGE, renderDom } from '../../utils/Routes';
 import Block from '../../utils/Block';
 import template from './login.hbs';
 import loginForm from './login-form.hbs';

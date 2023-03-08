@@ -4,7 +4,7 @@ import { ChatItem, Field, Link, Messages } from '../../Components';
 import data from '../../Api/chats.json'; 
 
 import './chat.pcss';
-import { PROFILE_PAGE, renderDom } from '../../routers';
+import { PROFILE_PAGE, renderDom } from '../../utils/Routes';
 import ChildType from '../../typings/ChildrenType';
 
 export default class ChatPage extends Block {
