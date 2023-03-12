@@ -1,18 +1,29 @@
-import { Field } from '../../Components';
+import { Field, Input } from '../../Components';
 import Button from '../../Components/Button';
 import Form from '../../Components/Form';
 import Link from '../../Components/Link';
-import { CHAT_PAGE, REGISTRATION_PAGE, renderDom } from '../../utils/Routes';
+import { CHAT_PAGE, REGISTRATION_PAGE } from '../../utils/Routes';
 import Block from '../../utils/Block';
 import template from './login.hbs';
 import loginForm from './login-form.hbs';
 import './login.pcss'; 
 import ChildType from '../../typings/ChildrenType';
+import { withStore } from '../../utils/Store'; 
+import Router from '../../utils/Router';
+import AuthController from '../../Controllers/AuthController';
+import Text from '../../Components/Text';
 
-export default class LoginPage extends Block {
+class LoginPageBase extends Block {
 
-    constructor(props: {}) { 
-        super(props);
+    protected componentDidUpdate(oldProps: any, newProps: any): boolean { 
+      if(!!newProps.error) {
+        this.children.ErrorMessage = new Text({
+          text: newProps.error,
+          className: 'error-message' 
+        });
+        return true;
+      }
+      return false;
     }
 
     init() {
@@ -40,10 +51,7 @@ export default class LoginPage extends Block {
       const button = new Button({
         title: 'Войти',
         className: 'login-form_buttons_button button',
-        type: 'submit',
-        events: {
-          click: () => renderDom(CHAT_PAGE)
-        }
+        type: 'submit'
       });
 
       const noAccountLink = new Link({
@@ -51,7 +59,7 @@ export default class LoginPage extends Block {
         containerClassName: 'mx-2',
         className: 'login-form_registration text-center',
         events: {
-          click: () => renderDom(REGISTRATION_PAGE)
+          click: () => Router.go(REGISTRATION_PAGE)
         }
       });
 
@@ -67,8 +75,8 @@ export default class LoginPage extends Block {
             if(login.length === 0 || password.length === 0) {
               return;
             }
-            
-            console.log({ login,password })
+
+            AuthController.signin({ login, password }); 
           }
         }, 
         LoginField: loginField,
@@ -77,8 +85,12 @@ export default class LoginPage extends Block {
         NoAccount: noAccountLink 
       });
     }
-  
+
     render() {
       return this.compile(template, this.props);
-    } 
+    }
 };
+
+const withUser = withStore((state) => ({ ...state.user }))
+
+export default withUser(LoginPageBase);

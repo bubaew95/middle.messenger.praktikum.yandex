@@ -1,44 +1,81 @@
 import template from './chat.hbs'
 import Block from '../../utils/Block';
-import { ChatItem, Field, Link, Messages } from '../../Components';
+import { ChatItem, Field, Link, Messages, Modal } from '../../Components';
 import data from '../../Api/chats.json'; 
 
 import './chat.pcss';
-import { PROFILE_PAGE, renderDom } from '../../utils/Routes';
+import { PROFILE_PAGE } from '../../utils/Routes';
 import ChildType from '../../typings/ChildrenType';
+import { withStore } from '../../utils/Store';
+import Router from '../../utils/Router';
+import ChatsController from '../../Controllers/ChatsController';
+import ModalForm from '../../Components/Modal/Form';
 
-export default class ChatPage extends Block {
-    
-    constructor(props: {}) {
-        super(props)
-    } 
+class ChatPageBase extends Block {
 
-    protected init(): void {
-        let child: ChildType = this.children;
+    protected componentDidUpdate(oldProps: any, newProps: any): boolean { 
+        if(!!newProps.chats) {
+            let child: ChildType = this.children;
+            child.Chat = new Messages({});
 
-        child.Chat = new Messages({});
-
-        let chats: Block[] = [];
-        data.map((item: {[key: string]: any}) => { 
-            const chatItem = new ChatItem({                 
-                ...item,
-                events: {
-                    click: (e: PointerEvent) => {
-                        (child.Chat as Block).setProps({
-                            id: item.id
-                        });
+            let chats: Block[] = [];
+            newProps.chats.map((item: {[key: string]: any}) => { 
+                const chatItem = new ChatItem({                 
+                    ...item,
+                    events: {
+                        click: (e: PointerEvent) => {
+                            (child.Chat as Block).setProps({
+                                id: item.id
+                            });
+                        }
                     }
-                }
+                });
+    
+                chats.push(chatItem);
             });
 
-            chats.push(chatItem);
+            child.Chats = chats;
+            return true;
+        }
+
+        return false;
+    }
+
+    protected init(): void {
+        ChatsController.all();
+        
+        let child: ChildType = this.children;
+        child.Modal = new Modal({});
+
+        child.AddChatLink = new Link({
+            text: 'Создать чат <i class="ib eva-arrow-ios-forward-fill"></i>',
+            className: 'chat_left-column_header-profile_link',
+            events: {
+                click: () => {
+                    (child.Modal as Block).setProps({
+                        title: 'Создать чат',
+                        state: 'show',
+                        body: new ModalForm({
+                            fieldName: 'chat',
+                            fieldText: 'Название чата',
+                            buttonText: 'Создать',
+                            onSubmit: (text: string) => {
+                                (child.Modal as Block).setProps({
+                                    state: 'hide'
+                                });
+                                ChatsController.create(text);
+                            }
+                        })
+                    })
+                }
+            }
         });
 
         child.ProfileLink = new Link({
             text: 'Профиль <i class="ib eva-arrow-ios-forward-fill"></i>',
             className: 'chat_left-column_header-profile_link',
             events: {
-                click: () => renderDom(PROFILE_PAGE)
+                click: () => Router.go(PROFILE_PAGE)
             }
         });
 
@@ -56,12 +93,13 @@ export default class ChatPage extends Block {
                 console.log(query);
             }
         });
-
-        child.Chats = chats;
     }
 
     protected render(): DocumentFragment {
         return this.compile(template, this.props)
     }
-
 }
+
+const withChats = withStore((store) => ({ ...store }))
+
+export default withChats(ChatPageBase as typeof Block);

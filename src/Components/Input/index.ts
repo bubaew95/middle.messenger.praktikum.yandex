@@ -8,6 +8,7 @@ interface IInputProps {
     type?: string;
     placeholder?:string;
     value?: string;
+    accept?: string;
     events?: {
         keyup?: (e: KeyboardEvent) => void;
         blur?: (e: FocusEvent) => void;
@@ -17,6 +18,10 @@ interface IInputProps {
 export default class Input extends Block {
     constructor(props: IInputProps) {
         super(props)
+    }
+
+    getName(): string {
+        return (this.element as HTMLInputElement).value;
     }
 
     getValue(): string {

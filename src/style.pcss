@@ -214,11 +214,13 @@ form {
             margin: 46px 0;
             font-size: 20px;
 
-            & a {
+            & a, label {
+                color: #3a75c4;
                 width: 170px;
                 text-align: center;
                 font-size: 14px;
                 text-decoration: underline;
+                cursor: pointer;
             }
         }
 
@@ -261,6 +263,19 @@ form {
     &:hover {
         opacity: .8;
     }
+}
+
+.error-message {
+    text-align: center;
+    color: white;
+    background: $errorColor;
+    font-size: 14px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.visiblity-hidden {
+    visibility: hidden !important;
 }
 
 .gray-color {

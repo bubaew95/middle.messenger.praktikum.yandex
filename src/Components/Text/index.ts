@@ -6,7 +6,7 @@ interface ITextProps {
     text: string;
 }
 
-export default class Icon extends Block {
+export default class Text extends Block {
     
     constructor(props: ITextProps){
         super(props)

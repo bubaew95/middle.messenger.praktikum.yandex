@@ -1,12 +1,13 @@
 import ChildType from '../../../typings/ChildrenType';
 import Block from '../../../utils/Block';
 import Button from '../../Button';
+import Field from '../../Field';
 import Form from '../../Form';
 import Link from '../../Link';
 import template from './browse.hbs'
 
 interface IBrowseProps {
-    onSubmit: (e: SubmitEvent) => void;
+    onSubmit: (formData: FormData) => void;
 }
 
 export default class Browse extends Block {
@@ -18,24 +19,33 @@ export default class Browse extends Block {
     protected init(): void {
         let child: ChildType = this.children;
         
+        const FileField = new Field({
+            name: 'file',
+            label: 'Выбрать файл на компьютере', 
+            type: 'file',
+            parentClassName: 'modal_body_browse',
+            className: 'display-none',
+            accept: 'image/*'
+        });
+
+        const SaveButton = new Button({
+            title: 'Сохранить',
+            className: 'button',
+            type: 'submit'
+        });
+
         child.Form = new Form({
             body: [
-                new Link({
-                    text: 'Выбрать файл на компьютере', 
-                    containerClassName: 'modal_body_browse',
-                    events: {
-                        click: () => console.log('click browse image')
-                    }
-                }),
-                new Button({
-                    title: 'Сохранить',
-                    className: 'button'
-                })
+                FileField,
+                SaveButton
             ],
             events: {
                 submit:(e: SubmitEvent) => {
                     e.preventDefault();
-                    this.props.onSubmit(e);
+                    const formData = (child.Form as Block).getContent();  
+                    this.props.onSubmit(
+                        new FormData(formData as HTMLFormElement)
+                    );
                 }
             }
         });

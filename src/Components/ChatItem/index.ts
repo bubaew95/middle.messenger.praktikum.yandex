@@ -9,6 +9,7 @@ type TChatProps = {
 export default class Chat extends Block {
 
     constructor(props: TChatProps) { 
+        console.log(props)
         super(props)
     }
 

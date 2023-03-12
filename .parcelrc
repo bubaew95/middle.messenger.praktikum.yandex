@@ -4,5 +4,8 @@
     "*.hbs": [
       "@anikin/parcel-transformer-handlebars-precompile"
     ]
+  },
+  "optimizers": {
+    "*.{jpg,jpeg,png}": []
   }
 } 

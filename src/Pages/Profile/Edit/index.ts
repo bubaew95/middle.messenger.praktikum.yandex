@@ -8,32 +8,28 @@ import EmailValidatorService from '../../../Services/EmailValidatorService';
 import LoginValidatorService from '../../../Services/LoginValidatorService';
 import NameValidatorService from '../../../Services/NameValidatorService';
 import PhoneValidatorService from '../../../Services/PhoneValidatorService';
-import { PROFILE_PAGE, renderDom } from '../../../utils/Routes';
+import { PROFILE_PAGE } from '../../../utils/Routes';
 import ChildType from '../../../typings/ChildrenType';
 import Block from '../../../utils/Block';
 import template from './edit.hbs'; 
 import formTemplate from './form.hbs'; 
+import { withStore } from '../../../utils/Store';
+import ProfileController from '../../../Controllers/ProfileController';
+import Router from '../../../utils/Router';
 
-export default class EditProfile extends Block {
-    constructor(props: {}) {
-        props = {
-            email: 'noxchi_dev@ya.ru',
-            login: 'noxchi_dev',
-            first_name: 'Noxcho',
-            second_name: 'al-Shishany',
-            display_name: 'noxchi developer',
-            phone: '79999999999',
-        };
-        super(props)
-    }
-
+class EditProfileBase extends Block {
     protected init(): void {
         let child: ChildType = this.children;
 
         child.Modal = new Modal({
             title: 'Загрузите файл',
             body: new Browse({
-                onSubmit: (e: SubmitEvent) => console.log('Загрузите файл')
+                onSubmit: (formData: FormData) => {
+                    ProfileController.changeAvatar({
+                        avatar: formData.get('file')
+                    })
+                    // console.log(formData.getAll)
+                }
             })
         });
 
@@ -50,7 +46,7 @@ export default class EditProfile extends Block {
             icon: 'la-long-arrow-alt-left',
             className: 'profile_left_prev-icon',
             events: {
-                click: () => renderDom(PROFILE_PAGE)
+                click: () => Router.go(PROFILE_PAGE)
             }
         })
 
@@ -123,7 +119,7 @@ export default class EditProfile extends Block {
             email: emailField,
             login: loginField, 
             second_name: secondNameField,
-            nickname,
+            display_name: nickname,
             phone: phoneField,
         });
 
@@ -171,14 +167,14 @@ export default class EditProfile extends Block {
                         return;
                     }
 
-                    console.log({
-                        firstNameValue,
-                        emailValue,
-                        loginValue,
-                        secondNameValue,
-                        nickNameValue,
-                        phoneValue,
-                    })
+                    ProfileController.update({
+                        first_name: firstNameValue,
+                        second_name: secondNameValue,
+                        display_name: nickNameValue,
+                        login: loginValue,
+                        email: emailValue,
+                        phone: phoneValue
+                    });
                 }
             },
             ProfileData: profileData,
@@ -192,3 +188,9 @@ export default class EditProfile extends Block {
         return this.compile(template, this.props);
     }
 }
+
+
+
+const withProfile = withStore((store) => ({ ...store.user }))
+
+export default withProfile(EditProfileBase as typeof Block);

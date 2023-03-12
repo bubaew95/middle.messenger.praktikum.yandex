@@ -4,13 +4,15 @@ import Icon from '../../../Components/Icon';
 import ProfileAvatar from '../../../Components/ProfileAvatar';
 import PasswordValidatorService from '../../../Services/PasswordValidatorService';
 import RePasswordValidatorService from '../../../Services/RePasswordValidatorService';
-import { PROFILE_PAGE, renderDom } from '../../../utils/Routes';
+import { PROFILE_PAGE } from '../../../utils/Routes';
 import ChildType from '../../../typings/ChildrenType';
 import Block from '../../../utils/Block';
 import template from './change-password.hbs'; 
 import formTemplate from './form.hbs';
+import Router from '../../../utils/Router';
+import { withStore } from '../../../utils/Store';
 
-export default class ChangePassword extends Block {
+class ChangePassword extends Block {
     constructor(props: {}) {
         props = {
             email: 'noxchi_dev@ya.ru',
@@ -35,7 +37,7 @@ export default class ChangePassword extends Block {
             icon: 'la-long-arrow-alt-left',
             className: 'profile_left_prev-icon',
             events: {
-                click: () => renderDom(PROFILE_PAGE)
+                click: () => Router.go(PROFILE_PAGE)
             }
         });
         
@@ -45,9 +47,9 @@ export default class ChangePassword extends Block {
             placeholder: '*******',
             onBlur: (e: FocusEvent) => {
                 const target = (e.target as HTMLInputElement);
-                oldPasswordField.setProps({
-                    error: 'test'
-                })
+                // oldPasswordField.setProps({
+                //     error: 'test'
+                // })
                 console.log(target.value)
             }
         });
@@ -123,8 +125,7 @@ export default class ChangePassword extends Block {
             newPassword: newPasswordField,
             rePassword: rePasswordField,
             SaveButton
-        }) 
-
+        });
     }
     
 
@@ -132,3 +133,7 @@ export default class ChangePassword extends Block {
         return this.compile(template, this.props);
     }
 }
+
+
+const changePassword = withStore((state) => ({ ...state.user }));
+export default changePassword(ChangePassword as typeof Block);

@@ -10,9 +10,11 @@ interface FieldProps {
     label?: string;
     error?: string;
     className?: string;
+    parentClassName?:string;
     type?: string;
     placeholder?:string;
     value?: string;
+    accept?:string;
     onBlur?: (e: FocusEvent) => void;
     onKeyup?: (e: KeyboardEvent) => void;
     events?: {
@@ -25,6 +27,11 @@ export default class Field extends Block {
 
     constructor(props: FieldProps){
         super(props);
+    }
+
+    getName(): string {
+        const input: Nullable<HTMLInputElement> = (this.children.Input as Input).element as HTMLInputElement
+        return input.name;
     }
 
     getValue(): string {

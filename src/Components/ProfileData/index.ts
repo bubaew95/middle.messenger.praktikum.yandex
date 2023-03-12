@@ -7,7 +7,7 @@ interface IProfileDataProps {
     login: string | Input,
     first_name: string | Input,
     second_name: string | Input,
-    nickname: string | Input,
+    display_name: string | Input,
     phone: string | Input,
 }
 

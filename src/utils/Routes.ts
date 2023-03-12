@@ -1,8 +1,6 @@
 import LoginPage from '../Pages/Login';
 import RegistrationPage from '../Pages/Registration'; 
 import {Profile, EditProfile} from '../Pages/Profile';
-import { Nullable } from '../typings/Nullable';
-import Block from './Block';
 import ChatPage from '../Pages/Chat';
 import { ChangePassword } from '../Pages/Profile';
 import ErrorPage from '../Pages/Error';
@@ -11,9 +9,9 @@ export type TRoutes = {
     [key: string]: Function
 };
 
-export const LOGIN_PAGE = '/login';
+export const LOGIN_PAGE = '/';
 export const REGISTRATION_PAGE = '/registration';
-export const CHAT_PAGE = '/chat';
+export const CHAT_PAGE = '/chats';
 export const PROFILE_PAGE = '/profile';
 export const PROFILE_EDIT_PAGE = '/profile/edit';
 export const PROFILE_CHANGE_PASSWORD_PAGE = '/profile/change-password';

@@ -23,12 +23,12 @@ interface IMessageProps {
 
 export default class Messages extends Block {
 
-    constructor(props: IMessageProps) { 
+    constructor(props: IMessageProps) {   
         super(props);
     }
 
     protected componentDidUpdate(oldProps: any, newProps: any): boolean {
-        if(oldProps.id !== newProps.id) {
+        if(oldProps.id !== newProps.id) { 
             return this._addMessagesBlock(newProps);
         }
 
