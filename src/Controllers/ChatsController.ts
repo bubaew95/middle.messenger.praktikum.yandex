@@ -50,9 +50,16 @@ export class ChatsController {
   async addUserToChat(login: string, chatId: number) {
     try {
       const userId = await this.getLoginId(login);
-      return await this.api.addUserToChat(userId, chatId);
+      const addUserResponse = await this.api.addUserToChat(userId, chatId);
+      return {
+        status: 'success',
+        msg: addUserResponse
+      };
     } catch (e: any) {
-      store.set('chat.searchuser.error', e.reason);
+      return {
+        status: 'error',
+        msg: e.reason
+      }
     }
   }
 
@@ -67,7 +74,8 @@ export class ChatsController {
 
   async deleteChat(chatId: number) {
     try {
-      return await this.api.delete(chatId);
+      await this.api.delete(chatId);
+      await this.all();
     } catch (e: any) {
       store.set('chat.delete.error', e.reason);
     }

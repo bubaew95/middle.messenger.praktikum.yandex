@@ -13,13 +13,13 @@ import Icon from '../Icon';
 import Action from '../Action';
 import List from '../List';
 import Modal from '../Modal';
-import Browse from '../Modal/Browse';
-import ModalForm from '../Modal/Form';
+import Browse from '../Modal/Browse'; 
 import ChildType from '../../typings/ChildrenType';
 import { withStore } from '../../utils/Store'; 
-import { getAvatar } from '../../utils/Helpers';
-import ChatsController from '../../Controllers/ChatsController';
+import { getAvatar } from '../../utils/Helpers'; 
 import MessageWebSoket from '../../Api/MessageWebSoket';
+import Alert from '../Modal/Alert';
+import ChatActions from './partials/chat-actions';
 
 interface IMessageProps {
     id?: string
@@ -27,9 +27,18 @@ interface IMessageProps {
 
 class MessagesBase extends Block {
     private _websocket: any;
+    private _chatId: number;
+    private _userId: number;
+    private _selectedChat: any;
+    private _modal: Modal;
 
     protected componentDidUpdate(oldProps: any, newProps: any): boolean { 
         if(oldProps?.selectedChat?.id !== newProps.selectedChat.id) { 
+            const {selectedChat, user } = newProps;
+            this._selectedChat = selectedChat;
+            this._chatId = selectedChat.id;
+            this._userId = user.data.id;
+
             return this._addMessagesBlock(newProps);
         }
 
@@ -49,15 +58,16 @@ class MessagesBase extends Block {
         }
     }
 
-    private _addMessagesBlock(props: any) { 
-        const {selectedChat, user } = props;
+    private _addMessagesBlock(props: any) {  
+        this.initChat();
+
         //this.socket(selectedChat, user.data);
 
         let child: ChildType = this.children;
 
         this.setProps({
-            title: selectedChat.title,
-            avatar: getAvatar(selectedChat.avatar)
+            title: this._selectedChat.title,
+            avatar: getAvatar(this._selectedChat.avatar)
         });
 
         const chats: Array<{[key:string]: any}> = data.filter(
@@ -110,7 +120,7 @@ class MessagesBase extends Block {
                     text: 'Фото или Видео',
                     events: {
                         click: () => {
-                            (child.Modal as Block).setProps({
+                            this._modal.setProps({
                                 title: 'Отправить Фото или Видео',
                                 state: 'show',
                                 body: new Browse({
@@ -128,7 +138,7 @@ class MessagesBase extends Block {
                     text: 'Файл',
                     events: {
                         click: () => {
-                            (child.Modal as Block).setProps({
+                            this._modal.setProps({
                                 title: 'Отправить Файл',
                                 state: 'show',
                                 body: new Browse({
@@ -146,7 +156,7 @@ class MessagesBase extends Block {
                     text: 'Локация',
                     events: {
                         click: () => {
-                            (child.Modal as Block).setProps({
+                            this._modal.setProps({
                                 title: 'Отправить Локация',
                                 state: 'show',
                                 body: new Browse({
@@ -196,76 +206,17 @@ class MessagesBase extends Block {
         });
     }
 
-    protected init(): void { 
+    private initChat(): void { 
+        this._modal = new Modal({});
 
         let child: {[key: string]: Block | Block[]} = this.children;
 
         this._addFormBlock(child);
 
-        const chatAction = new Action({
-            state: 'display-none',
-            className: 'settings-block chat_right-column_selected_header_actions_block border-shadow-radius',
-            List: [
-                new List({
-                    icon: 'ph-user-plus-fill',
-                    iconClassName: 'ib-22px primary-color',
-                    text: 'Добавить пользователя',
-                    events: {
-                        click: () => {
-                            (child.Modal as Block).setProps({
-                                title: 'Добавить пользователя',
-                                state: 'show',
-                                body: new ModalForm({
-                                    onSubmit: async (login) => {
-                                        if(login.length === 0) {
-                                            return;
-                                        }
-                                        await ChatsController.addUserToChat(login, this.props.selectedChat.id);
-                                        (child.Modal as Block).setProps({
-                                            state: 'hide'
-                                        })
-                                    }
-                                })
-                            })
-                        }
-                    }
-                }),
-                new List({
-                    icon: 'fluent-person-delete-20-filled',
-                    iconClassName: 'ib-22px primary-color',
-                    text: 'Удалить пользователя',
-                    events: {
-                        click: () => {
-                            (child.Modal as Block).setProps({
-                                title: 'Удалить пользователя',
-                                state: 'show',
-                                body: new ModalForm({
-                                    onSubmit: async (login) => {
-                                        if(login.length === 0) {
-                                            return;
-                                        }
-
-                                        await ChatsController.deleteUserFromChat(login, this.props.selectedChat.id);
-                                        (child.Modal as Block).setProps({
-                                            state: 'hide'
-                                        })
-                                    }
-                                })
-                            })
-                        }
-                    }
-                }),
-                new List({
-                    icon: 'fluent-delete-off-24-filled',
-                    iconClassName: 'ib-22px primary-color',
-                    text: 'Удалить переписку',
-                    events: {
-                        click: () => {
-                            console.log('click Удалить переписку')
-                        }
-                    }
-                }),
-            ]
+        const chatAction = ChatActions({
+            modal: this._modal,
+            selectedChat: this._selectedChat,
+            userId:  this._userId
         });
 
         const HeaderIcon = new Icon({
@@ -287,7 +238,7 @@ class MessagesBase extends Block {
             chatAction, 
         ];
 
-        child.Modal = new Modal({});
+        child.Modal = this._modal;
     }
 
     protected render(): DocumentFragment {
