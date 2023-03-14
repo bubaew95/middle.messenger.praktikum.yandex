@@ -16,51 +16,69 @@ import Modal from '../Modal';
 import Browse from '../Modal/Browse';
 import ModalForm from '../Modal/Form';
 import ChildType from '../../typings/ChildrenType';
+import { withStore } from '../../utils/Store'; 
+import { getAvatar } from '../../utils/Helpers';
+import ChatsController from '../../Controllers/ChatsController';
+import MessageWebSoket from '../../Api/MessageWebSoket';
 
 interface IMessageProps {
     id?: string
 }
 
-export default class Messages extends Block {
+class MessagesBase extends Block {
+    private _websocket: any;
 
-    constructor(props: IMessageProps) {   
-        super(props);
-    }
-
-    protected componentDidUpdate(oldProps: any, newProps: any): boolean {
-        if(oldProps.id !== newProps.id) { 
+    protected componentDidUpdate(oldProps: any, newProps: any): boolean { 
+        if(oldProps?.selectedChat?.id !== newProps.selectedChat.id) { 
             return this._addMessagesBlock(newProps);
         }
 
         return false;
     }
 
-    private _addMessagesBlock(newProps: {id: string}) {
+    private socket (chat, user){
+        this._websocket = new MessageWebSoket( user.id, chat.id, chat.token );
+        
+        this._websocket.send(JSON.stringify({
+            content: 'Моё первое сообщение миру!',
+            type: 'message',
+        }));
+
+        this._websocket.onmessage = function (event) {
+            console.log('Получены данные', event.data);
+        }
+    }
+
+    private _addMessagesBlock(props: any) { 
+        const {selectedChat, user } = props;
+        //this.socket(selectedChat, user.data);
+
         let child: ChildType = this.children;
 
+        this.setProps({
+            title: selectedChat.title,
+            avatar: getAvatar(selectedChat.avatar)
+        });
+
         const chats: Array<{[key:string]: any}> = data.filter(
-            (item: {[key:string]: any}) => item.id == newProps.id
+            (item: {[key:string]: any}) => item.id == '63de7124043a64ee89625b18'
         );
 
         if(chats.length === 0) {
             return false;
         }
         
-        const chat = chats[0];
         
-        this.setProps({
-            avatar: chat.avatar,
-            name: chat.name
-        })
+        const chat = chats[0];
 
         const messages = chat.messages;
 
         child.Messages = [];
-        if(messages.length !== 0) {  
-            messages.map((item: {[key: string]: any}) => {
-                (child.Messages as Array<Block>).push(new MessageItem(item))
-            }) 
-        } 
+        // if(messages.length !== 0) {  
+        //     messages.map((item: {[key: string]: any}) => {
+        //         (child.Messages as Array<Block>).push(new MessageItem(item))
+        //     }) 
+        // } 
         return true;
     }
 
@@ -178,7 +196,8 @@ export default class Messages extends Block {
         });
     }
 
-    protected init(): void {
+    protected init(): void { 
+
         let child: {[key: string]: Block | Block[]} = this.children;
 
         this._addFormBlock(child);
@@ -197,8 +216,14 @@ export default class Messages extends Block {
                                 title: 'Добавить пользователя',
                                 state: 'show',
                                 body: new ModalForm({
-                                    onSubmit: (login) => {
-                                        console.log('Добавить пользователя', login)
+                                    onSubmit: async (login) => {
+                                        if(login.length === 0) {
+                                            return;
+                                        }
+                                        await ChatsController.addUserToChat(login, this.props.selectedChat.id);
+                                        (child.Modal as Block).setProps({
+                                            state: 'hide'
+                                        })
                                     }
                                 })
                             })
@@ -215,8 +240,15 @@ export default class Messages extends Block {
                                 title: 'Удалить пользователя',
                                 state: 'show',
                                 body: new ModalForm({
-                                    onSubmit: (login) => {
-                                        console.log('Удалить пользователя', login)
+                                    onSubmit: async (login) => {
+                                        if(login.length === 0) {
+                                            return;
+                                        }
+
+                                        await ChatsController.deleteUserFromChat(login, this.props.selectedChat.id);
+                                        (child.Modal as Block).setProps({
+                                            state: 'hide'
+                                        })
                                     }
                                 })
                             })
@@ -260,9 +292,11 @@ export default class Messages extends Block {
 
     protected render(): DocumentFragment {
         return this.compile(
-            !this.props.name ? emptyMessagesTemplate : template, 
+            !this.props.title ? emptyMessagesTemplate : template, 
             this.props
         )
     }
-
 }
+
+const withMessages = withStore((store) => ({...store}));
+export default withMessages(MessagesBase as typeof Block);

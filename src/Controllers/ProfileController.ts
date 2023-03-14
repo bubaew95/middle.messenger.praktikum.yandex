@@ -1,5 +1,5 @@
 import store from '../utils/Store';
-import API, { ProfileAPI, ProfileData } from '../Api/ProfileAPI';
+import API, { ProfileAPI, ProfileData, ProfileDataAvatar } from '../Api/ProfileAPI';
 import Router from '../utils/Router';
 import { PROFILE_PAGE } from '../utils/Routes';
 
@@ -10,23 +10,38 @@ export class ProfileController {
     this.api = API;
   }
 
+  private setUser(user: ProfileDataAvatar)
+  {
+    store.set('user', user);
+    Router.go(PROFILE_PAGE);
+  }
+
   async update(data: ProfileData) {
     try {
       const user = await this.api.update(data);
-      store.set('user', user);
-
-      Router.go(PROFILE_PAGE);
+      this.setUser(user);
     } catch (e: any) {
-      store.set('user.error', e.reason);
+      store.set('user.profileUpdate.error', e.reason);
     }
   }
 
-  async changeAvatar(data) {
+  async changeAvatar(data: FormData) { 
     try {
       const user = await this.api.changeAvatar(data);
-      console.log('user', user)
+      this.setUser(user);
     } catch (e: any) {
-      store.set('user.error', e.reason);
+      store.set('user.changeAvatar.error', e.reason);
+    }
+  }
+
+  async changePassword(oldPassword: string, newPassword: string) 
+  {
+    try {
+      await this.api.changePassword({
+        oldPassword, newPassword
+      });
+    } catch (e: any) {
+      store.set('user.changePassword.error', e.reason);
     }
   }
 

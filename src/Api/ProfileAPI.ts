@@ -13,6 +13,15 @@ export interface ProfileDataAvatar extends ProfileData {
     avatar: string;
 }
 
+export interface IUserData extends ProfileDataAvatar {
+    id: number;
+}
+
+export interface ProfileChangePassword {
+    oldPassword: string;
+    newPassword: string;
+}
+
 export class ProfileAPI extends BaseAPI 
 {
     constructor() {
@@ -23,8 +32,16 @@ export class ProfileAPI extends BaseAPI
         return this.http.put('/profile', data);
     }
 
-    public changeAvatar(data) {
+    public changeAvatar(data: FormData): Promise<ProfileDataAvatar> {
         return this.http.put('/profile/avatar', data);
+    }
+
+    public changePassword(data: ProfileChangePassword): Promise<any> {
+        return this.http.put('/password', data);
+    }
+
+    public searchUsers(login: string): Promise<IUserData[]> {
+        return this.http.post('/search', {login});
     }
 
     read = undefined; 

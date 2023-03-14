@@ -11,26 +11,37 @@ import template from './change-password.hbs';
 import formTemplate from './form.hbs';
 import Router from '../../../utils/Router';
 import { withStore } from '../../../utils/Store';
+import ProfileController from '../../../Controllers/ProfileController';
+import Text from '../../../Components/Text';
+import { getAvatar } from '../../../utils/Helpers';
 
 class ChangePassword extends Block {
-    constructor(props: {}) {
-        props = {
-            email: 'noxchi_dev@ya.ru',
-            login: 'noxchi_dev',
-            name: 'Noxcho',
-            first_name: 'al-Shishany',
-            nickname: 'noxchi developer',
-            phone: '79999999999',
-        };
-        super(props)
+
+    protected componentDidUpdate(oldProps: any, newProps: any): boolean {
+        
+        if(!!newProps.error) {
+            let child: ChildType = this.children;
+
+            child.ErrorMessage = new Text({
+                text: newProps.error,
+                className: 'error-message'
+            });
+
+            return true;
+        }
+
+        return false;
     }
+
 
     protected init(): void {
         let child: ChildType = this.children;
 
+        const avatar = getAvatar(this.props.avatar);
+        
         child.ChangeAvatar = new ProfileAvatar({
-            image: 'https://i.ytimg.com/vi/S_bBS3tUwdU/maxresdefault.jpg',
-            isNotEdit: true
+            image: avatar,
+            isNotEdit: true,
         });
 
         child.PrevButton = new Icon({
@@ -47,10 +58,6 @@ class ChangePassword extends Block {
             placeholder: '*******',
             onBlur: (e: FocusEvent) => {
                 const target = (e.target as HTMLInputElement);
-                // oldPasswordField.setProps({
-                //     error: 'test'
-                // })
-                console.log(target.value)
             }
         });
 
@@ -113,12 +120,8 @@ class ChangePassword extends Block {
                     if(isError) {
                         return;
                     }
-                    
-                    console.log({
-                        oldPasswordValue,
-                        newPasswordValue,
-                        rePasswordValue,
-                    })
+
+                    ProfileController.changePassword(oldPasswordValue, newPasswordValue);
                 }
             }, 
             oldPassword: oldPasswordField,
@@ -135,5 +138,8 @@ class ChangePassword extends Block {
 }
 
 
-const changePassword = withStore((state) => ({ ...state.user }));
+const changePassword = withStore((state) => ({ 
+    ...state.user.data,
+    error: state.user?.changePassword?.error
+}));
 export default changePassword(ChangePassword as typeof Block);

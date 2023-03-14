@@ -37,3 +37,10 @@ export function set(object: Indexed | unknown, path: string, value: unknown): In
 
     return merge(object as Indexed, result);
 }  
+
+
+export function getAvatar(avatar: string): string {
+  return avatar
+        ? `https://ya-praktikum.tech/api/v2/resources/${avatar}` 
+        : 'https://cs6.pikabu.ru/avatars/1121/x1121129-2144512139.png';
+}

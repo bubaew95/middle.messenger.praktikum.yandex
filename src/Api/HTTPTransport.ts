@@ -9,6 +9,7 @@ export enum Method {
   type Options = {
     method: Method;
     data?: any;
+    headers?:any;
   };
   
   export default class HTTPTransport {
@@ -32,8 +33,8 @@ export enum Method {
   
     public put<Response = void>(path: string, data: unknown): Promise<Response> {
       return this.request<Response>(this.endpoint + path, {
-        method: Method.Put,
         data,
+        method: Method.Put, 
       });
     }
   
@@ -44,14 +45,15 @@ export enum Method {
       });
     }
   
-    public delete<Response>(path: string): Promise<Response> {
+    public delete<Response>(path: string, data: any): Promise<Response> {
       return this.request<Response>(this.endpoint + path, {
         method: Method.Delete,
+        data
       });
     }
   
     private request<Response>(url: string, options: Options = {method: Method.Get}): Promise<Response> {
-      const {method, data} = options;
+      const {method, data, headers} = options;
   
       return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
@@ -71,16 +73,18 @@ export enum Method {
         xhr.onabort = () => reject({reason: 'abort'});
         xhr.onerror = () => reject({reason: 'network error'});
         xhr.ontimeout = () => reject({reason: 'timeout'});
-  
-        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        if( (data instanceof FormData) === false) {
+          xhr.setRequestHeader('Content-Type', 'application/json');
+        } 
   
         xhr.withCredentials = true;
         xhr.responseType = 'json';
   
         if (method === Method.Get || !data) {
           xhr.send();
-        } else {
-          xhr.send(JSON.stringify(data));
+        } else {  
+          xhr.send( (data instanceof FormData) === false ? JSON.stringify(data) : data);
         }
       });
     }

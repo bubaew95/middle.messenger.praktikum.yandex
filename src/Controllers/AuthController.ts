@@ -15,7 +15,7 @@ export class AuthController {
 
       router.go('/chats');
     } catch (e: any) {
-      store.set('user.error', e.reason);
+      store.set('user.signin.error', e.reason);
     }
   }
 
@@ -27,13 +27,13 @@ export class AuthController {
 
       router.go('/profile');
     } catch (e: any) {
-      store.set('user.error', e.reason);
+      store.set('user.signup.error', e.reason);
     }
   }
 
   async fetchUser() {
     const user = await this.api.read();
-    store.set('user', user);
+    store.set('user.data', user);
   }
 
   async logout() {

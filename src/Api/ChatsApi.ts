@@ -30,6 +30,10 @@ export interface DeleteChatData {
     }
 }
 
+export interface IToken {
+    token: string
+}
+
 export class ChatsAPI extends BaseAPI 
 {
     constructor() {
@@ -44,14 +48,33 @@ export class ChatsAPI extends BaseAPI
         return this.http.get('/');
     }
 
-    public update?(identifier: string, data: unknown): Promise<unknown> {
-        throw new Error('Method not implemented.');
+    public getToken(id: number): Promise<IToken[]> {
+        return this.http.post(`/token/${id}`);
     }
 
-    public delete(chatId: number): Promise<DeleteChatData> {
-        throw new Error('Method not implemented.');
+    public addUserToChat(userId: number, chatId: number) {
+        return this.http.put('/users', {
+            users: [
+                userId
+            ], 
+            chatId
+        })
     }
 
+    public deleteUserFromChat(userId: number, chatId: number) {
+        return this.http.delete('/users', {
+            users: [
+                userId
+            ], 
+            chatId
+        })
+    }
+
+    public delete(chatId: number) {
+        return this.http.delete('/', {chatId})
+    }
+
+    update = undefined; 
 }
 
 export default new ChatsAPI();

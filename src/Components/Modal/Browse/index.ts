@@ -20,7 +20,7 @@ export default class Browse extends Block {
         let child: ChildType = this.children;
         
         const FileField = new Field({
-            name: 'file',
+            name: 'avatar',
             label: 'Выбрать файл на компьютере', 
             type: 'file',
             parentClassName: 'modal_body_browse',
@@ -42,7 +42,7 @@ export default class Browse extends Block {
             events: {
                 submit:(e: SubmitEvent) => {
                     e.preventDefault();
-                    const formData = (child.Form as Block).getContent();  
+                    const formData = (child.Form as Block).getContent();
                     this.props.onSubmit(
                         new FormData(formData as HTMLFormElement)
                     );

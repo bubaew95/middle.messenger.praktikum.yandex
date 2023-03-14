@@ -15,7 +15,8 @@ import template from './edit.hbs';
 import formTemplate from './form.hbs'; 
 import { withStore } from '../../../utils/Store';
 import ProfileController from '../../../Controllers/ProfileController';
-import Router from '../../../utils/Router';
+import Router from '../../../utils/Router'; 
+import { getAvatar } from '../../../utils/Helpers';
 
 class EditProfileBase extends Block {
     protected init(): void {
@@ -25,16 +26,14 @@ class EditProfileBase extends Block {
             title: 'Загрузите файл',
             body: new Browse({
                 onSubmit: (formData: FormData) => {
-                    ProfileController.changeAvatar({
-                        avatar: formData.get('file')
-                    })
-                    // console.log(formData.getAll)
+                    ProfileController.changeAvatar(formData)
                 }
             })
         });
 
+        const avatar = getAvatar(this.props.avatar);
         child.ChangeAvatar = new ProfileAvatar({
-            image: 'https://i.ytimg.com/vi/S_bBS3tUwdU/maxresdefault.jpg',
+            image: avatar,
             onChangeAvatar: () => {
                 (child.Modal as Block).setProps({ 
                     state: 'show'
@@ -191,6 +190,6 @@ class EditProfileBase extends Block {
 
 
 
-const withProfile = withStore((store) => ({ ...store.user }))
+const withProfile = withStore((store) => ({ ...store.user.data }))
 
 export default withProfile(EditProfileBase as typeof Block);

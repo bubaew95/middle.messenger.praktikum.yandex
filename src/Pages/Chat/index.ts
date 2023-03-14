@@ -23,10 +23,12 @@ class ChatPageBase extends Block {
                 const chatItem = new ChatItem({                 
                     ...item,
                     events: {
-                        click: (e: PointerEvent) => {
-                            (child.Chat as Block).setProps({
-                                id: item.id
-                            });
+                        click: async (e: PointerEvent) => {
+                            const token = await ChatsController.token(item.id);
+                            (child.Chat as Block).setProps({selectedChat: {
+                                ...item,
+                                ...token
+                            }});
                         }
                     }
                 });
@@ -100,6 +102,8 @@ class ChatPageBase extends Block {
     }
 }
 
-const withChats = withStore((store) => ({ ...store }))
+const withChats = withStore((store) => ({ 
+    ...store
+ }))
 
 export default withChats(ChatPageBase as typeof Block);

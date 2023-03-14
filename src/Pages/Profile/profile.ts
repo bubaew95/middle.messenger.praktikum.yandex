@@ -9,6 +9,8 @@ import ProfileData from '../../Components/ProfileData';
 import ChildType from '../../typings/ChildrenType';
 import { withStore } from '../../utils/Store';
 import Router from '../../utils/Router';
+import { getAvatar } from '../../utils/Helpers';
+import  AuthController from '../../Controllers/AuthController';
 
 class ProfileBase extends Block {
     protected init(): void {
@@ -22,8 +24,9 @@ class ProfileBase extends Block {
             }
         })
 
+        const avatar = getAvatar(this.props.avatar);
         child.ChangeAvatar = new ProfileAvatar({
-            image: 'https://i.ytimg.com/vi/S_bBS3tUwdU/maxresdefault.jpg',
+            image: avatar,
             isNotEdit: true,
         });
 
@@ -47,7 +50,7 @@ class ProfileBase extends Block {
             text: 'Выйти',
             className: 'text-danger', 
             events: {
-                click: () => console.log('logout')
+                click: () => AuthController.logout()
             }
         }); 
     }
@@ -57,6 +60,8 @@ class ProfileBase extends Block {
     }
 }
 
-const withProfile = withStore((store) => ({ ...store.user }))
+const withProfile = withStore((store) => ({ 
+    ...store.user.data
+ }))
 
 export default withProfile(ProfileBase as typeof Block);

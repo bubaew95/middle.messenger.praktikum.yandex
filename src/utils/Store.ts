@@ -1,6 +1,7 @@
 import { set } from './Helpers';
 import { EventBus } from './EventBus';
 import Block from './Block';
+import { ChatData } from '../Api/ChatsApi';
 
 export enum StoreEvents {
   Updated = 'updated'
@@ -19,11 +20,23 @@ export class Store extends EventBus {
   }
 }
 
+type TData = {
+  data: {};
+  error: string;
+  isLoading: boolean;
+}
+
+interface IStore {
+  user?: TData,
+  chats?: TData,
+  selectedChat?: ChatData,
+}
+
 const store = new Store();
 
 export function withStore(mapStateToProps: (state: any) => any) {
   return function wrap(Component: typeof Block){
-    let previousState: any;
+    let previousState: IStore;
     return class WithStore extends Component {
       constructor(props: any) { 
         previousState = mapStateToProps(store.getState());
