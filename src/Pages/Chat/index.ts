@@ -10,6 +10,7 @@ import { withStore } from '../../utils/Store';
 import Router from '../../utils/Router';
 import ChatsController from '../../Controllers/ChatsController';
 import ModalForm from '../../Components/Modal/Form';
+import Spinner from '../../Components/Spinner';
 
 class ChatPageBase extends Block {
 
@@ -48,6 +49,8 @@ class ChatPageBase extends Block {
         
         let child: ChildType = this.children;
         child.Modal = new Modal({});
+        
+        child.Chats = [ new Spinner() ];
 
         child.AddChatLink = new Link({
             text: 'Создать чат <i class="ib eva-arrow-ios-forward-fill"></i>',

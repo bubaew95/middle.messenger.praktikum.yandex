@@ -17,8 +17,7 @@ import Browse from '../Modal/Browse';
 import ChildType from '../../typings/ChildrenType';
 import { withStore } from '../../utils/Store'; 
 import { getAvatar } from '../../utils/Helpers'; 
-import MessageWebSoket from '../../Api/MessageWebSoket';
-import Alert from '../Modal/Alert';
+import MessageWebSoket from '../../utils/MessageWebSoket';
 import ChatActions from './partials/chat-actions';
 
 interface IMessageProps {
@@ -33,7 +32,7 @@ class MessagesBase extends Block {
     private _modal: Modal;
 
     protected componentDidUpdate(oldProps: any, newProps: any): boolean { 
-        if(oldProps?.selectedChat?.id !== newProps.selectedChat.id) { 
+        if(!!newProps.selectedChat && oldProps?.selectedChat?.id !== newProps.selectedChat.id) { 
             const {selectedChat, user } = newProps;
             this._selectedChat = selectedChat;
             this._chatId = selectedChat.id;

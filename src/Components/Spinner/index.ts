@@ -8,7 +8,7 @@ interface ISpinner {
     state: boolean
 }
 
-class Spinner extends Block<ISpinner> 
+export default class Spinner extends Block<ISpinner> 
 {
     protected render(): DocumentFragment {
         return this.compile(template, this.props);
