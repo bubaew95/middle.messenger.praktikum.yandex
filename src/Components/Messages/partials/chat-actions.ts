@@ -115,12 +115,8 @@ function DeleteChat(modal: Modal, chatId: number) : Block {
     });
 }
 
-export default function ChatActions(modal: Modal) {
-    const {selectedChat, user} = store.getState();
-
-    if(!selectedChat) {
-        return [];
-    }
+export default function ChatActions(modal: Modal, selectedChat: any) {
+    const {user} = store.getState();
 
     let buttons = [];
 

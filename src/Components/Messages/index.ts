@@ -4,8 +4,6 @@ import emptyMessagesTemplate from './partials/empty-messages.hbs';
 import formTemplate from './partials/send-form.hbs';
 import MessageItem from './MessageItem';
 import './messages.pcss';
-
-import data from '../../Api/chats.json'; 
 import Field from '../Field';
 import Button from '../Button';
 import Form from '../Form';
@@ -18,6 +16,7 @@ import ChildType from '../../typings/ChildrenType';
 import { withStore } from '../../utils/Store'; 
 import { getAvatar } from '../../utils/Helpers';
 import ChatActions from './partials/chat-actions';
+import MessagesController from '../../Controllers/MessagesController';
 
 interface IMessageProps {
     id?: string
@@ -28,11 +27,9 @@ class MessagesBase extends Block {
     private _selectedChat: any;
     private _modal: Modal;
 
-    protected componentDidUpdate(oldProps: any, newProps: any): boolean { 
-        console.log(newProps)
+    protected componentDidUpdate(oldProps: any, newProps: any): boolean {  
         if(!!newProps.selectedChat && oldProps?.selectedChat?.id !== newProps.selectedChat.id) { 
-            this.children.messages = this.createMessages(newProps);
-            return true;
+            return this._addMessages(newProps);
             // const {selectedChat, user } = newProps;
             // this._selectedChat = selectedChat;
             // this._userId = user.data.id;
@@ -43,36 +40,52 @@ class MessagesBase extends Block {
         return false;
     }
 
-    private _addMessagesBlock(props: any) {  
-        // this.initChat();
-
+    private _addMessages(props: any) {
         let child: ChildType = this.children;
+        const {selectedChat} = props;
 
         this.setProps({
-            title: this._selectedChat.title,
-            avatar: getAvatar(this._selectedChat.avatar)
+            title: selectedChat.title,
+            avatar: getAvatar(selectedChat.avatar)
         });
 
-        const chats: Array<{[key:string]: any}> = data.filter(
-            (item: {[key:string]: any}) => item.id == '63de7124043a64ee89625b18'
-        );
+        child.Messages = this.createMessages(props);
 
-        if(chats.length === 0) {
-            return false;
-        }
-        
-        
-        const chat = chats[0];
+        const ChatButtons = new Action({
+            state: 'display-none',
+            className: 'settings-block chat_right-column_selected_header_actions_block border-shadow-radius',
+            List: ChatActions(this._modal, selectedChat)
+        });
 
-        const messages = chat.messages;
+        const HeaderIcon = new Icon({
+            icon: 'entypo-dots-three-vertical',
+            iconClassName: 'gray-color',
+            className: 'chat_right-column_selected_header_actions_icon',
+            events: {
+                click: () => {
+                    const { state } = ChatButtons.getProps();
+                    ChatButtons.setProps({
+                        state: state === 'display-block' ? 'display-none' : 'display-block'
+                    })
+                }
+            }
+        });
 
-        child.Messages = [];
-        // if(messages.length !== 0) {  
-        //     messages.map((item: {[key: string]: any}) => {
-        //         (child.Messages as Array<Block>).push(new MessageItem(item))
-        //     }) 
-        // } 
+        child.HeaderActions = [
+            HeaderIcon, 
+            ChatButtons
+        ];
+
         return true;
+    }
+
+    private createMessages(props: any) {
+        const chatId = props.selectedChat.id;
+        const userId = props.user.data.id;
+
+        return props.messages[chatId].map((data: any) => {
+          return new MessageItem({...data, isMySelf: userId === data.user_id });
+        })
     }
 
     private _addFormBlock(child: {[key: string]: Block | Block[]})
@@ -179,7 +192,7 @@ class MessagesBase extends Block {
                         return;
                     }
 
-                    console.log('message', message)
+                    MessagesController.sendMessage(this.props.selectedChat!.id, message);
                 }
             },
             Input,
@@ -189,55 +202,23 @@ class MessagesBase extends Block {
         });
     }
 
-    private createMessages(props: any) {
-        console.log(props.messages);return;
-        return props.messages.map(data => {
-          return new MessageItem({...data, isMySelf: props.userId === data.user_id });
-        })
-    }
-
-    private init(): void { 
+    protected init(): void {
         this._modal = new Modal({});
 
         let child: {[key: string]: Block | Block[]} = this.children;
 
+        this._addFormBlock(child);
         child.Messages = [];
-
-        const ChatButtons = new Action({
-            state: 'display-none',
-            className: 'settings-block chat_right-column_selected_header_actions_block border-shadow-radius',
-            List: ChatActions(this._modal)
-        });
-
-        const HeaderIcon = new Icon({
-            icon: 'entypo-dots-three-vertical',
-            iconClassName: 'gray-color',
-            className: 'chat_right-column_selected_header_actions_icon',
-            events: {
-                click: () => {
-                    const { state } = ChatButtons.getProps();
-                    ChatButtons.setProps({
-                        state: state === 'display-block' ? 'display-none' : 'display-block'
-                    })
-                }
-            }
-        });
-
-        child.HeaderActions = [
-            HeaderIcon, 
-            ChatButtons
-        ];
-
         child.Modal = this._modal;
     }
 
     protected render(): DocumentFragment {
         return this.compile(
-            !this.props.title ? emptyMessagesTemplate : template, 
+            !this.props.selectedChat ? emptyMessagesTemplate : template, 
             this.props
         )
     }
 }
 
-const withMessages = withStore((state) => ({...state}));
+const withMessages = withStore(state => ({...state}));
 export default withMessages(MessagesBase);

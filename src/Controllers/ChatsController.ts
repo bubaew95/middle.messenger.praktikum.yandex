@@ -85,6 +85,10 @@ export class ChatsController {
     }
   }
 
+  selectedChat(item) {
+    store.set('selectedChat', item);
+  }
+
 }
 
 export default new ChatsController();

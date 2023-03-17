@@ -6,7 +6,7 @@ import data from '../../Api/chats.json';
 import './chat.pcss';
 import { PROFILE_PAGE } from '../../utils/Routes';
 import ChildType from '../../typings/ChildrenType';
-import { withStore } from '../../utils/Store';
+import store, { withStore } from '../../utils/Store';
 import Router from '../../utils/Router';
 import ChatsController from '../../Controllers/ChatsController';
 import ModalForm from '../../Components/Modal/Form';
@@ -19,24 +19,17 @@ class ChatPageBase extends Block {
             let child: ChildType = this.children;
             child.Chat = new Messages({});
 
-            let chats: Block[] = [];
-            newProps.chats.map((item: {[key: string]: any}) => { 
-                const chatItem = new ChatItem({                 
+            child.Chats = newProps.chats.map((item: {[key: string]: any}) => { 
+                return new ChatItem({                 
                     ...item,
                     events: {
                         click: async (e: PointerEvent) => {
-                            // const token = await ChatsController.token(item.id);
-                            (child.Chat as Block).setProps({selectedChat: {
-                                ...item
-                            }});
+                            store.set('selectedChatId', item.id);
+                            (child.Chat as Block).setProps({selectedChat: item});
                         }
                     }
                 });
-    
-                chats.push(chatItem);
             });
-
-            child.Chats = chats;
             return true;
         }
 
@@ -104,8 +97,6 @@ class ChatPageBase extends Block {
     }
 }
 
-const withChats = withStore((store) => ({ 
-    ...store
- }))
+const withChats = withStore((state) => ({...state}));
 
 export default withChats(ChatPageBase as typeof Block);
