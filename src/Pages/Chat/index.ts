@@ -25,10 +25,9 @@ class ChatPageBase extends Block {
                     ...item,
                     events: {
                         click: async (e: PointerEvent) => {
-                            const token = await ChatsController.token(item.id);
+                            // const token = await ChatsController.token(item.id);
                             (child.Chat as Block).setProps({selectedChat: {
-                                ...item,
-                                ...token
+                                ...item
                             }});
                         }
                     }
@@ -45,7 +44,7 @@ class ChatPageBase extends Block {
     }
 
     protected init(): void {
-        ChatsController.all();
+        ChatsController.fetchChats();
         
         let child: ChildType = this.children;
         child.Modal = new Modal({});

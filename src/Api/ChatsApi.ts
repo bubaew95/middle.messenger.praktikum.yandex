@@ -48,8 +48,9 @@ export class ChatsAPI extends BaseAPI
         return this.http.get('/');
     }
 
-    public getToken(id: number): Promise<IToken[]> {
-        return this.http.post(`/token/${id}`);
+    public async getToken(id: number): Promise<string> {
+        const response = await this.http.post<{ token: string }>(`/token/${id}`);
+        return response.token;
     }
 
     public addUserToChat(userId: number, chatId: number) {

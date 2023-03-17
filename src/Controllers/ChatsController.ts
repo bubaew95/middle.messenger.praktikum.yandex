@@ -1,7 +1,7 @@
 import API, { ChatsAPI } from '../Api/ChatsApi';
 import store from '../utils/Store';
-import router from '../utils/Router';
 import ProfileAPI, { IUserData } from '../Api/ProfileAPI';
+import MessagesController from './MessagesController';
 
 export class ChatsController {
   private readonly api: ChatsAPI;
@@ -10,10 +10,17 @@ export class ChatsController {
     this.api = API;
   }
 
-  async all() {
+  async fetchChats() {
     try {
-        const chats = await this.api.read();
-        store.set('chats', chats)
+      const chats = await this.api.read();
+      
+      chats.map(async (chat) => {
+        const token = await this.getToken(chat.id);
+        
+        await MessagesController.connect(chat.id, token);
+      });
+
+      store.set('chats', chats);
     } catch (e: any) {
       store.set('chats.error', e.reason);
     }
@@ -22,18 +29,14 @@ export class ChatsController {
   async create(title: string) {
     try {
         await this.api.create({title});
-        await this.all();
+        this.fetchChats();
     } catch (e: any) {
       store.set('chats.error', e.reason);
     }
   }
 
-  async token(id: number) {
-    try {
-      return await this.api.getToken(id); 
-    } catch (e: any) {
-      store.set('socket.error', e.reason);
-    }
+  getToken(id: number) {
+    return this.api.getToken(id); 
   }
 
   async getLoginId(login: string)
@@ -75,7 +78,8 @@ export class ChatsController {
   async deleteChat(chatId: number) {
     try {
       await this.api.delete(chatId);
-      await this.all();
+      
+      this.fetchChats();
     } catch (e: any) {
       store.set('chat.delete.error', e.reason);
     }

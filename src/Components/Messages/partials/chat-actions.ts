@@ -1,5 +1,6 @@
 import ChatsController from "../../../Controllers/ChatsController";
 import Block from "../../../utils/Block";
+import store from "../../../utils/Store";
 import Action from "../../Action";
 import List from "../../List";
 import Modal from "../../Modal";
@@ -114,8 +115,12 @@ function DeleteChat(modal: Modal, chatId: number) : Block {
     });
 }
 
-export default function ChatActions(data: IChatActions) {
-    const {modal, selectedChat, userId} = data;
+export default function ChatActions(modal: Modal) {
+    const {selectedChat, user} = store.getState();
+
+    if(!selectedChat) {
+        return [];
+    }
 
     let buttons = [];
 
@@ -125,15 +130,11 @@ export default function ChatActions(data: IChatActions) {
 
     buttons.push(addUser);
 
-    if(selectedChat.created_by === userId) {
+    if(selectedChat.created_by === user.data.id) {
         buttons.push(deleteUser);
         buttons.push(deleteChat);
     } 
 
-    return new Action({
-        state: 'display-none',
-        className: 'settings-block chat_right-column_selected_header_actions_block border-shadow-radius',
-        List: buttons
-    });
+    return buttons;
 
 }

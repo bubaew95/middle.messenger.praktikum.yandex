@@ -29,22 +29,19 @@ class MessagesBase extends Block {
     private _modal: Modal;
 
     protected componentDidUpdate(oldProps: any, newProps: any): boolean { 
-        console.log(newProps)
         if(!!newProps.selectedChat && oldProps?.selectedChat?.id !== newProps.selectedChat.id) { 
-            this.children.messages = this.createMessages(newProps);
-            return true;
-            // const {selectedChat, user } = newProps;
-            // this._selectedChat = selectedChat;
-            // this._userId = user.data.id;
+            const {selectedChat, user } = newProps;
+            this._selectedChat = selectedChat;
+            this._userId = user.data.id;
 
-            // return this._addMessagesBlock(newProps);
+            return this._addMessagesBlock(newProps);
         }
 
         return false;
     }
 
     private _addMessagesBlock(props: any) {  
-        // this.initChat();
+        this.initChat();
 
         let child: ChildType = this.children;
 
@@ -189,24 +186,17 @@ class MessagesBase extends Block {
         });
     }
 
-    private createMessages(props: any) {
-        console.log(props.messages);return;
-        return props.messages.map(data => {
-          return new MessageItem({...data, isMySelf: props.userId === data.user_id });
-        })
-    }
-
-    private init(): void { 
+    private initChat(): void { 
         this._modal = new Modal({});
 
         let child: {[key: string]: Block | Block[]} = this.children;
 
-        child.Messages = [];
+        this._addFormBlock(child);
 
-        const ChatButtons = new Action({
-            state: 'display-none',
-            className: 'settings-block chat_right-column_selected_header_actions_block border-shadow-radius',
-            List: ChatActions(this._modal)
+        const chatAction = ChatActions({
+            modal: this._modal,
+            selectedChat: this._selectedChat,
+            userId:  this._userId
         });
 
         const HeaderIcon = new Icon({
@@ -215,8 +205,8 @@ class MessagesBase extends Block {
             className: 'chat_right-column_selected_header_actions_icon',
             events: {
                 click: () => {
-                    const { state } = ChatButtons.getProps();
-                    ChatButtons.setProps({
+                    const { state } = chatAction.getProps();
+                    chatAction.setProps({
                         state: state === 'display-block' ? 'display-none' : 'display-block'
                     })
                 }
@@ -224,8 +214,8 @@ class MessagesBase extends Block {
         });
 
         child.HeaderActions = [
-            HeaderIcon, 
-            ChatButtons
+            HeaderIcon,
+            chatAction, 
         ];
 
         child.Modal = this._modal;
@@ -239,5 +229,8 @@ class MessagesBase extends Block {
     }
 }
 
-const withMessages = withStore((state) => ({...state}));
-export default withMessages(MessagesBase);
+const withMessages = withStore((state) => {
+    const selectedChatId = state.selectedChat;
+    return state;
+});
+export default withMessages(MessagesBase as typeof Block);
