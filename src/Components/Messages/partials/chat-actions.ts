@@ -116,20 +116,20 @@ function DeleteChat(modal: Modal, chatId: number) : Block {
 }
 
 export default function ChatActions(modal: Modal, selectedChat: any) {
-    const {user} = store.getState();
+    const { user } = store.getState();
 
     let buttons = [];
 
-    const addUser = AddUserModel(modal, selectedChat.id);
-    const deleteUser = DeleteUserModel(modal, selectedChat.id);
-    const deleteChat = DeleteChat(modal, selectedChat.id);
+    const addUser = AddUserModel(modal, selectedChat);
+    const deleteUser = DeleteUserModel(modal, selectedChat);
+    const deleteChat = DeleteChat(modal, selectedChat);
 
     buttons.push(addUser);
 
-    if(selectedChat.created_by === user.data.id) {
-        buttons.push(deleteUser);
-        buttons.push(deleteChat);
-    } 
+    // if(selectedChat.created_by === user.data.id) {
+    //     buttons.push(deleteUser);
+    //     buttons.push(deleteChat);
+    // } 
 
     return buttons;
 

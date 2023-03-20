@@ -11,38 +11,18 @@ import Router from '../../utils/Router';
 import ChatsController from '../../Controllers/ChatsController';
 import ModalForm from '../../Components/Modal/Form';
 import Spinner from '../../Components/Spinner';
+import Chats from '../../Components/Chat';
 
-class ChatPageBase extends Block {
-
-    protected componentDidUpdate(oldProps: any, newProps: any): boolean { 
-        if(!!newProps.chats) {
-            let child: ChildType = this.children;
-            child.Chat = new Messages({});
-
-            child.Chats = newProps.chats.map((item: {[key: string]: any}) => { 
-                return new ChatItem({                 
-                    ...item,
-                    events: {
-                        click: async (e: PointerEvent) => {
-                            store.set('selectedChatId', item.id);
-                            (child.Chat as Block).setProps({selectedChat: item});
-                        }
-                    }
-                });
-            });
-            return true;
-        }
-
-        return false;
-    }
-
+export default class ChatPage extends Block {
     protected init(): void {
-        ChatsController.fetchChats();
-        
         let child: ChildType = this.children;
         child.Modal = new Modal({});
         
-        child.Chats = [ new Spinner() ];
+
+        child.Messangers = new Messages({});
+        child.Chats = new Chats({});
+
+        ChatsController.fetchChats();
 
         child.AddChatLink = new Link({
             text: 'Создать чат <i class="ib eva-arrow-ios-forward-fill"></i>',
@@ -96,7 +76,3 @@ class ChatPageBase extends Block {
         return this.compile(template, this.props)
     }
 }
-
-const withChats = withStore((state) => ({...state}));
-
-export default withChats(ChatPageBase as typeof Block);

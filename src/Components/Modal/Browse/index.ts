@@ -7,6 +7,8 @@ import Link from '../../Link';
 import template from './browse.hbs'
 
 interface IBrowseProps {
+    name?: string,
+    accept?: string;
     onSubmit: (formData: FormData) => void;
 }
 
@@ -20,12 +22,12 @@ export default class Browse extends Block {
         let child: ChildType = this.children;
         
         const FileField = new Field({
-            name: 'avatar',
+            name: this.props.name ?? 'avatar',
             label: 'Выбрать файл на компьютере', 
             type: 'file',
             parentClassName: 'modal_body_browse',
             className: 'display-none',
-            accept: 'image/*'
+            accept: this.props.accept ?? 'image/*'
         });
 
         const SaveButton = new Button({

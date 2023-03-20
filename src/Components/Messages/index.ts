@@ -14,42 +14,31 @@ import Modal from '../Modal';
 import Browse from '../Modal/Browse'; 
 import ChildType from '../../typings/ChildrenType';
 import { withStore } from '../../utils/Store'; 
-import { getAvatar } from '../../utils/Helpers';
+import { getAvatar, getFile } from '../../utils/Helpers';
 import ChatActions from './partials/chat-actions';
 import MessagesController from '../../Controllers/MessagesController';
+import { ChatData } from '../../Api/ChatsApi';
+import { IResource } from '../../Api/ResourcesApi';
+import Alert from '../Modal/Alert';
 
-interface IMessageProps {
-    id?: string
-}
 
 class MessagesBase extends Block {
-    private _userId: number;
-    private _selectedChat: any;
     private _modal: Modal;
 
-    protected componentDidUpdate(oldProps: any, newProps: any): boolean {  
-        if(!!newProps.selectedChat && oldProps?.selectedChat?.id !== newProps.selectedChat.id) { 
+    protected componentDidUpdate(oldProps: any, newProps: any): boolean { 
+        
+        if(newProps.selectedChat != oldProps.selectedChat) {
             return this._addMessages(newProps);
-            // const {selectedChat, user } = newProps;
-            // this._selectedChat = selectedChat;
-            // this._userId = user.data.id;
-
-            // return this._addMessagesBlock(newProps);
         }
 
-        return false;
+        let child: ChildType = this.children;
+        child.Messages = this.createMessages(newProps);
+        return true;
     }
 
     private _addMessages(props: any) {
         let child: ChildType = this.children;
-        const {selectedChat} = props;
-
-        this.setProps({
-            title: selectedChat.title,
-            avatar: getAvatar(selectedChat.avatar)
-        });
-
-        child.Messages = this.createMessages(props);
+        const { selectedChat } = props;
 
         const ChatButtons = new Action({
             state: 'display-none',
@@ -80,11 +69,14 @@ class MessagesBase extends Block {
     }
 
     private createMessages(props: any) {
-        const chatId = props.selectedChat.id;
-        const userId = props.user.data.id;
-
-        return props.messages[chatId].map((data: any) => {
-          return new MessageItem({...data, isMySelf: userId === data.user_id });
+        const userId = props.userId ;//?? props.user.data.id;
+        console.log(props.messages)
+        return props.messages.map((data: any) => {
+            return new MessageItem({
+                ...data, 
+                isMySelf: userId === data.user_id,
+                media: data.type === 'file' ? getFile(data.file) :  null
+            });
         })
     }
 
@@ -120,8 +112,14 @@ class MessagesBase extends Block {
                                 title: 'Отправить Фото или Видео',
                                 state: 'show',
                                 body: new Browse({
-                                    onSubmit: (e: SubmitEvent) => {
-                                        console.log('Отправить Фото или Видео')
+                                    name: 'resource',
+                                    accept: 'image/*, video/*',
+                                    onSubmit: async (formData: FormData) => {
+                                        const file: IResource = await MessagesController.sendFile(formData);
+                                        MessagesController.sendMessage(this.props.selectedChat, (file.id).toString(), 'file');
+                                        this._modal.setProps({
+                                            show: 'hide'
+                                        })
                                     }
                                 })
                             })
@@ -138,8 +136,11 @@ class MessagesBase extends Block {
                                 title: 'Отправить Файл',
                                 state: 'show',
                                 body: new Browse({
-                                    onSubmit: (e: SubmitEvent) => {
-                                        console.log('Отправить Файл')
+                                    name: 'resource',
+                                    accept: '.pdf, .txt, .xls, .word',
+                                    onSubmit: async (formData: FormData) => {
+                                        const file: IResource = await MessagesController.sendFile(formData);
+                                        MessagesController.sendMessage(this.props.selectedChat, (file.id).toString(), 'file');
                                     }
                                 })
                             })
@@ -156,7 +157,7 @@ class MessagesBase extends Block {
                                 title: 'Отправить Локация',
                                 state: 'show',
                                 body: new Browse({
-                                    onSubmit: (e: SubmitEvent) => {
+                                    onSubmit: (e: FormData) => {
                                         console.log('Отправить Локация')
                                     }
                                 })
@@ -192,7 +193,9 @@ class MessagesBase extends Block {
                         return;
                     }
 
-                    MessagesController.sendMessage(this.props.selectedChat!.id, message);
+                    Input.setValue('');
+
+                    MessagesController.sendMessage(this.props.selectedChat, message);
                 }
             },
             Input,
@@ -220,5 +223,32 @@ class MessagesBase extends Block {
     }
 }
 
-const withMessages = withStore(state => ({...state}));
-export default withMessages(MessagesBase);
+const withMessages = withStore(state => {
+    const selectedChatId = state.selectedChat;
+
+    function getChat(chatId: number) {
+        return state.chats.filter((item: ChatData) => item.id === chatId)[0];
+    }
+
+    if (!selectedChatId) {
+        return {
+            messages: [],
+            selectedChat: undefined,
+            userId: state.user.data.id,
+            title: undefined,
+            avatar: undefined
+        };
+    }
+
+    const chat: ChatData = getChat(selectedChatId);
+
+    return {
+        messages: (state.messages || {})[selectedChatId] || [],
+        selectedChat: state.selectedChat,
+        userId: state.user.data.id,
+        title: chat.title,
+        avatar: getAvatar(chat.avatar)
+    };
+});
+
+export default withMessages(MessagesBase as typeof Block);

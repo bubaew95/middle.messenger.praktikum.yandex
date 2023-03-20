@@ -52,15 +52,16 @@ const store = new Store();
 //     }
 //   }
 // }
-export function withStore<SP>(mapStateToProps: (state: any) => any) {
-  return function wrap<P>(Component: typeof Block){
+export function withStore(mapStateToProps: (state: any) => any) {
+  return function wrap(Component: typeof Block){
 
     return class WithStore extends Component {
 
-      constructor(props: Omit<P, keyof SP>) {
+      constructor(props: any) {
+        console.log('props', props)
         let previousState = mapStateToProps(store.getState());
 
-        super({ ...(props as P), ...previousState });
+        super({ ...(props), ...previousState });
 
         store.on(StoreEvents.Updated, () => {
           const stateProps = mapStateToProps(store.getState());

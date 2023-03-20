@@ -34,6 +34,11 @@ export default class Field extends Block {
         return input.name;
     }
 
+    public setValue(value: string) {
+        const input: Nullable<HTMLInputElement> = (this.children.Input as Input).element as HTMLInputElement
+        return input.value = value;
+    }
+
     getValue(): string {
         const input: Nullable<HTMLInputElement> = (this.children.Input as Input).element as HTMLInputElement
         return input.value;

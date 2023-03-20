@@ -1,5 +1,6 @@
 import WSTransport, { WSTransportEvents } from '../utils/WSTransport';
 import store from '../utils/Store';
+import ResourcesAPI from '../Api/ResourcesApi';
 
 export interface Message {
   chat_id: number;
@@ -38,7 +39,7 @@ class MessagesController {
     this.fetchOldMessages(id);
   }
 
-  sendMessage(id: number, message: string) {
+  sendMessage(id: number, message: string, type: string = 'message') {
     const socket = this.sockets.get(id);
 
     if (!socket) {
@@ -46,7 +47,7 @@ class MessagesController {
     }
 
     socket.send({
-      type: 'message',
+      type: type,
       content: message,
     });
   }
@@ -89,6 +90,11 @@ class MessagesController {
     transport.on(WSTransportEvents.Message, (message) => this.onMessage(id, message));
     transport.on(WSTransportEvents.Close, () => this.onClose(id));
   }
+
+  async sendFile(data: FormData) { 
+    return await ResourcesAPI.sendFile(data)
+  }
+
 }
  
 export default new MessagesController();
