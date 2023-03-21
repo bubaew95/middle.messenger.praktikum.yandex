@@ -4,6 +4,7 @@ import { withStore } from '../../utils/Store';
 import ChatItem from '../ChatItem';
 import ChatsController from '../../Controllers/ChatsController';
 import Spinner from '../Spinner';
+import { getAvatar } from '../../utils/Helpers';
 
 class ChatsBase extends Block {
 
@@ -21,10 +22,11 @@ class ChatsBase extends Block {
       return false;
     }
   
-    private createChats(props: any) { 
+    private createChats(props: any) {
       return props.chats.map(data => {
         return new ChatItem({
           ...data,
+          avatar: data.avatar && getAvatar(data.avatar),
           events: {
             click: () => {
               ChatsController.selectChat(data.id);
@@ -41,5 +43,5 @@ class ChatsBase extends Block {
   
   const withChats = withStore((state) => ({chats: [...(state.chats || [])]}));
   
-  export default withChats(ChatsBase);
+  export default withChats(ChatsBase as typeof Block);
   

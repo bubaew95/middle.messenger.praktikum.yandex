@@ -1,16 +1,12 @@
 import template from './chat.hbs'
 import Block from '../../utils/Block';
-import { ChatItem, Field, Link, Messages, Modal } from '../../Components';
-import data from '../../Api/chats.json'; 
-
+import { Field, Link, Messages, Modal } from '../../Components';
 import './chat.pcss';
 import { PROFILE_PAGE } from '../../utils/Routes';
 import ChildType from '../../typings/ChildrenType';
-import store, { withStore } from '../../utils/Store';
 import Router from '../../utils/Router';
 import ChatsController from '../../Controllers/ChatsController';
 import ModalForm from '../../Components/Modal/Form';
-import Spinner from '../../Components/Spinner';
 import Chats from '../../Components/Chat';
 
 export default class ChatPage extends Block {

@@ -3,6 +3,11 @@ import store from '../utils/Store';
 import ProfileAPI, { IUserData } from '../Api/ProfileAPI';
 import MessagesController from './MessagesController';
 
+export interface IResult {
+  status: string;
+  msg: string;
+}
+
 export class ChatsController {
   private readonly api: ChatsAPI;
 
@@ -50,38 +55,51 @@ export class ChatsController {
     return (user[0] as IUserData).id;
   }
 
-  async addUserToChat(login: string, chatId: number) {
+  async addUserToChat(login: string, chatId: number): Promise<IResult> {
     try {
       const userId = await this.getLoginId(login);
-      const addUserResponse = await this.api.addUserToChat(userId, chatId);
+      await this.api.addUserToChat(userId, chatId);
       return {
         status: 'success',
-        msg: addUserResponse
+        msg: 'Пользователь добавлен'
       };
+    } catch (e: any) {
+      return {
+        status: 'error',
+        msg: `Не найден пользователь с "${login}" таким логином!`
+      }
+    }
+  }
+
+  async deleteUserFromChat(login: string, chatId: number): Promise<IResult> {
+    try {
+      const userId = await this.getLoginId(login);
+      await this.api.deleteUserFromChat(userId, chatId);
+      return {
+        status: 'success',
+        msg: 'Пользователь добавлен'
+      };
+    } catch (e: any) {
+      return {
+        status: 'error',
+        msg: `Не найден пользователь с "${login}" таким логином!`
+      }
+    }
+  }
+
+  async deleteChat(chatId: number): Promise<IResult> {
+    try {
+      await this.api.delete(chatId);
+      this.fetchChats();
+      return {
+        status: 'success',
+        msg: ''
+      }
     } catch (e: any) {
       return {
         status: 'error',
         msg: e.reason
       }
-    }
-  }
-
-  async deleteUserFromChat(login: string, chatId: number) {
-    try {
-      const userId = await this.getLoginId(login);
-      return await this.api.deleteUserFromChat(userId, chatId);
-    } catch (e: any) {
-      store.set('chat.searchuser.error', e.reason);
-    }
-  }
-
-  async deleteChat(chatId: number) {
-    try {
-      await this.api.delete(chatId);
-      
-      this.fetchChats();
-    } catch (e: any) {
-      store.set('chat.delete.error', e.reason);
     }
   }
 

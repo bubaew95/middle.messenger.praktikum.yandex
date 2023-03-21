@@ -52,7 +52,7 @@ export function set(object: Indexed | unknown, path: string, value: unknown): In
 
 export function getAvatar(avatar: string): string {
   return avatar
-        ? `https://ya-praktikum.tech/api/v2/resources/${avatar}` 
+        ? `https://ya-praktikum.tech/api/v2/resources${avatar}` 
         : 'https://cs6.pikabu.ru/avatars/1121/x1121129-2144512139.png';
 }
 
@@ -65,3 +65,5 @@ export function getFile (file: IFile) {
       return `<div class="media_file"><i class="ib media-file"> ${file.filename}</div>`
   }
 }
+
+ 

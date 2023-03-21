@@ -4,6 +4,7 @@ import 'icon-blender/css/icon-blender.css';
 import './style.pcss';
 
 import './Helpers/Substr'
+import './Helpers/Time'
 import Router from './utils/Router';
 import { BlockConstructable } from './utils/Route';
 import AuthController from './Controllers/AuthController';

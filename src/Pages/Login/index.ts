@@ -1,8 +1,8 @@
-import { Field, Input } from '../../Components';
+import { Field } from '../../Components';
 import Button from '../../Components/Button';
 import Form from '../../Components/Form';
 import Link from '../../Components/Link';
-import { CHAT_PAGE, REGISTRATION_PAGE } from '../../utils/Routes';
+import { REGISTRATION_PAGE } from '../../utils/Routes';
 import Block from '../../utils/Block';
 import template from './login.hbs';
 import loginForm from './login-form.hbs';
@@ -16,9 +16,9 @@ import Text from '../../Components/Text';
 class LoginPageBase extends Block {
 
     protected componentDidUpdate(oldProps: any, newProps: any): boolean { 
-      if(!!newProps.error) {
+      if(!!newProps.signin && newProps.signin.error) {
         this.children.ErrorMessage = new Text({
-          text: newProps.error,
+          text: newProps.signin.error,
           className: 'error-message' 
         });
         return true;
@@ -34,7 +34,6 @@ class LoginPageBase extends Block {
         label: 'Логин',
         onBlur: (e: FocusEvent) => { 
           const element: string  = (e.target as HTMLInputElement).value; 
-          console.log(element)
         }
       });
       
@@ -44,7 +43,6 @@ class LoginPageBase extends Block {
         type: 'password',
         onBlur: (e: FocusEvent) => { 
           const element: string  = (e.target as HTMLInputElement).value; 
-          console.log(element)
         }
       });
       
@@ -93,4 +91,4 @@ class LoginPageBase extends Block {
 
 const withUser = withStore((state) => ({ ...state.user }))
 
-export default withUser(LoginPageBase);
+export default withUser(LoginPageBase as typeof Block);

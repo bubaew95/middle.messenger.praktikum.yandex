@@ -1,7 +1,8 @@
 import ChatsController from "../../../Controllers/ChatsController";
 import Block from "../../../utils/Block";
+import Router from "../../../utils/Router";
+import { CHAT_PAGE } from "../../../utils/Routes";
 import store from "../../../utils/Store";
-import Action from "../../Action";
 import List from "../../List";
 import Modal from "../../Modal";
 import Alert from "../../Modal/Alert";
@@ -24,6 +25,31 @@ interface IChatActions {
     userId: number
 }
 
+enum Status {
+    Success = 'success',
+    Error = 'error'
+}
+
+function mAlert(modal: Modal, result: {status: string, msg: string}) {
+    if(result.status === Status.Success) {
+        modal.setProps({
+            state: 'hide'
+        }); 
+        return true;
+    }
+
+    modal.setProps({
+        title: 'Alert',
+        state: 'show',
+        body: new Alert({
+            text: (result.msg as string),
+            status: 'warning'
+        })
+    });
+
+    return false;
+}
+
 function AddUserModel (modal: Modal, chatId: number): Block {
     const onSubmit = () => {
         modal.setProps({
@@ -39,26 +65,10 @@ function AddUserModel (modal: Modal, chatId: number): Block {
                         title: 'Loading',
                         state: 'show',
                         body: new Spinner()
-                    });
+                    }); 
 
-                    setTimeout(() => {
-                        modal.setProps({
-                            title: 'Alert',
-                            state: 'show',
-                            body: new Alert({
-                                text: 'Ошибка',
-                                status: 'warning'
-                            })
-                        })
-                    }, 4000);
-
-                    // const result = await ChatsController.addUserToChat(login, chatId);
-                    
-                    // modal.setProps({
-                    //     state: 'hide'
-                    // }); 
-                    
-
+                    const result = await ChatsController.addUserToChat(login, chatId);
+                    return mAlert(modal, result);
                 }
             })
         })
@@ -85,10 +95,8 @@ function DeleteUserModel(modal: Modal, chatId: number) : Block {
                         return;
                     }
 
-                    await ChatsController.deleteUserFromChat(login, chatId);
-                    modal.setProps({
-                        state: 'hide'
-                    })
+                    const result = await ChatsController.deleteUserFromChat(login, chatId);
+                    return mAlert(modal, result);
                 }
             })
         })
@@ -105,17 +113,26 @@ function DeleteUserModel(modal: Modal, chatId: number) : Block {
 }
 
 function DeleteChat(modal: Modal, chatId: number) : Block {
+    const onSubmit = async () => { 
+        const result = await ChatsController.deleteChat(chatId);
+        const alert = mAlert(modal, result);
+
+        if(alert) {
+            store.set('selectedChat', undefined);
+        } 
+    }
+
     return new List({
         icon: 'fluent-delete-off-24-filled',
         iconClassName: 'ib-22px primary-color',
         text: 'Удалить переписку',
         events: {
-            click: async () => ChatsController.deleteChat(chatId)
+            click: () => onSubmit()
         }
     });
 }
 
-export default function ChatActions(modal: Modal, selectedChat: any) {
+export default function ChatActions(modal: Modal, selectedChat: number, chatCreatedBy: number | undefined) {
     const { user } = store.getState();
 
     let buttons = [];
@@ -125,10 +142,10 @@ export default function ChatActions(modal: Modal, selectedChat: any) {
     const deleteChat = DeleteChat(modal, selectedChat);
 
     buttons.push(addUser);
+    buttons.push(deleteUser);
+    buttons.push(deleteChat);
 
-    // if(selectedChat.created_by === user.data.id) {
-    //     buttons.push(deleteUser);
-    //     buttons.push(deleteChat);
+    // if(chatCreatedBy === user.data.id) {
     // } 
 
     return buttons;

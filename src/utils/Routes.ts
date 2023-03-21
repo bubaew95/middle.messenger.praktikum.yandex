@@ -10,11 +10,11 @@ export type TRoutes = {
 };
 
 export const LOGIN_PAGE = '/';
-export const REGISTRATION_PAGE = '/registration';
-export const CHAT_PAGE = '/chats';
-export const PROFILE_PAGE = '/profile';
-export const PROFILE_EDIT_PAGE = '/profile/edit';
-export const PROFILE_CHANGE_PASSWORD_PAGE = '/profile/change-password';
+export const REGISTRATION_PAGE = '/sign-up';
+export const CHAT_PAGE = '/messenger';
+export const PROFILE_PAGE = '/settings';
+export const PROFILE_EDIT_PAGE = '/settings/edit';
+export const PROFILE_CHANGE_PASSWORD_PAGE = '/settings/change-password';
 export const ERROR_PAGE = '/error'; 
 
 export const ROUTERS: TRoutes = {

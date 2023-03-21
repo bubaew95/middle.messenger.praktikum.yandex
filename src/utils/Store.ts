@@ -34,31 +34,12 @@ interface IStore {
 
 const store = new Store();
 
-// export function withStore(mapStateToProps: (state: any) => any) {
-//   return function wrap(Component: typeof Block){
-//     let previousState: IStore;
-//     return class WithStore extends Component {
-//       constructor(props: any) { 
-//         previousState = mapStateToProps(store.getState());
-//         super({ ...props, ...previousState });
-
-//         store.on(StoreEvents.Updated, () => {
-//           const stateProps = mapStateToProps(store.getState());
-//           previousState = stateProps;
-//           this.setProps({ ...stateProps });
-//         });
-
-//       } 
-//     }
-//   }
-// }
 export function withStore(mapStateToProps: (state: any) => any) {
   return function wrap(Component: typeof Block){
 
     return class WithStore extends Component {
 
       constructor(props: any) {
-        console.log('props', props)
         let previousState = mapStateToProps(store.getState());
 
         super({ ...(props), ...previousState });

@@ -17,10 +17,8 @@ import { withStore } from '../../utils/Store';
 import { getAvatar, getFile } from '../../utils/Helpers';
 import ChatActions from './partials/chat-actions';
 import MessagesController from '../../Controllers/MessagesController';
-import { ChatData } from '../../Api/ChatsApi';
-import { IResource } from '../../Api/ResourcesApi';
-import Alert from '../Modal/Alert';
-
+import { ChatData } from '../../Api/ChatsApi';  
+import { IResource } from '../../Api/ResourcesAPI';
 
 class MessagesBase extends Block {
     private _modal: Modal;
@@ -37,13 +35,13 @@ class MessagesBase extends Block {
     }
 
     private _addMessages(props: any) {
-        let child: ChildType = this.children;
-        const { selectedChat } = props;
+        let child: ChildType = this.children; 
+        const { selectedChat, chatCreatedBy } = props;
 
         const ChatButtons = new Action({
             state: 'display-none',
             className: 'settings-block chat_right-column_selected_header_actions_block border-shadow-radius',
-            List: ChatActions(this._modal, selectedChat)
+            List: ChatActions(this._modal, selectedChat, chatCreatedBy)
         });
 
         const HeaderIcon = new Icon({
@@ -69,13 +67,12 @@ class MessagesBase extends Block {
     }
 
     private createMessages(props: any) {
-        const userId = props.userId ;//?? props.user.data.id;
-        console.log(props.messages)
+        const userId = props.userId;
         return props.messages.map((data: any) => {
             return new MessageItem({
                 ...data, 
                 isMySelf: userId === data.user_id,
-                media: data.type === 'file' ? getFile(data.file) :  null
+                media: data.type === 'file' ? getFile(data.file) :  null, 
             });
         })
     }
@@ -224,8 +221,7 @@ class MessagesBase extends Block {
 }
 
 const withMessages = withStore(state => {
-    const selectedChatId = state.selectedChat;
-
+    const selectedChatId = state.selectedChat; 
     function getChat(chatId: number) {
         return state.chats.filter((item: ChatData) => item.id === chatId)[0];
     }
@@ -236,7 +232,8 @@ const withMessages = withStore(state => {
             selectedChat: undefined,
             userId: state.user.data.id,
             title: undefined,
-            avatar: undefined
+            avatar: undefined,
+            chatCreatedBy: undefined
         };
     }
 
@@ -246,8 +243,9 @@ const withMessages = withStore(state => {
         messages: (state.messages || {})[selectedChatId] || [],
         selectedChat: state.selectedChat,
         userId: state.user.data.id,
-        title: chat.title,
-        avatar: getAvatar(chat.avatar)
+        title: chat && chat.title,
+        avatar: chat && getAvatar(chat.avatar),
+        chatCreatedBy: chat && chat.created_by
     };
 });
 

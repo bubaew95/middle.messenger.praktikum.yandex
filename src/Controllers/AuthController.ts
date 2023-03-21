@@ -1,6 +1,7 @@
 import API, { AuthAPI, SigninData, SignupData } from '../Api/AuthAPI';
 import store from '../utils/Store';
-import router from '../utils/Router';
+import { LOGIN_PAGE, PROFILE_PAGE } from '../utils/Routes';
+import Router from '../utils/Router';
 
 export class AuthController {
   private readonly api: AuthAPI;
@@ -11,9 +12,8 @@ export class AuthController {
 
   async signin(data: SigninData) {
     try {
-      await this.api.signin(data);
-
-      router.go('/chats');
+      await this.api.signin(data); 
+      Router.go(PROFILE_PAGE);
     } catch (e: any) {
       store.set('user.signin.error', e.reason);
     }
@@ -25,7 +25,7 @@ export class AuthController {
 
       await this.fetchUser();
 
-      router.go('/profile');
+      Router.go(PROFILE_PAGE);
     } catch (e: any) {
       store.set('user.signup.error', e.reason);
     }
@@ -40,7 +40,7 @@ export class AuthController {
     try {
       await this.api.logout();
 
-      router.go('/');
+      Router.go(LOGIN_PAGE);
     } catch (e: any) {
       console.error(e.message);
     }

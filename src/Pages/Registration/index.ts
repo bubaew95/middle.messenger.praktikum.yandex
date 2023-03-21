@@ -22,9 +22,9 @@ import Text from '../../Components/Text';
 class RegistrationPageBase extends Block {
 
   protected componentDidUpdate(oldProps: any, newProps: any): boolean { 
-    if(!!newProps.error) {
+    if(!!newProps.signup && newProps.signup.error) { 
       this.children.ErrorMessage = new Text({
-        text: newProps.error,
+        text: newProps.signup.error,
         className: 'error-message' 
       });
       return true;

@@ -11,8 +11,8 @@ export class ProfileController {
   }
 
   private setUser(user: ProfileDataAvatar)
-  {
-    store.set('user', user);
+  { 
+    store.set('user.data', user);
     Router.go(PROFILE_PAGE);
   }
 
@@ -28,6 +28,7 @@ export class ProfileController {
   async changeAvatar(data: FormData) { 
     try {
       const user = await this.api.changeAvatar(data);
+      console.log(user)
       this.setUser(user);
     } catch (e: any) {
       store.set('user.changeAvatar.error', e.reason);
@@ -40,6 +41,8 @@ export class ProfileController {
       await this.api.changePassword({
         oldPassword, newPassword
       });
+      
+      Router.go(PROFILE_PAGE);
     } catch (e: any) {
       store.set('user.changePassword.error', e.reason);
     }
