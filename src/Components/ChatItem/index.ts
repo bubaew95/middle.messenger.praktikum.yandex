@@ -6,14 +6,14 @@ type TChatProps = {
     [key:string]: any
 };
 
-export default class Chat extends Block {
+export default class ChatItem extends Block {
 
-    constructor(props: TChatProps) { 
+    constructor(props: TChatProps) {
         super(props)
     }
 
     protected render(): DocumentFragment {
-        return this.compile(template, this.props)
+        return this.compile(template, {...this.props, isSelected: this.props.id === this.props.selectedChat?.id});
     }
 
 }

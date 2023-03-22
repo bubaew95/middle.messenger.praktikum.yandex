@@ -4,7 +4,7 @@ import Block from '../../utils/Block';
 import template from './registration.hbs';
 import registrationForm from './registration-form.hbs';
 import Link from '../../Components/Link';
-import { LOGIN_PAGE, renderDom } from '../../routers';
+import { LOGIN_PAGE } from '../../utils/Routes';
 
 import './registration.pcss';
 import ChildType from '../../typings/ChildrenType';
@@ -14,12 +14,23 @@ import NameValidatorService from '../../Services/NameValidatorService';
 import LoginValidatorService from '../../Services/LoginValidatorService';
 import PasswordValidatorService from '../../Services/PasswordValidatorService';
 import RePasswordValidatorService from '../../Services/RePasswordValidatorService';
+import { withStore } from '../../utils/Store';
+import AuthController from '../../Controllers/AuthController';
+import Router from '../../utils/Router';
+import Text from '../../Components/Text';
 
-export default class RegistrationPage extends Block {
+class RegistrationPageBase extends Block {
 
-    constructor(props: {}) { 
-        super(props)
+  protected componentDidUpdate(oldProps: any, newProps: any): boolean { 
+    if(!!newProps.signup && newProps.signup.error) { 
+      this.children.ErrorMessage = new Text({
+        text: newProps.signup.error,
+        className: 'error-message' 
+      });
+      return true;
     }
+    return false;
+  }
 
     protected init(): void {
         let child: ChildType = this.children;
@@ -114,7 +125,7 @@ export default class RegistrationPage extends Block {
             text: 'Войти',
             className: 'registration-form_login mx-2',
             events: {
-              click: () => renderDom(LOGIN_PAGE)
+              click: () => Router.go(LOGIN_PAGE)
             }
         });
  
@@ -138,8 +149,6 @@ export default class RegistrationPage extends Block {
                 if(LoginValidatorService.check(login, loginField)) { 
                   isError = true;
                 }
-
-                console.log(isError)
 
                 if(NameValidatorService.check(firstName, firstNameField)) {
                   isError = true;
@@ -165,14 +174,14 @@ export default class RegistrationPage extends Block {
                   return;
                 }
 
-                console.log({
-                  email,
+                AuthController.signup({
+                  first_name: firstName,
+                  second_name: secondName,
                   login,
-                  firstName,
-                  secondName,
-                  phone,
+                  email,
                   password,
-                })
+                  phone
+                });
               }
             },
             Button: button,
@@ -193,3 +202,7 @@ export default class RegistrationPage extends Block {
         return this.compile(template, this.props)
     }
 }
+
+const withUser = withStore((state) => ({ ...state.user }))
+
+export default withUser(RegistrationPageBase);

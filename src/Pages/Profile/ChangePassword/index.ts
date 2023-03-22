@@ -4,38 +4,51 @@ import Icon from '../../../Components/Icon';
 import ProfileAvatar from '../../../Components/ProfileAvatar';
 import PasswordValidatorService from '../../../Services/PasswordValidatorService';
 import RePasswordValidatorService from '../../../Services/RePasswordValidatorService';
-import { PROFILE_PAGE, renderDom } from '../../../routers';
+import { PROFILE_PAGE } from '../../../utils/Routes';
 import ChildType from '../../../typings/ChildrenType';
 import Block from '../../../utils/Block';
 import template from './change-password.hbs'; 
 import formTemplate from './form.hbs';
+import Router from '../../../utils/Router';
+import { withStore } from '../../../utils/Store';
+import ProfileController from '../../../Controllers/ProfileController';
+import Text from '../../../Components/Text';
+import { getAvatar } from '../../../utils/Helpers';
 
-export default class ChangePassword extends Block {
-    constructor(props: {}) {
-        props = {
-            email: 'noxchi_dev@ya.ru',
-            login: 'noxchi_dev',
-            name: 'Noxcho',
-            first_name: 'al-Shishany',
-            nickname: 'noxchi developer',
-            phone: '79999999999',
-        };
-        super(props)
+class ChangePassword extends Block {
+
+    protected componentDidUpdate(oldProps: any, newProps: any): boolean {
+        
+        if(!!newProps.error) {
+            let child: ChildType = this.children;
+
+            child.ErrorMessage = new Text({
+                text: newProps.error,
+                className: 'error-message'
+            });
+
+            return true;
+        }
+
+        return false;
     }
+
 
     protected init(): void {
         let child: ChildType = this.children;
 
+        const avatar = getAvatar(this.props.avatar);
+        
         child.ChangeAvatar = new ProfileAvatar({
-            image: 'https://i.ytimg.com/vi/S_bBS3tUwdU/maxresdefault.jpg',
-            isNotEdit: true
+            image: avatar,
+            isNotEdit: true,
         });
 
         child.PrevButton = new Icon({
             icon: 'la-long-arrow-alt-left',
             className: 'profile_left_prev-icon',
             events: {
-                click: () => renderDom(PROFILE_PAGE)
+                click: () => Router.go(PROFILE_PAGE)
             }
         });
         
@@ -45,10 +58,6 @@ export default class ChangePassword extends Block {
             placeholder: '*******',
             onBlur: (e: FocusEvent) => {
                 const target = (e.target as HTMLInputElement);
-                oldPasswordField.setProps({
-                    error: 'test'
-                })
-                console.log(target.value)
             }
         });
 
@@ -111,20 +120,15 @@ export default class ChangePassword extends Block {
                     if(isError) {
                         return;
                     }
-                    
-                    console.log({
-                        oldPasswordValue,
-                        newPasswordValue,
-                        rePasswordValue,
-                    })
+
+                    ProfileController.changePassword(oldPasswordValue, newPasswordValue);
                 }
             }, 
             oldPassword: oldPasswordField,
             newPassword: newPasswordField,
             rePassword: rePasswordField,
             SaveButton
-        }) 
-
+        });
     }
     
 
@@ -132,3 +136,10 @@ export default class ChangePassword extends Block {
         return this.compile(template, this.props);
     }
 }
+
+
+const changePassword = withStore((state) => ({ 
+    ...state.user.data,
+    error: state.user?.changePassword?.error
+}));
+export default changePassword(ChangePassword as typeof Block);

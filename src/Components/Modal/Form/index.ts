@@ -6,7 +6,10 @@ import Form from "../../Form";
 import template from './form.hbs';
 
 interface IModelFormProps {
-    onSubmit: (login: string) => void;
+    fieldName?:string;
+    fieldText?:string;
+    buttonText?:string;
+    onSubmit: (text: string) => void;
 }
 
 export default class ModalForm extends Block {
@@ -18,22 +21,23 @@ export default class ModalForm extends Block {
     protected init(): void {
         let child: ChildType = this.children;
         
-        const LoginField = new Field({
-            name: 'login',
-            placeholder: 'Логин'
+        const FormField = new Field({
+            name: this.props.fieldName ?? 'login',
+            placeholder: this.props.fieldText ?? 'Логин'
         });
 
         const FormButton = new Button({
-            title: 'Сохранить',
-            className: 'button'
+            title: this.props.buttonText ?? 'Сохранить',
+            className: 'button',
+            type: 'submit'
         });
 
         child.Form = new Form({
-            body: [ LoginField, FormButton ],
+            body: [ FormField, FormButton ],
             events: {
                 submit:(e: SubmitEvent) => {
-                    e.preventDefault();
-                    this.props.onSubmit(LoginField.getValue());
+                    e.preventDefault(); 
+                    this.props.onSubmit(FormField.getValue());
                 }
             }
         });

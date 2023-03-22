@@ -3,24 +3,16 @@ import template from './profile.hbs';
 import './profile.pcss';
 import { Link } from '../../Components';
 import Icon from '../../Components/Icon';
-import { CHAT_PAGE, PROFILE_CHANGE_PASSWORD_PAGE, PROFILE_EDIT_PAGE, renderDom } from '../../routers';
+import { CHAT_PAGE, PROFILE_CHANGE_PASSWORD_PAGE, PROFILE_EDIT_PAGE } from '../../utils/Routes';
 import ProfileAvatar from '../../Components/ProfileAvatar';
 import ProfileData from '../../Components/ProfileData';
 import ChildType from '../../typings/ChildrenType';
+import { withStore } from '../../utils/Store';
+import Router from '../../utils/Router';
+import { getAvatar } from '../../utils/Helpers';
+import  AuthController from '../../Controllers/AuthController';
 
-export default class Profile extends Block {
-    constructor(props: {}) {
-        props = {
-            email: 'noxchi_dev@ya.ru',
-            login: 'noxchi_dev',
-            name: 'Noxcho',
-            first_name: 'al-Shishany',
-            nickname: 'noxchi developer',
-            phone: '79999999999',
-        };
-        super(props)
-    }
-
+class ProfileBase extends Block {
     protected init(): void {
         let child: ChildType = this.children;
 
@@ -28,12 +20,13 @@ export default class Profile extends Block {
             icon: 'la-long-arrow-alt-left',
             className: 'profile_left_prev-icon',
             events: {
-                click: () => renderDom(CHAT_PAGE)
+                click: () => Router.go(CHAT_PAGE)
             }
         })
 
+        const avatar = getAvatar(this.props.avatar);
         child.ChangeAvatar = new ProfileAvatar({
-            image: 'https://i.ytimg.com/vi/S_bBS3tUwdU/maxresdefault.jpg',
+            image: avatar,
             isNotEdit: true,
         });
 
@@ -42,14 +35,14 @@ export default class Profile extends Block {
         child.EditProfile = new Link({
             text: 'Изменить данные', 
             events: {
-                click: () => renderDom(PROFILE_EDIT_PAGE)
+                click: () => Router.go(PROFILE_EDIT_PAGE)
             }
         });
 
         child.EditPassword = new Link({
             text: 'Изменить пароль', 
             events: {
-                click: () => renderDom(PROFILE_CHANGE_PASSWORD_PAGE)
+                click: () => Router.go(PROFILE_CHANGE_PASSWORD_PAGE)
             }
         });
 
@@ -57,7 +50,7 @@ export default class Profile extends Block {
             text: 'Выйти',
             className: 'text-danger', 
             events: {
-                click: () => console.log('logout')
+                click: () => AuthController.logout()
             }
         }); 
     }
@@ -66,3 +59,9 @@ export default class Profile extends Block {
         return this.compile(template, this.props);
     }
 }
+
+const withProfile = withStore((store) => ({ 
+    ...store.user.data
+ }))
+
+export default withProfile(ProfileBase as typeof Block);

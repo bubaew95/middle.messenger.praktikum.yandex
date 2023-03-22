@@ -104,7 +104,6 @@ class Block<P extends Record<string, any> = any, E extends HTMLElement = HTMLEle
   }
 
   private _componentDidUpdate(oldProps: P, newProps: P) {
-    console.log(oldProps)
     if (this.componentDidUpdate(oldProps, newProps)) {
       this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }

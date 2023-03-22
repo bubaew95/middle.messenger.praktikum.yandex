@@ -5,6 +5,7 @@
             <div class="chat_left-column_header">
                 <div class="chat_left-column_header-profile">
 
+                    {{{ AddChatLink }}}
                     {{{ ProfileLink }}}
                     
                 </div>
@@ -18,9 +19,7 @@
 
             <div class="chat_left-column_items">
 
-                {{#each Chats}}
-                    {{{this}}}
-                {{/each}}
+                {{{Chats}}}
 
             </div>
         </div>
@@ -28,9 +27,11 @@
         <!-- Подгрузка сообщений происходит в файле index.js -->
         <div class="chat_right-column chat-block">
             
-            {{{ Chat }}} 
+            {{{ Messangers }}} 
 
         </div>
 
     </div>
+
+    {{{ Modal }}}
 </div>

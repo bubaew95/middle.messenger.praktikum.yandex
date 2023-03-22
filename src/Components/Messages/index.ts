@@ -4,8 +4,6 @@ import emptyMessagesTemplate from './partials/empty-messages.hbs';
 import formTemplate from './partials/send-form.hbs';
 import MessageItem from './MessageItem';
 import './messages.pcss';
-
-import data from '../../Api/chats.json'; 
 import Field from '../Field';
 import Button from '../Button';
 import Form from '../Form';
@@ -13,55 +11,70 @@ import Icon from '../Icon';
 import Action from '../Action';
 import List from '../List';
 import Modal from '../Modal';
-import Browse from '../Modal/Browse';
-import ModalForm from '../Modal/Form';
+import Browse from '../Modal/Browse'; 
 import ChildType from '../../typings/ChildrenType';
+import { withStore } from '../../utils/Store'; 
+import { getAvatar, getFile } from '../../utils/Helpers';
+import ChatActions from './partials/chat-actions';
+import MessagesController from '../../Controllers/MessagesController';
+import { ChatData } from '../../Api/ChatsApi';  
+import { IResource } from '../../Api/ResourcesAPI';
 
-interface IMessageProps {
-    id?: string
-}
+class MessagesBase extends Block {
+    private _modal: Modal;
 
-export default class Messages extends Block {
-
-    constructor(props: IMessageProps) { 
-        super(props);
-    }
-
-    protected componentDidUpdate(oldProps: any, newProps: any): boolean {
-        if(oldProps.id !== newProps.id) {
-            return this._addMessagesBlock(newProps);
+    protected componentDidUpdate(oldProps: any, newProps: any): boolean { 
+        
+        if(newProps.selectedChat != oldProps.selectedChat) {
+            return this._addMessages(newProps);
         }
 
-        return false;
-    }
-
-    private _addMessagesBlock(newProps: {id: string}) {
         let child: ChildType = this.children;
-
-        const chats: Array<{[key:string]: any}> = data.filter(
-            (item: {[key:string]: any}) => item.id == newProps.id
-        );
-
-        if(chats.length === 0) {
-            return false;
-        }
-        
-        const chat = chats[0];
-        
-        this.setProps({
-            avatar: chat.avatar,
-            name: chat.name
-        })
-
-        const messages = chat.messages;
-
-        child.Messages = [];
-        if(messages.length !== 0) {  
-            messages.map((item: {[key: string]: any}) => {
-                (child.Messages as Array<Block>).push(new MessageItem(item))
-            }) 
-        } 
+        child.Messages = this.createMessages(newProps);
         return true;
+    }
+
+    private _addMessages(props: any) {
+        let child: ChildType = this.children; 
+        const { selectedChat, chatCreatedBy } = props;
+
+        const ChatButtons = new Action({
+            state: 'display-none',
+            className: 'settings-block chat_right-column_selected_header_actions_block border-shadow-radius',
+            List: ChatActions(this._modal, selectedChat, chatCreatedBy)
+        });
+
+        const HeaderIcon = new Icon({
+            icon: 'entypo-dots-three-vertical',
+            iconClassName: 'gray-color',
+            className: 'chat_right-column_selected_header_actions_icon',
+            events: {
+                click: () => {
+                    const { state } = ChatButtons.getProps();
+                    ChatButtons.setProps({
+                        state: state === 'display-block' ? 'display-none' : 'display-block'
+                    })
+                }
+            }
+        });
+
+        child.HeaderActions = [
+            HeaderIcon, 
+            ChatButtons
+        ];
+
+        return true;
+    }
+
+    private createMessages(props: any) {
+        const userId = props.userId;
+        return props.messages.map((data: any) => {
+            return new MessageItem({
+                ...data, 
+                isMySelf: userId === data.user_id,
+                media: data.type === 'file' ? getFile(data.file) :  null, 
+            });
+        })
     }
 
     private _addFormBlock(child: {[key: string]: Block | Block[]})
@@ -92,12 +105,18 @@ export default class Messages extends Block {
                     text: 'Фото или Видео',
                     events: {
                         click: () => {
-                            (child.Modal as Block).setProps({
+                            this._modal.setProps({
                                 title: 'Отправить Фото или Видео',
                                 state: 'show',
                                 body: new Browse({
-                                    onSubmit: (e: SubmitEvent) => {
-                                        console.log('Отправить Фото или Видео')
+                                    name: 'resource',
+                                    accept: 'image/*, video/*',
+                                    onSubmit: async (formData: FormData) => {
+                                        const file: IResource = await MessagesController.sendFile(formData);
+                                        MessagesController.sendMessage(this.props.selectedChat, (file.id).toString(), 'file');
+                                        this._modal.setProps({
+                                            show: 'hide'
+                                        })
                                     }
                                 })
                             })
@@ -110,12 +129,15 @@ export default class Messages extends Block {
                     text: 'Файл',
                     events: {
                         click: () => {
-                            (child.Modal as Block).setProps({
+                            this._modal.setProps({
                                 title: 'Отправить Файл',
                                 state: 'show',
                                 body: new Browse({
-                                    onSubmit: (e: SubmitEvent) => {
-                                        console.log('Отправить Файл')
+                                    name: 'resource',
+                                    accept: '.pdf, .txt, .xls, .word',
+                                    onSubmit: async (formData: FormData) => {
+                                        const file: IResource = await MessagesController.sendFile(formData);
+                                        MessagesController.sendMessage(this.props.selectedChat, (file.id).toString(), 'file');
                                     }
                                 })
                             })
@@ -128,11 +150,11 @@ export default class Messages extends Block {
                     text: 'Локация',
                     events: {
                         click: () => {
-                            (child.Modal as Block).setProps({
+                            this._modal.setProps({
                                 title: 'Отправить Локация',
                                 state: 'show',
                                 body: new Browse({
-                                    onSubmit: (e: SubmitEvent) => {
+                                    onSubmit: (e: FormData) => {
                                         console.log('Отправить Локация')
                                     }
                                 })
@@ -168,7 +190,9 @@ export default class Messages extends Block {
                         return;
                     }
 
-                    console.log('message', message)
+                    Input.setValue('');
+
+                    MessagesController.sendMessage(this.props.selectedChat, message);
                 }
             },
             Input,
@@ -179,90 +203,50 @@ export default class Messages extends Block {
     }
 
     protected init(): void {
+        this._modal = new Modal({});
+
         let child: {[key: string]: Block | Block[]} = this.children;
 
         this._addFormBlock(child);
-
-        const chatAction = new Action({
-            state: 'display-none',
-            className: 'settings-block chat_right-column_selected_header_actions_block border-shadow-radius',
-            List: [
-                new List({
-                    icon: 'ph-user-plus-fill',
-                    iconClassName: 'ib-22px primary-color',
-                    text: 'Добавить пользователя',
-                    events: {
-                        click: () => {
-                            (child.Modal as Block).setProps({
-                                title: 'Добавить пользователя',
-                                state: 'show',
-                                body: new ModalForm({
-                                    onSubmit: (login) => {
-                                        console.log('Добавить пользователя', login)
-                                    }
-                                })
-                            })
-                        }
-                    }
-                }),
-                new List({
-                    icon: 'fluent-person-delete-20-filled',
-                    iconClassName: 'ib-22px primary-color',
-                    text: 'Удалить пользователя',
-                    events: {
-                        click: () => {
-                            (child.Modal as Block).setProps({
-                                title: 'Удалить пользователя',
-                                state: 'show',
-                                body: new ModalForm({
-                                    onSubmit: (login) => {
-                                        console.log('Удалить пользователя', login)
-                                    }
-                                })
-                            })
-                        }
-                    }
-                }),
-                new List({
-                    icon: 'fluent-delete-off-24-filled',
-                    iconClassName: 'ib-22px primary-color',
-                    text: 'Удалить переписку',
-                    events: {
-                        click: () => {
-                            console.log('click Удалить переписку')
-                        }
-                    }
-                }),
-            ]
-        });
-
-        const HeaderIcon = new Icon({
-            icon: 'entypo-dots-three-vertical',
-            iconClassName: 'gray-color',
-            className: 'chat_right-column_selected_header_actions_icon',
-            events: {
-                click: () => {
-                    const { state } = chatAction.getProps();
-                    chatAction.setProps({
-                        state: state === 'display-block' ? 'display-none' : 'display-block'
-                    })
-                }
-            }
-        });
-
-        child.HeaderActions = [
-            HeaderIcon,
-            chatAction, 
-        ];
-
-        child.Modal = new Modal({});
+        child.Messages = [];
+        child.Modal = this._modal;
     }
 
     protected render(): DocumentFragment {
         return this.compile(
-            !this.props.name ? emptyMessagesTemplate : template, 
+            !this.props.selectedChat ? emptyMessagesTemplate : template, 
             this.props
         )
     }
-
 }
+
+const withMessages = withStore(state => {
+    const selectedChatId = state.selectedChat; 
+    function getChat(chatId: number) {
+        return state.chats.filter((item: ChatData) => item.id === chatId)[0];
+    }
+
+    if (!selectedChatId) {
+        return {
+            messages: [],
+            selectedChat: undefined,
+            userId: state.user.data.id,
+            title: undefined,
+            avatar: undefined,
+            chatCreatedBy: undefined
+        };
+    }
+
+    const chat: ChatData = getChat(selectedChatId);
+
+    return {
+        messages: (state.messages || {})[selectedChatId] || [],
+        selectedChat: state.selectedChat,
+        userId: state.user.data.id,
+        title: chat && chat.title,
+        avatar: chat && getAvatar(chat.avatar),
+        chatCreatedBy: chat && chat.created_by
+    };
+});
+
+export default withMessages(MessagesBase as typeof Block);

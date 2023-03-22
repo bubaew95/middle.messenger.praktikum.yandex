@@ -1,9 +1,10 @@
 import { Link } from "../../Components";
-import { CHAT_PAGE, renderDom } from "../../routers";
+import { CHAT_PAGE } from "../../utils/Routes";
 import ChildType from "../../typings/ChildrenType";
 import Block from "../../utils/Block";
 import template from './error.hbs';
 import './error.pcss';
+import Router from "../../utils/Router";
 
 export default class ErrorPage extends Block 
 {
@@ -21,7 +22,7 @@ export default class ErrorPage extends Block
             text: 'Назад к чатам',
             containerClassName: 'error-page_go-to-back mt-4',
             events: {
-                click: () => renderDom(CHAT_PAGE)
+                click: () => Router.go(CHAT_PAGE)
             }
         });
     }

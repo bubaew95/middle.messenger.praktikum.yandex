@@ -1,44 +1,54 @@
 import template from './chat.hbs'
 import Block from '../../utils/Block';
-import { ChatItem, Field, Link, Messages } from '../../Components';
-import data from '../../Api/chats.json'; 
-
+import { Field, Link, Messages, Modal } from '../../Components';
 import './chat.pcss';
-import { PROFILE_PAGE, renderDom } from '../../routers';
+import { PROFILE_PAGE } from '../../utils/Routes';
 import ChildType from '../../typings/ChildrenType';
+import Router from '../../utils/Router';
+import ChatsController from '../../Controllers/ChatsController';
+import ModalForm from '../../Components/Modal/Form';
+import Chats from '../../Components/Chat';
 
 export default class ChatPage extends Block {
-    
-    constructor(props: {}) {
-        super(props)
-    } 
-
     protected init(): void {
         let child: ChildType = this.children;
+        child.Modal = new Modal({});
+        
 
-        child.Chat = new Messages({});
+        child.Messangers = new Messages({});
+        child.Chats = new Chats({});
 
-        let chats: Block[] = [];
-        data.map((item: {[key: string]: any}) => { 
-            const chatItem = new ChatItem({                 
-                ...item,
-                events: {
-                    click: (e: PointerEvent) => {
-                        (child.Chat as Block).setProps({
-                            id: item.id
-                        });
-                    }
+        ChatsController.fetchChats();
+
+        child.AddChatLink = new Link({
+            text: 'Создать чат <i class="ib eva-arrow-ios-forward-fill"></i>',
+            className: 'chat_left-column_header-profile_link',
+            events: {
+                click: () => {
+                    (child.Modal as Block).setProps({
+                        title: 'Создать чат',
+                        state: 'show',
+                        body: new ModalForm({
+                            fieldName: 'chat',
+                            fieldText: 'Название чата',
+                            buttonText: 'Создать',
+                            onSubmit: (text: string) => {
+                                (child.Modal as Block).setProps({
+                                    state: 'hide'
+                                });
+                                ChatsController.create(text);
+                            }
+                        })
+                    })
                 }
-            });
-
-            chats.push(chatItem);
+            }
         });
 
         child.ProfileLink = new Link({
             text: 'Профиль <i class="ib eva-arrow-ios-forward-fill"></i>',
             className: 'chat_left-column_header-profile_link',
             events: {
-                click: () => renderDom(PROFILE_PAGE)
+                click: () => Router.go(PROFILE_PAGE)
             }
         });
 
@@ -56,12 +66,9 @@ export default class ChatPage extends Block {
                 console.log(query);
             }
         });
-
-        child.Chats = chats;
     }
 
     protected render(): DocumentFragment {
         return this.compile(template, this.props)
     }
-
 }
