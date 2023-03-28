@@ -154,7 +154,7 @@ class MessagesBase extends Block {
                                 title: 'Отправить Локация',
                                 state: 'show',
                                 body: new Browse({
-                                    onSubmit: (e: FormData) => {
+                                    onSubmit: () => {
                                         console.log('Отправить Локация')
                                     }
                                 })

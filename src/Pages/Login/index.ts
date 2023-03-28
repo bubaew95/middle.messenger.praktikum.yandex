@@ -15,7 +15,7 @@ import Text from '../../Components/Text';
 
 class LoginPageBase extends Block {
 
-    protected componentDidUpdate(oldProps: any, newProps: any): boolean { 
+    protected componentDidUpdate(_: any, newProps: any): boolean { 
       if(!!newProps.signin && newProps.signin.error) {
         this.children.ErrorMessage = new Text({
           text: newProps.signin.error,
@@ -31,19 +31,13 @@ class LoginPageBase extends Block {
 
       const loginField = new Field({
         name: 'login',
-        label: 'Логин',
-        onBlur: (e: FocusEvent) => { 
-          const element: string  = (e.target as HTMLInputElement).value; 
-        }
+        label: 'Логин'
       });
       
       const passwordField = new Field({ 
         name: 'password',
         label: 'Пароль',
-        type: 'password',
-        onBlur: (e: FocusEvent) => { 
-          const element: string  = (e.target as HTMLInputElement).value; 
-        }
+        type: 'password'
       });
       
       const button = new Button({

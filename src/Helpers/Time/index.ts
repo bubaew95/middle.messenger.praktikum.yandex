@@ -1,6 +1,6 @@
 import Handlebars from 'handlebars/dist/handlebars.runtime';
 
-Handlebars.registerHelper("DateFormat", function(date: string, options: any) {
+Handlebars.registerHelper("DateFormat", function(date: string) {
     if(!date) {
         return;
     }

@@ -1,7 +1,5 @@
 import ChatsController from "../../../Controllers/ChatsController";
 import Block from "../../../utils/Block";
-import Router from "../../../utils/Router";
-import { CHAT_PAGE } from "../../../utils/Routes";
 import store from "../../../utils/Store";
 import List from "../../List";
 import Modal from "../../Modal";
@@ -17,12 +15,6 @@ export interface ISelectedChat {
     title: string;
     token: string;
     unread_count: number;
-}
-
-interface IChatActions {
-    modal: Modal
-    selectedChat: ISelectedChat
-    userId: number
 }
 
 enum Status {
@@ -132,8 +124,8 @@ function DeleteChat(modal: Modal, chatId: number) : Block {
     });
 }
 
-export default function ChatActions(modal: Modal, selectedChat: number, chatCreatedBy: number | undefined) {
-    const { user } = store.getState();
+export default function ChatActions(modal: Modal, selectedChat: number, _chatCreatedBy: number | undefined) {
+    // const { user } = store.getState();
 
     let buttons = [];
 

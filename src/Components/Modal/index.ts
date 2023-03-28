@@ -10,7 +10,7 @@ export default class Modal extends Block {
         super(props);
     }
 
-    protected componentDidUpdate(oldProps: any, newProps: any): boolean {
+    protected componentDidUpdate(_oldProps: any, newProps: any): boolean {
         if(newProps.body && newProps.body instanceof Block) { 
             this.children.body = newProps.body;
         }

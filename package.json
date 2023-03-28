@@ -4,30 +4,36 @@
   "description": "",
   "scripts": {
     "start": "npm run build && node static/server.js",
-    "dev": "parcel src/index.html --open",
+    "dev": "npx webpack-dev-server --open",
     "build": "parcel build src/index.html"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@anikin/parcel-transformer-handlebars": "1.0.9",
-    "@anikin/parcel-transformer-handlebars-precompile": "1.0.1",
     "autoprefixer": "10.4.13",
+    "css-loader": "6.7.3",
     "eslint": "8.34.0",
     "eslint-config-airbnb": "19.0.4",
     "handlebars": "4.7.7",
-    "parcel": "2.8.3",
+    "handlebars-template-loader": "^1.0.0",
+    "html-webpack-plugin": "5.5.0",
     "path-browserify": "1.0.1",
     "postcss": "8.4.21",
     "postcss-icon-blender": "1.0.0-Beta.3",
+    "postcss-loader": "7.1.0",
     "postcss-modules": "4.3.1",
     "postcss-nested": "6.0.0",
     "postcss-simple-vars": "7.0.1",
     "process": "0.11.10",
+    "style-loader": "3.3.2",
     "stylelint": "15.1.0",
     "stylelint-config-recommended": "10.0.1",
-    "typescript": "4.9.5"
+    "ts-loader": "9.4.2",
+    "typescript": "4.9.5",
+    "webpack": "5.76.3",
+    "webpack-cli": "5.0.1",
+    "webpack-dev-server": "4.13.1"
   },
   "dependencies": {
     "express": "4.18.2"

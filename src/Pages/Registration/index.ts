@@ -21,7 +21,7 @@ import Text from '../../Components/Text';
 
 class RegistrationPageBase extends Block {
 
-  protected componentDidUpdate(oldProps: any, newProps: any): boolean { 
+  protected componentDidUpdate(_oldProps: any, newProps: any): boolean { 
     if(!!newProps.signup && newProps.signup.error) { 
       this.children.ErrorMessage = new Text({
         text: newProps.signup.error,
@@ -205,4 +205,4 @@ class RegistrationPageBase extends Block {
 
 const withUser = withStore((state) => ({ ...state.user }))
 
-export default withUser(RegistrationPageBase);
+export default withUser(RegistrationPageBase as typeof Block);
