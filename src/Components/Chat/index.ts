@@ -4,7 +4,7 @@ import { withStore } from '../../utils/Store';
 import ChatItem from '../ChatItem';
 import ChatsController from '../../Controllers/ChatsController';
 import Spinner from '../Spinner';
-import { getAvatar } from '../../utils/Helpers';
+import { DateFormat, getAvatar, Substr } from '../../utils/Helpers';
 
 class ChatsBase extends Block {
 
@@ -27,6 +27,8 @@ class ChatsBase extends Block {
         return new ChatItem({
           ...data,
           avatar: data.avatar && getAvatar(data.avatar),
+          last_message: data.last_message?.content && Substr(data.last_message.content),
+          last_message_time: data.last_message?.time && DateFormat(data.last_message.time),
           events: {
             click: () => {
               ChatsController.selectChat(data.id);

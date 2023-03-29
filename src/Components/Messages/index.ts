@@ -14,7 +14,7 @@ import Modal from '../Modal';
 import Browse from '../Modal/Browse'; 
 import ChildType from '../../typings/ChildrenType';
 import { withStore } from '../../utils/Store'; 
-import { getAvatar, getFile } from '../../utils/Helpers';
+import { DateFormat, getAvatar, getFile } from '../../utils/Helpers';
 import ChatActions from './partials/chat-actions';
 import MessagesController from '../../Controllers/MessagesController';
 import { ChatData } from '../../Api/ChatsApi';  
@@ -72,7 +72,8 @@ class MessagesBase extends Block {
             return new MessageItem({
                 ...data, 
                 isMySelf: userId === data.user_id,
-                media: data.type === 'file' ? getFile(data.file) :  null, 
+                media: data.type === 'file' ? getFile(data.file) :  null,
+                time: data.time && DateFormat(data.time)
             });
         })
     }
