@@ -9,10 +9,11 @@ export interface IResult {
 }
 
 export class ChatsController {
-  private readonly api: ChatsAPI;
+  ;
 
-  constructor() {
-    this.api = API;
+  constructor(
+    private readonly api: ChatsAPI = API
+  ) {
   }
 
   async fetchChats() {

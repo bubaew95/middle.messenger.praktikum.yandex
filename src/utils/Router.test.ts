@@ -34,17 +34,17 @@ describe('Router', () => {
         .use('/', BlockMock)
         .start();
 
-    //   Router.back();
+      Router.back();
 
       expect(getContentFake.callCount).to.eq(1);
     });
   });
 
-//   it('should render a page on start', () => {
-//     Router
-//       .use('/', BlockMock)
-//       .start();
+  it('should render a page on start', () => {
+    Router
+      .use('/', BlockMock)
+      .start();
 
-//     expect(getContentFake.callCount).to.eq(1);
-//   });
+    expect(getContentFake.callCount).to.eq(1);
+  });
 });
