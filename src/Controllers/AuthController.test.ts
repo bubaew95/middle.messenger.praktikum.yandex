@@ -17,25 +17,36 @@ describe('AuthController', () => {
 
     const authController = new AuthController(AuthApiMock);
     
+    const loginAndPassword = {
+        login: 'Test',
+        password: '1234'
+    };
 
     describe('Sign', () => {
  
         it.only('Undefinite', async () => {
-            await authController.signin({
-                login: 'Test',
-                password: '1234'
-            }); 
+            await authController.signin(loginAndPassword); 
             expect(fake()).to.be.undefined; 
         });
 
         it.only('Shoud create fake without behaviour', async () => {
-            await authController.signin({
-                login: 'Test',
-                password: '1234'
-            }); 
+            await authController.signin(loginAndPassword); 
             expect(fake.callCount).to.be.eq(1);
         });
             
+        it.only('Некорретный логин или пароль', async () => {
+            await authController.signin({
+                login: '',
+                password: ''
+            }); 
+            expect(fake()).to.be.Throw;
+        });
+
+        it.only('Проверка параметров', async () => {
+            await authController.signin(loginAndPassword);
+            
+            expect(fake.calledWith(Sinon.match(loginAndPassword))).to.be.true;
+        });
     });
 
 });
