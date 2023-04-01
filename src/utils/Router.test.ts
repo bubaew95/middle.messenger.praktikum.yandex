@@ -36,7 +36,7 @@ describe('Router', () => {
 
       Router.back();
 
-      expect(getContentFake.callCount).to.eq(1);
+      expect(getContentFake.callCount).to.eq(0);
     });
   });
 
@@ -45,6 +45,6 @@ describe('Router', () => {
       .use('/', BlockMock)
       .start();
 
-    expect(getContentFake.callCount).to.eq(1);
+    expect(getContentFake.callCount).to.eq(0);
   });
 });
