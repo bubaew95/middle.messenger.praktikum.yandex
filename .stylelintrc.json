@@ -17,6 +17,7 @@
       "**/*.png",
       "src/index.html",
       "build/*",
-      "dist/*"
+      "dist/*",
+      "Dockerfile"
     ]
 } 
