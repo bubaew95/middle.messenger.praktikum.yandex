@@ -9,7 +9,7 @@ describe('HTTPTransport', () => {
 
   beforeEach(() => {
     xhr = sinon.useFakeXMLHttpRequest();
-
+    
     // @ts-ignore
     global.XMLHttpRequest = xhr;
 

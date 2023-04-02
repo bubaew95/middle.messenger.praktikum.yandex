@@ -4,10 +4,10 @@ import Router from '../utils/Router';
 import { PROFILE_PAGE } from '../utils/Routes';
 
 export class ProfileController {
-  private readonly api: ProfileAPI;
-
-  constructor() {
-    this.api = API;
+  
+  constructor(
+    private readonly api: ProfileAPI = API
+  ) {
   }
 
   private setUser(user: ProfileDataAvatar)
@@ -28,7 +28,6 @@ export class ProfileController {
   async changeAvatar(data: FormData) { 
     try {
       const user = await this.api.changeAvatar(data);
-      console.log(user)
       this.setUser(user);
     } catch (e: any) {
       store.set('user.changeAvatar.error', e.reason);
