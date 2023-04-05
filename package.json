@@ -6,7 +6,8 @@
     "start": "npm run build && node static/server.js",
     "dev": "webpack serve --open",
     "build": "webpack",
-    "test": "mocha --require ts-node/register --require ./mochaSetup.js './src/**/*.test.ts'"
+    "test": "mocha --require ts-node/register --require ./mochaSetup.js './src/**/*.test.ts'",
+    "lint:all": "eslint ."
   },
   "keywords": [],
   "author": "",
@@ -54,8 +55,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm-run-all test lint:all",
-      "pre-push": "npm run other command"
+      "pre-commit": "npm run test && npm run lint:all"
     }
   }
 }
