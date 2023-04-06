@@ -1,3 +1,9 @@
+В production версии npm audit не выкидывает ошибок
+__
+```
+npm audit --production
+```
+
 Ссылка на макет
 https://www.figma.com/file/q5QZGfBMPnQVNkvHyI4BLn/Chat-(Copy)?node-id=0%3A1&t=9pAEceO2LdEbha3U-1
 
