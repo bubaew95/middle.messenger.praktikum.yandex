@@ -1,19 +1,22 @@
 import API, { AuthAPI, SigninData, SignupData } from '../Api/AuthAPI';
 import store from '../utils/Store';
 import { LOGIN_PAGE, PROFILE_PAGE } from '../utils/Routes';
-import Router from '../utils/Router';
+import Router, {Router as RouterBase} from '../utils/Router';
 
 export class AuthController {
-  private readonly api: AuthAPI;
 
-  constructor() {
-    this.api = API;
+  constructor(
+    private readonly api: AuthAPI = API,
+    private readonly router: RouterBase = Router
+  ) {
+    this.api = api;
+    this.router = router;
   }
 
   async signin(data: SigninData) {
     try {
       await this.api.signin(data); 
-      Router.go(PROFILE_PAGE);
+      this.router.go(PROFILE_PAGE);
     } catch (e: any) {
       store.set('user.signin.error', e.reason);
     }
@@ -25,7 +28,7 @@ export class AuthController {
 
       await this.fetchUser();
 
-      Router.go(PROFILE_PAGE);
+      this.router.go(PROFILE_PAGE);
     } catch (e: any) {
       store.set('user.signup.error', e.reason);
     }
@@ -40,7 +43,7 @@ export class AuthController {
     try {
       await this.api.logout();
 
-      Router.go(LOGIN_PAGE);
+      this.router.go(LOGIN_PAGE);
     } catch (e: any) {
       console.error(e.message);
     }

@@ -11,9 +11,12 @@ export default class WSTransport extends EventBus {
   private socket: WebSocket | null = null;
   private pingInterval: number = 0;
 
-  constructor(private url: string) {
+  constructor(
+    private url: string,
+  ) {
     super();
   }
+
 
   public send(data: unknown) {
     if (!this.socket) {
@@ -42,7 +45,7 @@ export default class WSTransport extends EventBus {
   }
 
   private setupPing() {
-    this.pingInterval = setInterval(() => {
+    setInterval(() => {
       this.send({ type: 'ping' });
     }, 5000)
 
@@ -66,9 +69,8 @@ export default class WSTransport extends EventBus {
     });
 
     socket.addEventListener('message', (message) => {
-      try {
-        const data = JSON.parse(message.data);
-
+      try { 
+        const data = JSON.parse(typeof message.data !== 'undefined' ? message.data : message); 
         if (data.type && data.type === 'pong') {
           return;
         }

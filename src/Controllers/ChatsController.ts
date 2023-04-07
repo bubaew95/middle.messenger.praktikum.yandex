@@ -1,6 +1,6 @@
 import API, { ChatsAPI } from '../Api/ChatsApi';
 import store from '../utils/Store';
-import ProfileAPI, { IUserData } from '../Api/ProfileAPI';
+import ProfileAPI, { IUserData, ProfileAPI as BaseProfileApi } from '../Api/ProfileAPI';
 import MessagesController from './MessagesController';
 
 export interface IResult {
@@ -9,10 +9,14 @@ export interface IResult {
 }
 
 export class ChatsController {
-  private readonly api: ChatsAPI;
+  ;
 
-  constructor() {
-    this.api = API;
+  constructor(
+    private readonly api: ChatsAPI = API,
+    private readonly profileAPI: BaseProfileApi = ProfileAPI
+  ) {
+    this.api = api;
+    this.profileAPI = profileAPI;
   }
 
   async fetchChats() {
@@ -46,7 +50,7 @@ export class ChatsController {
 
   async getLoginId(login: string)
   {
-    const users = await ProfileAPI.searchUsers(login);
+    const users = await this.profileAPI.searchUsers(login);
     const user = users.filter((user: IUserData) => user.login === login);
     if(!user) {
       throw new Error('Пользователь с таким логимом не найден!');
@@ -56,7 +60,7 @@ export class ChatsController {
   }
 
   async addUserToChat(login: string, chatId: number): Promise<IResult> {
-    try {
+    try {  
       const userId = await this.getLoginId(login);
       await this.api.addUserToChat(userId, chatId);
       return {

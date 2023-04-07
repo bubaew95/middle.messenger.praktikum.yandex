@@ -18,7 +18,6 @@ const RenderDom = (query: string, block: Block) => {
 
     root.innerHTML = '';
     root.append(block.getContent()!);
-    block.dispatchComponentDidMount();
 } 
 
 export default class Route {

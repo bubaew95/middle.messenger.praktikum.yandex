@@ -1,6 +1,6 @@
 import Route, { BlockConstructable } from "./Route";
 
-class Router {
+export class Router {
     private static __instance: Router;
     private routes: Route[] = [];
     private currentRoute: Route | null = null;

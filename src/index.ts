@@ -2,9 +2,6 @@ import { CHAT_PAGE, LOGIN_PAGE, REGISTRATION_PAGE, ROUTERS } from './utils/Route
 import './Components';
 import 'icon-blender/css/icon-blender.css';
 import './style.pcss';
-
-import './Helpers/Substr'
-import './Helpers/Time'
 import Router from './utils/Router';
 import { BlockConstructable } from './utils/Route';
 import AuthController from './Controllers/AuthController';

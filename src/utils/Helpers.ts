@@ -67,3 +67,22 @@ export function getFile (file: IFile) {
 }
 
  
+export function Substr(text: string, start: number = 0, end: number = 20) {
+    let string = text.substring(start, end);
+
+    if(text.length > end) {
+        string = string.trim() + '...';
+    }
+
+    return string;
+}
+
+export function DateFormat(date: string) {
+  if(!date) {
+      return;
+  }
+
+  const nDate = new Date(date);
+
+  return `${nDate.getHours()}:${nDate.getMinutes()}`;
+}

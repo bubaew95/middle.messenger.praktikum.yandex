@@ -17,7 +17,7 @@ import { getAvatar } from '../../../utils/Helpers';
 
 class ChangePassword extends Block {
 
-    protected componentDidUpdate(oldProps: any, newProps: any): boolean {
+    protected componentDidUpdate(_:any, newProps: any): boolean {
         
         if(!!newProps.error) {
             let child: ChildType = this.children;
@@ -55,10 +55,7 @@ class ChangePassword extends Block {
         const oldPasswordField = new Field({
             name: 'oldPassword',
             type: 'password',
-            placeholder: '*******',
-            onBlur: (e: FocusEvent) => {
-                const target = (e.target as HTMLInputElement);
-            }
+            placeholder: '*******'
         });
 
         const newPasswordField = new Field({

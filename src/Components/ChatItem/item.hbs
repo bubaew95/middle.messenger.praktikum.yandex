@@ -1,5 +1,5 @@
 
-<div class="chat_left-column_items_item {{# if active}}active{{/if}}">
+<div class="chat_left-column_items_item {{# if isSelected}}active{{/if}}">
     <div class="chat_left-column_items_item_avatar">
         <img src="{{#if avatar}}{{avatar}}{{else}}https://cs6.pikabu.ru/avatars/1121/x1121129-2144512139.png{{/if}}" alt="{{name}}">
     </div>
@@ -10,22 +10,18 @@
 
         <div class="chat_left-column_items_item_info_message">
 
-            {{#if isActive}}
+            {{#if isSelected}}
                 <span class="chat_left-column_items_item_info_my-message">Вы:</span>
             {{/if}}
             
-
-            {{# if last_message.content}}
-                {{Substr last_message.content end=70}}
-            {{/if}}
+    
+            {{last_message}}
         </div>
     </div>
 
     <div class="chat_left-column_items_item_right">
         <div class="chat_left-column_items_item_right_date">
-            {{# if last_message.time}}
-                {{ DateFormat last_message.time }}
-            {{/if}}
+            {{last_message_time}}
         </div>
 
         <div class="chat_left-column_items_item_right_badge">

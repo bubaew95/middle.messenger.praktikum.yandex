@@ -53,13 +53,13 @@ export enum Method {
     }
   
     private request<Response>(url: string, options: Options = {method: Method.Get}): Promise<Response> {
-      const {method, data, headers} = options;
+      const {method, data} = options;
   
       return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
         xhr.open(method, url);
   
-        xhr.onreadystatechange = (e) => {
+        xhr.onreadystatechange = () => {
   
           if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status < 400) {

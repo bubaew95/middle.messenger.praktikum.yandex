@@ -3,7 +3,6 @@ import Block from '../../../utils/Block';
 import Button from '../../Button';
 import Field from '../../Field';
 import Form from '../../Form';
-import Link from '../../Link';
 import template from './browse.hbs'
 
 interface IBrowseProps {
